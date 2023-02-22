@@ -53,6 +53,8 @@ dependencies {
 
     //adding material 3 -Rikard
     implementation "androidx.compose.material3:material3:1.0.0-alpha02"
+    //fler Icons
+    implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'

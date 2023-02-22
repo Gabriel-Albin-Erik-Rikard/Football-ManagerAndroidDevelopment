@@ -17,16 +17,16 @@ sealed class BottomBarScreen(
     object Calender : BottomBarScreen(
         route = "calender",
         title = "Calender",
-        icon = Icons.Default.Warning
+        icon = Icons.Default.CalendarMonth
     )
     object Teams : BottomBarScreen(
         route = "teams",
         title = "Teams",
-        icon = Icons.Default.Menu
+        icon = Icons.Default.Groups
     )
     object Profile : BottomBarScreen(
         route = "profile",
         title = "Profile",
-        icon = Icons.Default.Lock
+        icon = Icons.Default.AccountCircle
     )
 }
