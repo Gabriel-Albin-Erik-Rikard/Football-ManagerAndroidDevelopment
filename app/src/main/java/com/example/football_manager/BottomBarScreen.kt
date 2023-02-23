@@ -20,8 +20,8 @@ sealed class BottomBarScreen(
         icon = Icons.Default.CalendarMonth
     )
     object Teams : BottomBarScreen(
-        route = "teams",
-        title = "Teams",
+        route = "Groups",
+        title = "Groups",
         icon = Icons.Default.Groups
     )
     object Profile : BottomBarScreen(
