@@ -3,12 +3,10 @@ package com.example.football_manager
 import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +16,10 @@ import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.filament.Box
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
@@ -51,11 +53,15 @@ fun HomeScreen() {
     val newsList = mutableListOf<News>()
     newsList.add(News("Yikes", "Didnt go well"))
     newsList.add(News("Yikers", "Didnt go well"))
-    newsList.add(News("U cant beliewe what happens if u press this button", "Didnt go well"))
+    newsList.add(News("Yikes", "Didnt go well"))
+    newsList.add(News("Yikers", "Didnt go well"))
+    newsList.add(News("U cant beliewe what happens if u press this button in a veryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryvery long way", "Didnt go well"))
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(1f),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+
 
     )
             {
@@ -67,16 +73,31 @@ fun HomeScreen() {
                 }
             }
                 //maybe use text here instead of buttons?
-            items(newsList){ News ->
-                /*Text(
-                    text = News.title,
-                    modifier = Modifier
-                        .clickable{
-                            //TODO, show the news.
-                        }
-                    )*/
-                Button(onClick = { /*TODO take me to the news */ }) {
-                    Text(text = News.title)
+                //Gillar Card
+                items(newsList){ News ->
+                    Card(
+                        //shape =
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .height(180.dp)
+                            .width(280.dp)
+                            //.alignment = Alignment.Center
+                            //.background(androidx.compose.ui.graphics.Color.LightGray)
+                            .padding(12.dp)
+                            .clickable {
+                                //ta mig vidare här
+                                println("hejhej")
+                            }
+                    ) {
+                        Text(
+                            text = News.title,
+                            style = MaterialTheme.typography.h4,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                //.padding(12.dp)
+                                .background(androidx.compose.ui.graphics.Color.LightGray)
+                        )
+                    }
             }
     }
 }
