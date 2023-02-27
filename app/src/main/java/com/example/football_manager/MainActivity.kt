@@ -1,5 +1,6 @@
 package com.example.football_manager
 
+import android.content.ClipData.Item
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,6 +39,12 @@ class MainActivity : ComponentActivity() {
 
 val now = LocalDateTime.now()
 val newsRepository = NewsRepository().apply{
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
     addNews(
         "Welcome to Ekhagen",
         "In ekhagen you can find........",
@@ -112,31 +119,49 @@ fun AppScreen() {
 
 
 
-
 @Composable
 fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
 
     Box(
         modifier = Modifier.fillMaxSize()
-) {
+    ) {
+
         LazyColumn(
             modifier = Modifier.padding(24.dp)
         ){
+            item{
+                Text(text = "Welcome to News Page: ",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(vertical = 24.dp)
+                )
+            }
+
             items(listy) {News ->
                 Column(modifier = Modifier.clickable { navController.navigate("ViewOne/${News.id}") }) {
-                    Text(text = News.title, style = MaterialTheme.typography.titleLarge)
-                    Divider()
+                    Surface(
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(150.dp),
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                            .width(1100.dp)
+                    ) {
+                        Text(
+                            text = News.title,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(horizontal = 78.dp, vertical = 15.dp)
+                        )
+                    }
                 }
             }
         }
         Box(modifier = Modifier.fillMaxSize() ){
             FloatingActionButton(onClick ={
-                    /*todo*/
+                /*todo*/
             },
-            containerColor = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.BottomEnd)
+                containerColor = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd)
             ){
                 Text(
                     text = "+",
