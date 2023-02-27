@@ -10,17 +10,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import java.time.LocalDateTime
+import androidx.compose.ui.graphics.Color
+
 
 
 class MainActivity : ComponentActivity() {
@@ -99,7 +102,7 @@ fun AppScreen() {
         composable("viewAll") {
             ViewAllScreen(navController, newsRepository.getAllNews())
         }
-        composable("ViewOne/{id}") {
+        composable("viewOne/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
             viewOneScreen(id, navController)
 
@@ -126,23 +129,60 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
                 }
             }
         }
+        Box(modifier = Modifier.fillMaxSize() ){
+            FloatingActionButton(onClick ={
+                    /*todo*/
+            },
+            containerColor = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.BottomEnd)
+            ){
+                Text(
+                    text = "+",
+                    fontSize = 35.sp,
+                    color = Color.White
+
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun viewOneScreen(id: Int, navController: NavHostController){
-    val singelNews = newsRepository.getNewsById(id)
+fun viewOneScreen(id: Int, navController: NavHostController) {
+    val singleNews = newsRepository.getNewsById(id)
 
     Column(modifier = Modifier.padding(10.dp)) {
-        Text(text = "Title: ${singelNews?.title}" )
-        Text(text = "Content: ${singelNews?.content}" )
-        Text(text = "Date: ${singelNews?.date}" )
-        Text(text = "Writer: ${singelNews?.writer}" )
+        Text(text = " ${singleNews?.title}", style = MaterialTheme.typography.titleLarge)
+        Spacer(modifier = Modifier.height(50.dp))
+        Text(text = " ${singleNews?.content}", style = MaterialTheme.typography.titleMedium)
 
+        Spacer(modifier = Modifier.height(60.dp))
 
+        Row(modifier = Modifier.fillMaxWidth()) {
 
+            Text( text = "Date: ${singleNews?.date?.substring(0, 10)}",
+             style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
+            Text(text = "Writer: ${singleNews?.writer}", style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.5f))
+        }
+        Spacer(modifier = Modifier.height(200.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = { /* Handle first button click */ }) {
+                Text(text = "Edit News")
+            }
+            Button(onClick = { /* Handle second button click */ }) {
+                Text(text = "Delete News")
+            }
+        }
     }
 }
+
+
 
 
 
