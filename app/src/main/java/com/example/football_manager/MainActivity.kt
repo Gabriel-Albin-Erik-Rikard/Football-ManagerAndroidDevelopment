@@ -1,11 +1,8 @@
 package com.example.football_manager
 
-import android.content.ClipData.Item
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,9 +10,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -24,6 +22,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import java.time.LocalDateTime
 import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.runtime.remember
 
 
 
@@ -88,11 +91,10 @@ class NewsRepository {
 
     })
 
-    fun updateNewsById(id: Int, newTitle: String, newContent:String, newDate:String){
+    fun updateNewsById(id: Int, newTitle: String, newContent:String){
         getNewsById(id)?.run {
-            //title = newTitle
-            //content = newContent
-            //date = newDate
+            title = newTitle
+            content = newContent
         }
     }
 
@@ -111,8 +113,10 @@ fun AppScreen() {
         }
         composable("viewOne/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
-            viewOneScreen(id, navController)
-
+            ViewOneScreen(id, navController)
+        }
+        composable("createNews"){
+            createNews(navController = navController)
         }
     }
 }
@@ -156,7 +160,7 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
         }
         Box(modifier = Modifier.fillMaxSize() ){
             FloatingActionButton(onClick ={
-                /*todo*/
+                navController.navigate("createNews")
             },
                 containerColor = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
@@ -175,37 +179,83 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
 }
 
 @Composable
-fun viewOneScreen(id: Int, navController: NavHostController) {
+fun ViewOneScreen(id: Int, navController: NavHostController) {
     val singleNews = newsRepository.getNewsById(id)
+        Column(modifier = Modifier.padding(10.dp)) {
+            Text(text = " ${singleNews?.title}", style = MaterialTheme.typography.titleLarge)
+            Spacer(modifier = Modifier.height(50.dp))
+            Text(text = " ${singleNews?.content}", style = MaterialTheme.typography.titleMedium)
 
-    Column(modifier = Modifier.padding(10.dp)) {
-        Text(text = " ${singleNews?.title}", style = MaterialTheme.typography.titleLarge)
-        Spacer(modifier = Modifier.height(50.dp))
-        Text(text = " ${singleNews?.content}", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(60.dp))
 
-        Spacer(modifier = Modifier.height(60.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-
-            Text( text = "Date: ${singleNews?.date?.substring(0, 10)}",
-             style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
-            Text(text = "Writer: ${singleNews?.writer}", style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.5f))
-        }
-        Spacer(modifier = Modifier.height(200.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Button(onClick = { /* Handle first button click */ }) {
-                Text(text = "Edit News")
+                Text(
+                    text = "Date: ${singleNews?.date?.substring(0, 10)}",
+                    style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = "Writer: ${singleNews?.writer}",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.weight(0.5f)
+                )
             }
-            Button(onClick = { /* Handle second button click */ }) {
-                Text(text = "Delete News")
+            Spacer(modifier = Modifier.height(200.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Button(onClick = { /* Handle first button click */ }) {
+                    Text(text = "Edit News")
+                }
+                Button(onClick = { /* Handle second button click */ }) {
+                    Text(text = "Delete News")
+                }
             }
         }
     }
+
+@Composable
+fun createNews(navController: NavHostController){
+    Column(
+        modifier = Modifier.padding(80.dp)
+    ){
+        var newTextTitle by remember { mutableStateOf(TextFieldValue("")) }
+        OutlinedTextField(
+            value = newTextTitle, 
+            onValueChange = {newTextTitle = it},
+            label = { Text(text = "Your Title")},
+            placeholder = { Text(text = "Write Your Title")}
+        )
+
+        var newTextContent by remember { mutableStateOf(TextFieldValue("")) }
+        OutlinedTextField(
+            value = newTextContent,
+            onValueChange = {newTextContent = it},
+            label = { Text(text = "Your Title")},
+            placeholder = { Text(text = "Write Your Title")}
+        )
+        var newWriter by remember { mutableStateOf(TextFieldValue("")) }
+        OutlinedTextField(
+            value = newWriter,
+            onValueChange = {newWriter = it},
+            label = { Text(text = "Your Title")},
+            placeholder = { Text(text = "Write Your Title")}
+        )
+
+        var titleText = newTextTitle.text
+        var contentText = newTextContent.text
+        var writerText = newWriter.text
+        Button(onClick = {
+            newsRepository.addNews(title = titleText, content = contentText, date = now.toString(), writer = writerText)
+            navController.popBackStack()
+        }) {
+            Text(text = "Create News")
+        }
+    }
 }
+
 
 
 
