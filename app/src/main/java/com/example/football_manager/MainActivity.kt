@@ -22,19 +22,19 @@ import java.time.LocalDateTime
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 
-
+@ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           AppScreen()
+            AppScreen()
         }
     }
 }
 
 
 val now = LocalDateTime.now()
-val newsRepository = NewsRepository().apply{
+val newsRepository = NewsRepository().apply {
     addNews(
         "Welcome to Ekhagen",
         "In ekhagen you can find........",
@@ -48,7 +48,6 @@ val newsRepository = NewsRepository().apply{
         "Gabriel Adward"
     )
 }
-
 
 
 class NewsRepository {
@@ -74,17 +73,17 @@ class NewsRepository {
 
     fun getAllNews() = multipleNews
 
-    fun getNewsById(id:Int) = multipleNews.find{
+    fun getNewsById(id: Int) = multipleNews.find {
         it.id == id
     }
 
-    fun deleteNewsById(id:Int) = multipleNews.remove(multipleNews.find {
+    fun deleteNewsById(id: Int) = multipleNews.remove(multipleNews.find {
         println(it.id)
         it.id == id
 
     })
 
-    fun updateNewsById(id: Int, newTitle: String, newContent:String){
+    fun updateNewsById(id: Int, newTitle: String, newContent: String) {
         getNewsById(id)?.run {
             title = newTitle
             content = newContent
@@ -93,6 +92,7 @@ class NewsRepository {
 
 }
 
+@ExperimentalMaterial3Api
 @Composable
 fun AppScreen() {
     val navController = rememberNavController()
@@ -100,7 +100,7 @@ fun AppScreen() {
     NavHost(
         navController = navController,
         startDestination = "viewAll"
-    ){
+    ) {
         composable("viewAll") {
             ViewAllScreen(navController, newsRepository.getAllNews())
         }
@@ -108,12 +108,17 @@ fun AppScreen() {
             val id = it.arguments!!.getString("id")!!.toInt()
             ViewOneScreen(id, navController)
         }
-        composable("createNews"){
+
+        composable("viewOneEditedNews/{id}"){
+            val id  = it.arguments!!.getString("id")!!.toInt()
+            EditNews(id, navController)
+
+        }
+        composable("createNews") {
             createNews(navController = navController)
         }
     }
 }
-
 
 
 @Composable
@@ -125,15 +130,16 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
 
         LazyColumn(
             modifier = Modifier.padding(24.dp)
-        ){
-            item{
-                Text(text = "Welcome to News Page: ",
+        ) {
+            item {
+                Text(
+                    text = "Welcome to News Page: ",
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(vertical = 24.dp)
                 )
             }
 
-            items(listy) {News ->
+            items(listy) { News ->
                 Column(modifier = Modifier.clickable { navController.navigate("ViewOne/${News.id}") }) {
                     Surface(
                         color = MaterialTheme.colorScheme.secondary,
@@ -151,15 +157,16 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
                 }
             }
         }
-        Box(modifier = Modifier.fillMaxSize() ){
-            FloatingActionButton(onClick ={
-                navController.navigate("createNews")
-            },
+        Box(modifier = Modifier.fillMaxSize()) {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate("createNews")
+                },
                 containerColor = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.BottomEnd)
-            ){
+            ) {
                 Text(
                     text = "+",
                     fontSize = 35.sp,
@@ -174,41 +181,78 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
 @Composable
 fun ViewOneScreen(id: Int, navController: NavHostController) {
     val singleNews = newsRepository.getNewsById(id)
-        Column(modifier = Modifier.padding(10.dp)) {
-            Text(text = " ${singleNews?.title}", style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.height(50.dp))
-            Text(text = " ${singleNews?.content}", style = MaterialTheme.typography.titleMedium)
 
-            Spacer(modifier = Modifier.height(60.dp))
+    Column(modifier = Modifier.padding(10.dp)) {
+        Text(text = " ${singleNews?.title}", style = MaterialTheme.typography.titleLarge)
+        Spacer(
+            modifier = Modifier
+                .height(50.dp)
+                .padding(10.dp)
+        )
+        Text(text = " ${singleNews?.content}", style = MaterialTheme.typography.titleMedium)
 
-            Row(modifier = Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.height(60.dp))
 
-                Text(
-                    text = "Date: ${singleNews?.date?.substring(0, 10)}",
-                    style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "Writer: ${singleNews?.writer}",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.weight(0.5f)
-                )
+        Row(modifier = Modifier.fillMaxWidth()) {
+
+            Text(
+                text = "Date: ${singleNews?.date?.substring(0, 10)}",
+                style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "Writer: ${singleNews?.writer}",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Spacer(modifier = Modifier.height(100.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = { /* Handle first button click */ }) {
+                Text(text = "Edit News")
             }
-            Spacer(modifier = Modifier.height(200.dp))
+            val openDialog = remember { mutableStateOf(false) }
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(onClick = { /* Handle first button click */ }) {
-                    Text(text = "Edit News")
-                }
-                Button(onClick = { /* Handle second button click */ }) {
-                    Text(text = "Delete News")
-                }
+            Button(onClick = { openDialog.value = true }) {
+                Text(text = "Delete News")
+            }
+            if (openDialog.value) {
+                AlertDialog(onDismissRequest = { openDialog.value = false },
+                    title = {
+                        Text(text = "Are You Sure?")
+                    },
+                    confirmButton = {
+                        Button(onClick = {
+                            openDialog.value = false
+                            newsRepository.deleteNewsById(id)
+                            navController.popBackStack()
+                        }) {
+                            Text(text = "Yes!")
+
+                        }
+
+                    },
+                    dismissButton = {
+                        Button(
+                            onClick = { openDialog.value = false }) {
+                            Text(text = "No!")
+
+                        }
+                    }
+
+                )
+
+
             }
         }
-    }
 
+    }
+}
+
+@ExperimentalMaterial3Api
 @Composable
 fun createNews(navController: NavHostController) {
     val errors = remember { mutableStateListOf<String>() }
@@ -288,6 +332,11 @@ fun createNews(navController: NavHostController) {
             }
         }
     }
+}
+
+@Composable
+fun EditNews(id: Int, navController: NavHostController){
+
 }
 
 
