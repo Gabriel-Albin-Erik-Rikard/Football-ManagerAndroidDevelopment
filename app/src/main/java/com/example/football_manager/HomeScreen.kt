@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
@@ -22,8 +23,10 @@ import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -130,6 +133,63 @@ fun AppScreen() {
     }
 }
 
+
+@Composable
+fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        LazyColumn(
+            modifier = Modifier.padding(24.dp)
+        ) {
+            item {
+                androidx.compose.material3.Text(
+                    text = "Welcome to News Page: ",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(vertical = 24.dp)
+                )
+            }
+
+            items(listy) { News ->
+                Column(modifier = Modifier.clickable { navController.navigate("ViewOne/${News.id}") }) {
+                    androidx.compose.material3.Surface(
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(150.dp),
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                            .width(1100.dp)
+                    ) {
+                        androidx.compose.material3.Text(
+                            text = News.title,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(horizontal = 78.dp, vertical = 15.dp)
+                        )
+                    }
+                }
+            }
+        }
+        Box(modifier = Modifier.fillMaxSize()) {
+            androidx.compose.material3.FloatingActionButton(
+                onClick = {
+                    navController.navigate("createNews")
+                },
+                containerColor = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd)
+            ) {
+                androidx.compose.material3.Text(
+                    text = "+",
+                    fontSize = 35.sp,
+                    color = androidx.compose.ui.graphics.Color.White
+
+                )
+            }
+        }
+    }
+}
 
 
 
