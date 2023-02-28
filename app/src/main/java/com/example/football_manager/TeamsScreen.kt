@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.data.Group
+import androidx.compose.ui.tooling.data.UiToolingDataApi
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -26,11 +27,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 //TEST DATA
-data class gruop(
-    var name : String,
+data class Group(var id: Int,
+                 var name : String,
+                 val players: MutableList<Player>
 )
-
-data class player(
+data class Player(
     var id : Int,
     var assists : Int,
     var yellowCards : Int,
@@ -40,15 +41,30 @@ data class player(
     var redCards : Int
 )
 
-val ListOfPlayers = mutableListOf<player>()
+fun createTest() {
+    val group1 = Group(1, "Team A", mutableListOf())
+    val player1 = Player(1, 2, 2, 2, "Jöken", 2, 3)
+    val player2 = Player(2, 3, 4, 4, "Boris", 4, 5)
+    group1.players.add(player1)
+    group1.players.add(player2)
+
+    val group2 = Group(1, "Team A", mutableListOf())
+    val player3 = Player(1, 2, 2, 2, "Dala", 2, 3)
+    val player4 = Player(2, 3, 4, 4, "Hästen", 4, 5)
+    group2.players.add(player3)
+    group2.players.add(player4)
+
+}
 
 
 @Composable
 fun TeamsScreen(){
-    ListOfPlayers.add(player(1,2,3,4,"Kroken",3,5))
-    ListOfPlayers.add(player(2,2,3,4,"Dala",3,5))
-    ListOfPlayers.add(player(3,2,3,4,"Jöken",3,5))
-    ListOfPlayers.add(player(4,2,3,4,"Boris",3,5))
+    val groups = listOf(
+        Group(1, "Team A", mutableListOf()),
+        Group(2, "Team B", mutableListOf()),
+        Group(3, "Team C", mutableListOf())
+    )
+
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -69,19 +85,6 @@ fun TeamsScreen(){
 
 @Composable
 fun GroupScreenStart(navController: NavController){
-    val Groups = mutableListOf<gruop>()
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("Gruop of people who like really long names for their club even longer name"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
-    Groups.add(gruop("SexySwingers"))
 
     Box(
         modifier = Modifier
@@ -144,7 +147,7 @@ fun GroupPage(navController: NavController){
     modifier = Modifier
         //.fillMaxSize()
         .padding(bottom = 50.dp)
-        .background(Color.Green),
+        .background(Color.Blue),
     ){
         LazyColumn(
             modifier = Modifier
@@ -164,8 +167,6 @@ fun GroupPage(navController: NavController){
                     Text(text = "Add(implement later,mby)")
                 }
             }
-            //maybe use text here instead of buttons?
-            //Gillar Card
             items(ListOfPlayers){player ->
                 Card(
                     //shape =
@@ -201,7 +202,7 @@ fun PlayerPage(id: Int ,navController: NavController){
     Box( modifier = Modifier
         .fillMaxSize()
         .padding(bottom = 50.dp)
-        .background(Color.Green)
+        .background(Color.Blue)
     ) {
         // TODO import an Image here
         Icon(
@@ -214,13 +215,13 @@ fun PlayerPage(id: Int ,navController: NavController){
         )
         Card(
             //shape =
-            shape = RoundedCornerShape(12.dp),
+            //shape = RoundedCornerShape(12.dp),
 
             modifier = Modifier
-                .height(400.dp)
+                .height(300.dp)
                 .align(Alignment.BottomCenter)
-                .width(420.dp)
-                .padding(12.dp)
+                .width(480.dp)
+                //.padding(12.dp)
                 .background(Color.LightGray)
         ) {
             Text(
@@ -233,8 +234,9 @@ fun PlayerPage(id: Int ,navController: NavController){
                 style = MaterialTheme.typography.h4,
                 //textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(12.dp)
                     .background(Color.LightGray)
+                    .padding(6.dp)
+
             )
         }
     }
