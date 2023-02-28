@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
@@ -101,97 +102,42 @@ class NewsRepository {
 
 }
 
-
-
-
-
-
-
-
-
-
-
+@ExperimentalMaterial3Api
 @Composable
-fun HomeScreen() {
-    val startDestination : String = "HomeScreenStart"
+fun AppScreen() {
     val navController = rememberNavController()
+
     NavHost(
         navController = navController,
-        startDestination = startDestination
-    ){
-        composable("HomeScreenStart") {
-            HomeScreenStart(navController)
+        startDestination = "viewAll"
+    ) {
+        composable("viewAll") {
+            ViewAllScreen(navController, newsRepository.getAllNews())
         }
-        composable("HomeScreenNews") {
-            HomeScreenNews(navController)
+        composable("viewOne/{id}") {
+            val id = it.arguments!!.getString("id")!!.toInt()
+            ViewOneScreen(id, navController)
         }
-    }
-}
 
-@Composable
-fun HomeScreenStart(navController: NavController){
-    val newsList = mutableListOf<News>()
-    newsList.add(News("Yikes", "Didnt go well"))
-    newsList.add(News("Yikers", "Didnt go well"))
-    newsList.add(News("Yikes", "Didnt go well"))
-    newsList.add(News("Yikers", "Didnt go well"))
-    newsList.add(News("U cant beliewe what happens if u press this button in a veryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryvery long way", "Didnt go well"))
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(1f),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        composable("viewOneEditedNews/{id}"){
+            val id  = it.arguments!!.getString("id")!!.toInt()
+            EditNews(id, navController)
 
-
-    )
-    {
-        item{
-            Button(onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(backgroundColor = androidx.compose.ui.graphics.Color.Green)
-            ) {
-                Text(text = "Create")
-            }
         }
-        //maybe use text here instead of buttons?
-        //Gillar Card
-        items(newsList){ News ->
-            Card(
-                //shape =
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .height(180.dp)
-                    .width(280.dp)
-                    //.alignment = Alignment.Center
-                    //.background(androidx.compose.ui.graphics.Color.LightGray)
-                    .padding(12.dp)
-                    .clickable {
-                        //ta mig vidare här
-                        navController.navigate("HomeScreenNews")
-                        println("hejhej")
-                    }
-            ) {
-                Text(
-                    text = News.title,
-                    style = MaterialTheme.typography.h4,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        //.padding(12.dp)
-                        .background(LightGray)
-                )
-            }
+        composable("createNews") {
+            createNews(navController = navController)
         }
     }
 }
 
 
-@Composable
-fun HomeScreenNews(navController: NavController){
-    navController.currentDestination
-    Box(modifier = Modifier
-        .background(Gray),
-        contentAlignment = Alignment.Center
-    ){
-        Text(text = "senjor!")
-    }
-}
+
+
+
+
+
+
+
+
+
 
