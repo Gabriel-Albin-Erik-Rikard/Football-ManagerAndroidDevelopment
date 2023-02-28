@@ -73,13 +73,13 @@ fun TeamsScreen(){
         composable("GroupScreenStart") {
             GroupScreenStart(navController)
         }
-        composable("GroupPage") {
+        /*composable("GroupPage") {
             GroupPage(navController)
         }
         composable("PlayerPage/{id}") {
             val id = it.arguments?.getString("id")!!.toInt()
             PlayerPage(id,navController)
-        }
+        }*/
     }
 }
 
@@ -111,7 +111,7 @@ fun GroupScreenStart(navController: NavController){
             }
         //maybe use text here instead of buttons?
         //Gillar Card
-            items(Groups){ group ->
+            /*items(Groups){ group ->
                 Card(
                     //shape =
                     shape = RoundedCornerShape(12.dp),
@@ -137,7 +137,7 @@ fun GroupScreenStart(navController: NavController){
                     )
                 }
             }
-        }
+        }*/
     }
 }
 
@@ -167,7 +167,7 @@ fun GroupPage(navController: NavController){
                     Text(text = "Add(implement later,mby)")
                 }
             }
-            items(ListOfPlayers){player ->
+            /*items(ListOfPlayers){player ->
                 Card(
                     //shape =
                     shape = RoundedCornerShape(12.dp),
@@ -190,7 +190,7 @@ fun GroupPage(navController: NavController){
                             //.padding(12.dp)
                             .background(Color.LightGray)
                     )
-                }
+                }*/
             }
         }
     }
@@ -198,7 +198,7 @@ fun GroupPage(navController: NavController){
 
 @Composable
 fun PlayerPage(id: Int ,navController: NavController){
-    val player = ListOfPlayers.find{it.id == id}?:return
+    //val player = ListOfPlayers.find{it.id == id}?:return
     Box( modifier = Modifier
         .fillMaxSize()
         .padding(bottom = 50.dp)
@@ -225,7 +225,8 @@ fun PlayerPage(id: Int ,navController: NavController){
                 .background(Color.LightGray)
         ) {
             Text(
-                text = "Name: ${player.name} \n" +
+                text = "testing"
+                /*text = "Name: ${player.name} \n" +
                         "Games Played: ${player.gamesPlayed} \n"+
                         "Goals: ${player.goals} \n"+
                         "Assists: ${player.assists} \n"+
@@ -235,7 +236,7 @@ fun PlayerPage(id: Int ,navController: NavController){
                 //textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(Color.LightGray)
-                    .padding(6.dp)
+                    .padding(6.dp)*/
 
             )
         }
