@@ -6,11 +6,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
@@ -20,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -31,10 +38,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.filament.Box
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import java.lang.Math.ceil
 import java.time.LocalDateTime
+import java.util.Collections.min
+import kotlin.math.ceil
+import kotlin.math.min
 
-
-//FREE TO CHANGE
 
 data class News(
     val id: Int,
@@ -48,6 +57,36 @@ data class News(
 
 val now = LocalDateTime.now()
 val newsRepository = NewsRepository().apply {
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
     addNews(
         "Welcome to Ekhagen",
         "In ekhagen you can find........",
@@ -104,9 +143,10 @@ class NewsRepository {
 
 }
 
+
 @ExperimentalMaterial3Api
 @Composable
-fun AppScreen() {
+fun HomeScreen() {
     val navController = rememberNavController()
 
     NavHost(
@@ -132,63 +172,94 @@ fun AppScreen() {
     }
 }
 
-
 @Composable
-fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
+fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerPage: Int = 4) {
+    val pageCount = ceil(listy.size.toFloat() / itemsPerPage).toInt()
+    var currentPage by remember { mutableStateOf(1) }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-
+    Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                androidx.compose.material3.Text(
-                    text = "Welcome to News Page: ",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(vertical = 24.dp)
-                )
+                Button(
+                    onClick = {
+                        navController.navigate("createNews")
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = androidx.compose.ui.graphics.Color.Cyan),
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    Text(
+                        text = "Create News",
+                        fontSize = 20.sp,
+                        color = androidx.compose.ui.graphics.Color.White
+                    )
+                }
             }
 
-            items(listy) { News ->
-                Column(modifier = Modifier.clickable { navController.navigate("ViewOne/${News.id}") }) {
-                    androidx.compose.material3.Surface(
+            val startIndex = (currentPage - 1) * itemsPerPage
+            val endIndex = min(startIndex + itemsPerPage, listy.size)
+            val sublist = listy.subList(startIndex, endIndex)
+
+            items(sublist) { news ->
+                Column(modifier = Modifier.clickable { navController.navigate("ViewOne/${news.id}") }) {
+                    Surface(
                         color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(150.dp),
                         modifier = Modifier
-                            .padding(vertical = 4.dp)
+                            .padding(horizontal = 10.dp, vertical = 5.dp)
                             .width(1100.dp)
                     ) {
-                        androidx.compose.material3.Text(
-                            text = News.title,
+                        Text(
+                            text = news.title,
                             style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.padding(horizontal = 78.dp, vertical = 15.dp)
                         )
                     }
                 }
             }
-        }
-        Box(modifier = Modifier.fillMaxSize()) {
-            androidx.compose.material3.FloatingActionButton(
-                onClick = {
-                    navController.navigate("createNews")
-                },
-                containerColor = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.BottomEnd)
-            ) {
-                androidx.compose.material3.Text(
-                    text = "+",
-                    fontSize = 35.sp,
-                    color = androidx.compose.ui.graphics.Color.White
 
-                )
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    IconButton(
+                        onClick = { if (currentPage > 1) currentPage-- },
+                        enabled = currentPage > 1
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Previous Page"
+                        )
+                    }
+
+                    Text(
+                        text = "Page $currentPage of $pageCount",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+
+                    IconButton(
+                        onClick = { if (currentPage < pageCount) currentPage++ },
+                        enabled = currentPage < pageCount
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowForward,
+                            contentDescription = "Next Page"
+                        )
+                    }
+                }
             }
         }
     }
 }
+
+
+
+
 
 
 @Composable
