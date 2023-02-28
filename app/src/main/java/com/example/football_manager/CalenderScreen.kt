@@ -8,6 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
+
+data class Activities(
+    val id: Int,
+    var matchType: String,
+    var title: String ,
+    var description: String ,
+    var week: Int,
+    var date: String,
+    var time: String
+)
 @Composable
 fun CalenderScreen(){
     Box(
