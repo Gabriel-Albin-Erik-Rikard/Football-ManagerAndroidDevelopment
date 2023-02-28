@@ -82,6 +82,7 @@ fun HomeScreenStart(navController: NavController){
     newsList.add(News("U cant beliewe what happens if u press this button in a veryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryvery long way", "Didnt go well"))
     LazyColumn(
         modifier = Modifier
+            .padding(bottom = 50.dp)
             .fillMaxSize(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
