@@ -39,7 +39,9 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.filament.Box
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import java.lang.Math.ceil
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
 import java.util.Collections.min
 import kotlin.math.ceil
 import kotlin.math.min
@@ -174,7 +176,8 @@ fun HomeScreen() {
 
 @Composable
 fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerPage: Int = 4) {
-    val pageCount = ceil(listy.size.toFloat() / itemsPerPage).toInt()
+    val sortedList = listy.sortedByDescending { it.date } // sort the list in reverse chronological order
+    val pageCount = ceil(sortedList.size.toFloat() / itemsPerPage).toInt()
     var currentPage by remember { mutableStateOf(1) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -260,16 +263,15 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerP
     }
 }
 
-
-
-
-
-
 @Composable
 fun ViewOneScreen(id: Int, navController: NavHostController) {
     val singleNews = newsRepository.getNewsById(id)
 
-    Column(modifier = Modifier.padding(10.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+            .fillMaxSize()
+    ) {
         androidx.compose.material3.Text(
             text = " ${singleNews?.title}",
             style = MaterialTheme.typography.titleLarge
@@ -288,8 +290,10 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
 
         Row(modifier = Modifier.fillMaxWidth()) {
 
+            val currentDate = remember { Calendar.getInstance().time }
+            val formattedDate = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(currentDate)
             androidx.compose.material3.Text(
-                text = "Date: ${singleNews?.date?.substring(0, 10)}",
+                text = "Date:  $formattedDate",
                 style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f)
             )
             androidx.compose.material3.Text(
@@ -302,20 +306,28 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            androidx.compose.material3.Button(onClick = { navController.navigate("viewOneEditedNews/${id}") }) {
+            androidx.compose.material3.Button(
+                onClick = { navController.navigate("viewOneEditedNews/${id}") },
+                modifier = Modifier.padding(end = 8.dp)
+            ) {
                 androidx.compose.material3.Text(text = "Edit News")
             }
             val openDialog = remember { mutableStateOf(false) }
 
-            androidx.compose.material3.Button(onClick = { openDialog.value = true }) {
+            androidx.compose.material3.Button(
+                onClick = { openDialog.value = true },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
                 androidx.compose.material3.Text(text = "Delete News")
             }
             if (openDialog.value) {
-                androidx.compose.material3.AlertDialog(onDismissRequest = {
-                    openDialog.value = false
-                },
+                androidx.compose.material3.AlertDialog(
+                    onDismissRequest = {
+                        openDialog.value = false
+                    },
                     title = {
                         androidx.compose.material3.Text(text = "Are You Sure?")
                     },
@@ -326,26 +338,23 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
                             navController.popBackStack()
                         }) {
                             androidx.compose.material3.Text(text = "Yes!")
-
                         }
-
                     },
                     dismissButton = {
                         androidx.compose.material3.Button(
-                            onClick = { openDialog.value = false }) {
+                            onClick = { openDialog.value = false }
+                        ) {
                             androidx.compose.material3.Text(text = "No!")
-
                         }
                     }
-
                 )
-
-
             }
         }
-
     }
 }
+
+
+
 
 @ExperimentalMaterial3Api
 @Composable
@@ -440,9 +449,9 @@ fun EditNews(id: Int, navController: NavHostController){
     val EDIT_NEWS_CONTENT_MIN_LENGTH = 10
     val EDIT_NEWS_CONTENT_MAX_LENGTH = 120
 
-    val CurrentTaskID = newsRepository.getNewsById(id)
-    var CurrentTitle = CurrentTaskID?.title
-    var CurrentDescription = CurrentTaskID?.content
+    val currentTaskID = newsRepository.getNewsById(id)
+    var currentTitle = currentTaskID?.title
+    var currentDescription = currentTaskID?.content
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -451,7 +460,7 @@ fun EditNews(id: Int, navController: NavHostController){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var InputTitleTextOfNews by remember { mutableStateOf(TextFieldValue(CurrentTitle.toString())) }
+            var InputTitleTextOfNews by remember { mutableStateOf(TextFieldValue(currentTitle.toString())) }
             OutlinedTextField(
                 value = InputTitleTextOfNews,
                 onValueChange = {
@@ -462,7 +471,7 @@ fun EditNews(id: Int, navController: NavHostController){
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            var InputContentOfNews by remember { mutableStateOf(TextFieldValue(CurrentDescription.toString())) }
+            var InputContentOfNews by remember { mutableStateOf(TextFieldValue(currentDescription.toString())) }
             OutlinedTextField(
                 value = InputContentOfNews,
                 onValueChange = {
