@@ -188,8 +188,8 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerP
                     onClick = {
                         navController.navigate("createNews")
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = androidx.compose.ui.graphics.Color.Cyan),
-                    modifier = Modifier.padding(10.dp)
+
+                    modifier = Modifier.padding(15.dp)
                 ) {
                     Text(
                         text = "Create News",
@@ -204,7 +204,8 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerP
             val sublist = listy.subList(startIndex, endIndex)
 
             items(sublist) { news ->
-                Column(modifier = Modifier.clickable { navController.navigate("ViewOne/${news.id}") }) {
+                Column(modifier = Modifier.padding(vertical = 15.dp)
+                    .clickable { navController.navigate("ViewOne/${news.id}") }) {
                     Surface(
                         color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(150.dp),
@@ -215,7 +216,8 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerP
                         Text(
                             text = news.title,
                             style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.padding(horizontal = 78.dp, vertical = 15.dp)
+                            modifier = Modifier.padding(horizontal = 25.dp, vertical = 15.dp),
+                            color = androidx.compose.ui.graphics.Color.White
                         )
                     }
                 }
@@ -239,7 +241,8 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerP
                     Text(
                         text = "Page $currentPage of $pageCount",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(vertical = 10.dp)
                     )
 
                     IconButton(
