@@ -28,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.filament.Box
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import java.time.LocalDateTime
 
 
 //FREE TO CHANGE
@@ -39,6 +40,24 @@ data class News(
     var date: String,
     var writer: String
 )
+
+
+
+val now = LocalDateTime.now()
+val newsRepository = NewsRepository().apply {
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+}
 
 class NewsRepository {
     private val multipleNews = mutableListOf<News>()
