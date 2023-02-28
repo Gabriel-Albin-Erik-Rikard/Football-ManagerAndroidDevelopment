@@ -40,21 +40,55 @@ data class News(
     var writer: String
 )
 
-val newsList = mutableListOf<News>()
-/*class HomeScreenViewModel {
-    private val newsList = mutableListOf<News>()
-    fun addNews(news: News) {
-        newsList.add(news)
-    }
-    fun getNewsList(): List<News> {
-        return newsList
-    }
-    fun getNews(){
-        //TODO  hämta från server
-        //newsList.add(News("He died", "it was a horrible death"))
+class NewsRepository {
+    private val multipleNews = mutableListOf<News>()
+
+    fun addNews(title: String, content: String, date: String, writer: String): Int {
+        val id = when {
+            multipleNews.isEmpty() -> 1
+            else -> multipleNews.last().id + 1
+        }
+
+        multipleNews.add(
+            News(
+                id,
+                title,
+                content,
+                date,
+                writer
+            )
+        )
+        return id
     }
 
-}*/
+    fun getAllNews() = multipleNews
+
+    fun getNewsById(id: Int) = multipleNews.find {
+        it.id == id
+    }
+
+    fun deleteNewsById(id: Int) = multipleNews.remove(multipleNews.find {
+        println(it.id)
+        it.id == id
+
+    })
+
+    fun updateNewsById(id: Int, newTitle: String, newContent: String) {
+        getNewsById(id)?.run {
+            title = newTitle
+            content = newContent
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
 
 
 
