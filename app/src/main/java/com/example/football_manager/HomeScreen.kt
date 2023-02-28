@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
@@ -191,6 +192,88 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
     }
 }
 
+
+@Composable
+fun ViewOneScreen(id: Int, navController: NavHostController) {
+    val singleNews = newsRepository.getNewsById(id)
+
+    Column(modifier = Modifier.padding(10.dp)) {
+        androidx.compose.material3.Text(
+            text = " ${singleNews?.title}",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(
+            modifier = Modifier
+                .height(50.dp)
+                .padding(10.dp)
+        )
+        androidx.compose.material3.Text(
+            text = " ${singleNews?.content}",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Row(modifier = Modifier.fillMaxWidth()) {
+
+            androidx.compose.material3.Text(
+                text = "Date: ${singleNews?.date?.substring(0, 10)}",
+                style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f)
+            )
+            androidx.compose.material3.Text(
+                text = "Writer: ${singleNews?.writer}",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Spacer(modifier = Modifier.height(100.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            androidx.compose.material3.Button(onClick = { navController.navigate("viewOneEditedNews/${id}") }) {
+                androidx.compose.material3.Text(text = "Edit News")
+            }
+            val openDialog = remember { mutableStateOf(false) }
+
+            androidx.compose.material3.Button(onClick = { openDialog.value = true }) {
+                androidx.compose.material3.Text(text = "Delete News")
+            }
+            if (openDialog.value) {
+                androidx.compose.material3.AlertDialog(onDismissRequest = {
+                    openDialog.value = false
+                },
+                    title = {
+                        androidx.compose.material3.Text(text = "Are You Sure?")
+                    },
+                    confirmButton = {
+                        androidx.compose.material3.Button(onClick = {
+                            openDialog.value = false
+                            newsRepository.deleteNewsById(id)
+                            navController.popBackStack()
+                        }) {
+                            androidx.compose.material3.Text(text = "Yes!")
+
+                        }
+
+                    },
+                    dismissButton = {
+                        androidx.compose.material3.Button(
+                            onClick = { openDialog.value = false }) {
+                            androidx.compose.material3.Text(text = "No!")
+
+                        }
+                    }
+
+                )
+
+
+            }
+        }
+
+    }
+}
 
 
 
