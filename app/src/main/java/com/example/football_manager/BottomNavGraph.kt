@@ -1,14 +1,17 @@
 package com.example.football_manager
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
+@ExperimentalMaterial3Api
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
+
     NavHost(
         navController = navController,
         startDestination = BottomBarScreen.Home.route
@@ -27,3 +30,5 @@ fun BottomNavGraph(navController: NavHostController) {
         }
     }
 }
+
+
