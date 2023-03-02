@@ -41,6 +41,10 @@ class Group(var id : Int, var name : String ){
     fun getPlayerById(id: Int): Player {
         return players[id]
     }
+
+    fun getStaffById(id: Int): Staff {
+        return listOfStaff[id]
+    }
 }
 
 data class Staff( val id : Int, val name: String){
@@ -145,6 +149,13 @@ fun TeamsScreen(){
             println("kanske hit 1")
             PlayerPage(navController, groupID, playerID)
         }
+        composable("StaffPage/{groupID}/{staffID}") {
+            println("kanske hit 0")
+            val groupID = it.arguments!!.getString("groupID")!!.toInt()
+            val staffID = it.arguments!!.getString("staffID")!!.toInt()
+            println("kanske hit 1")
+            StaffPage(navController, groupID, staffID)
+        }
     }
 }
 
@@ -199,14 +210,9 @@ fun GroupScreenStart(navController: NavController, groups : List<com.example.foo
 @Composable
 fun GroupPage(navController: NavController, id: Int){
     val group = groupRepository.getGroupById(id)
-    val hej = group.id
-    println("grupp: ")
-    println(hej)
     Box(
     modifier = Modifier
-        //.fillMaxSize()
         .padding(bottom = 50.dp)
-        //.background(Color.Blue),
     ){
         LazyColumn(
             modifier = Modifier
@@ -235,7 +241,7 @@ fun GroupPage(navController: NavController, id: Int){
             }
             items(group.listOfStaff) { staff ->
                 Column(modifier = Modifier.padding(vertical = 0.dp)
-                    .clickable { navController.navigate("TODO") }) {
+                    .clickable { navController.navigate("StaffPage/${group.id}/${staff.id}") }) {
                     Surface(
                         color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(150.dp),
@@ -288,10 +294,6 @@ fun GroupPage(navController: NavController, id: Int){
 
 @Composable
 fun PlayerPage(navController: NavController, groupID: Int, playerID: Int){
-    //println("groups: " groupRepository.getGroupById(groupId).toString())
-    //println("groups: " groupRepository.getGroupById(groupId))
-    //val group = groupRepository.getGroupById(groupID).players.size
-    //val name = groupRepository.getGroupById(groupID).getPlayerById(playerID)
     println(groupID)
     println("kanske hit 3")
     //println(name)
@@ -300,14 +302,14 @@ fun PlayerPage(navController: NavController, groupID: Int, playerID: Int){
     Box( modifier = Modifier
         .fillMaxSize()
         .padding(bottom = 50.dp)
-        .background(Color.Blue)
+        //.background(Color.Blue)
     ) {
         // TODO import an Image here
         Icon(
             imageVector = Icons.Default.AccountCircle,
             contentDescription = "Favorite",
             modifier = Modifier
-                .size(400.dp)
+                .size(200.dp)
                 .align(Alignment.TopCenter),
             tint = Color.Red
         )
@@ -330,6 +332,55 @@ fun PlayerPage(navController: NavController, groupID: Int, playerID: Int){
                         "Assists: ${player.assists} \n"+
                         "Yellow Cards: ${player.yellowCards} \n"+
                         "Red Cards: ${player.redCards}",
+                style = typography.h4,
+                //textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(Color.LightGray)
+                    .padding(6.dp)
+
+            )
+        }
+    }
+}
+
+@Composable
+fun StaffPage(navController: NavController, groupID: Int, staffID: Int){
+    println(groupID)
+    println("kanske hit 3")
+    //println(name)
+    val staff = groupRepository.getGroupById(groupID).getStaffById(staffID)
+    println("kanske hit 4")
+    Box( modifier = Modifier
+        .fillMaxSize()
+        .padding(bottom = 50.dp)
+        //.background(Color.Blue)
+    ) {
+        // TODO import an Image here
+        Icon(
+            imageVector = Icons.Default.AccountCircle,
+            contentDescription = "Favorite",
+            modifier = Modifier
+                .size(200.dp)
+                .align(Alignment.TopCenter),
+            tint = Color.Red
+        )
+        Card(
+            //shape =
+            //shape = RoundedCornerShape(12.dp),
+
+            modifier = Modifier
+                .height(300.dp)
+                .align(Alignment.BottomCenter)
+                .width(480.dp)
+                //.padding(12.dp)
+                .background(Color.LightGray)
+        ) {
+            Text(
+                //text = "testing"
+                text = "Name: ${staff.name} \n" +
+                        "Role:  ${staff.role}",
+
+
                 style = typography.h4,
                 //textAlign = TextAlign.Center,
                 modifier = Modifier
