@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
@@ -15,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.selects.select
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
