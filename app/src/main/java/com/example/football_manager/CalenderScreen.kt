@@ -1,21 +1,25 @@
 package com.example.football_manager
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -139,7 +143,7 @@ fun CalenderScreen(){
 fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , itemsPerPage: Int = 2) {
     val sortedList = listy.sortedByDescending { it.date }
     val pageCount = ceil(sortedList.size.toFloat() / itemsPerPage).toInt()
-    val currentPage by remember { mutableStateOf(1) }
+    var currentPage by remember { mutableStateOf(1) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -181,92 +185,126 @@ fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , it
                             .padding(horizontal = 40.dp, vertical = 10.dp)
                             .width(600.dp)
                             .height(165.dp)
-                    ) {
-                        Column() {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                if (activities.matchType === "Match") {
-                                    Text(
-                                        text = activities.title,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 55.dp, bottom = 10.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Text(
-                                        text = "Week " + activities.week.toString(),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 45.dp, bottom = 10.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
+                    ) { Column() {
 
-                                    Text(
-                                        text = activities.date,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 45.dp, bottom = 10.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Text(
-                                        text = activities.time,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 40.dp, bottom = 10.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                                else if(activities.matchType === "Training"){
-                                    Text(
-                                        text = activities.matchType,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 105.dp, bottom = 10.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Text(
-                                        text = "Week " + activities.week.toString(),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 105.dp, bottom = 15.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
 
-                                    Text(
-                                        text = activities.date,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 110.dp, bottom = 10.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Text(
-                                        text = activities.time,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier
-                                            .padding(start = 100.dp, bottom = 10.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            if (activities.matchType === "Match") {
+                                Text(
+                                    text = activities.title,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 55.dp, bottom = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                                Text(
+                                    text = "Week " + activities.week.toString(),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 45.dp, bottom = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+
+                                Text(
+                                    text = activities.date,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 45.dp, bottom = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                                Text(
+                                    text = activities.time,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 40.dp, bottom = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                            } else if (activities.matchType === "Training") {
+                                Text(
+                                    text = activities.matchType,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 105.dp, bottom = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                                Text(
+                                    text = "Week " + activities.week.toString(),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 105.dp, bottom = 15.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+
+                                Text(
+                                    text = activities.date,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 110.dp, bottom = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                                Text(
+                                    text = activities.time,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier
+                                        .padding(start = 100.dp, bottom = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
+                    }
+                    }
+                }
+            }
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    IconButton(
+                        onClick = { if (currentPage > 1) currentPage-- },
+                        enabled = currentPage > 1
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Previous Page"
+                        )
+                    }
+                    Text(
+                        text = "Page $currentPage of $pageCount",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    )
+
+                    IconButton(
+                        onClick = { if (currentPage < pageCount) currentPage++ },
+                        enabled = currentPage < pageCount
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowForward,
+                            contentDescription = "Next Page"
+                        )
+
                     }
                 }
             }
         }
     }
 }
+
