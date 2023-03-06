@@ -59,6 +59,22 @@ val activityDummyData = ActivityRepository().apply{
         date = "2022-03-14",
         time = "16:00"
     )
+    addActivity(
+        matchType = "Match",
+        title = "Barcelona vs Real Madrid",
+        description = "A league match between Team C and Team D",
+        week = 3,
+        date = "2022-03-20",
+        time = "16:00"
+    )
+    addActivity(
+        matchType = "Match",
+        title = "Barcelona vs Real Madrid",
+        description = "A league match between Team C and Team D",
+        week = 1,
+        date = "2022-03-02",
+        time = "16:00"
+    )
 }
 
 class ActivityRepository {
@@ -141,7 +157,7 @@ fun CalenderScreen(){
 
 @Composable
 fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , itemsPerPage: Int = 2) {
-    val sortedList = listy.sortedByDescending { it.date }
+    val sortedList = listy.sortedBy { it.date }
     val pageCount = ceil(sortedList.size.toFloat() / itemsPerPage).toInt()
     var currentPage by remember { mutableStateOf(1) }
 
@@ -168,7 +184,7 @@ fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , it
 
             val startIndex = (currentPage - 1) * itemsPerPage
             val endIndex = min(startIndex + itemsPerPage, listy.size)
-            val sublist = listy.subList(startIndex, endIndex)
+            val sublist = sortedList.subList(startIndex, endIndex)
 
             items(sublist) { activities ->
                 Column(
