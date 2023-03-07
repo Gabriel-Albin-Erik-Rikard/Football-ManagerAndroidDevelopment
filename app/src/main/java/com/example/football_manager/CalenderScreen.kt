@@ -183,8 +183,10 @@ fun CreateActivity(navController: NavHostController) {
         context,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
             selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
-        }, year, month, dayOfMonth
+        }, year, month, dayOfMonth,
     )
+
+    datePicker.datePicker.minDate = calendar.timeInMillis
 
     val timePicker = TimePickerDialog(
         context,
