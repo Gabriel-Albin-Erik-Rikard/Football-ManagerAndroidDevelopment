@@ -42,10 +42,10 @@ data class Activities(
     var time: String
 )
 
-val activityDummyData = ActivityRepository().apply{
+val activityRepository = ActivityRepository().apply{
     addActivity(
         matchType = "Training",
-        title = "",
+        title = "Today´s Training",
         description = "A friendly match between Team A and Team B",
         week = 1,
         date = "2022-03-07",
@@ -143,17 +143,136 @@ class ActivityRepository {
 
 @Composable
 fun CalenderScreen(){
-    val navController  = rememberNavController()
+    val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = "viewAll"
-    ){
+    ) {
         composable("viewAll") {
-            ViewAllScreen(navController, activityDummyData.getAllActivities())
+            ViewAllScreen(navController, activityRepository.getAllActivities())
+        }
+        composable("viewOne/{id}") {
+            val id = it.arguments!!.getString("id")!!.toInt()
+            ViewOneScreen(id, navController)
+        }
+
+        composable("viewOneEditedNews/{id}"){
+            val id  = it.arguments!!.getString("id")!!.toInt()
+            EditNews(id, navController)
+
+        }
+        composable("createNews") {
+            CreateActivity(navController = navController)
         }
     }
 }
+
+@Composable
+fun CreateActivity(navController: NavHostController) {
+    TODO("Not yet implemented")
+}
+
+@Composable
+fun EditNews(id: Int, navController: NavHostController) {
+    TODO("Not yet implemented")
+}
+
+@Composable
+fun ViewOneScreen(id: Int, navController: NavHostController) {
+    val singleActivity = activityRepository.getActivityById(id)
+
+    Column(
+        modifier = Modifier
+            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+            .fillMaxSize()
+    ) {
+        Text(
+            text = " ${singleActivity?.title}",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(
+            modifier = Modifier
+                .height(50.dp)
+                .padding(10.dp)
+        )
+        Text(
+            text = "Type : ${singleActivity?.matchType}",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Text(
+            text = " Week : ${singleActivity?.week}",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+
+        Spacer(modifier = Modifier.height(60.dp))
+        Text(
+            text = "Date : ${singleActivity?.date}",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Text(
+            text = " Time : ${singleActivity?.time}",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                onClick = { navController.navigate("viewOneEditedNews/${id}") },
+                modifier = Modifier.padding(end = 8.dp)
+            ) {
+                Text(text = "Edit News")
+            }
+            val openDialog = remember { mutableStateOf(false) }
+
+            Button(
+                onClick = { openDialog.value = true },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text(text = "Delete News")
+            }
+            if (openDialog.value) {
+                androidx.compose.material3.AlertDialog(
+                    onDismissRequest = {
+                        openDialog.value = false
+                    },
+                    title = {
+                        Text(text = "Are You Sure?")
+                    },
+                    confirmButton = {
+                        Button(onClick = {
+                            openDialog.value = false
+                            activityRepository.deleteActivityById(id)
+                            navController.popBackStack()
+                        }) {
+                            Text(text = "Yes!")
+                        }
+                    },
+                    dismissButton = {
+                        Button(
+                            onClick = { openDialog.value = false }
+                        ) {
+                            Text(text = "No!")
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , itemsPerPage: Int = 2) {
@@ -187,13 +306,8 @@ fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , it
             val sublist = sortedList.subList(startIndex, endIndex)
 
             items(sublist) { activities ->
-                Column(
-                    modifier = Modifier
-                        .padding(vertical = 15.dp)
-                        .clickable { navController.navigate("ViewOne/${activities.id}") }
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                Column(modifier = Modifier.padding(vertical = 15.dp)
+                    .clickable { navController.navigate("ViewOne/${activities.id}") }) {
                     Surface(
                         color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(150.dp),
