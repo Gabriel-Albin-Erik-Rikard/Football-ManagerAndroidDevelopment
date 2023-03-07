@@ -204,23 +204,25 @@ fun CreateActivity(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            var newTextTitle by remember { mutableStateOf(TextFieldValue("")) }
-            OutlinedTextField(
-                value = newTextTitle,
-                onValueChange = { newTextTitle = it },
-                label = { Text(text = "Your title") },
-                placeholder = { Text(text = "Write Your title") }
-            )
-            Spacer(modifier = Modifier.padding(top = 15.dp))
+
 
             var newTextType by remember { mutableStateOf(TextFieldValue("")) }
             OutlinedTextField(
                 value = newTextType,
                 onValueChange = { newTextType = it },
-                label = { Text(text = "Your title") },
-                placeholder = { Text(text = "Write Your title") }
+                label = { Text(text = "Your MatchType") },
+                placeholder = { Text(text = "Write Your MatchType") }
             )
 
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+
+            var newTextTitle by remember { mutableStateOf(TextFieldValue("")) }
+            OutlinedTextField(
+                value = newTextTitle,
+                onValueChange = { newTextTitle = it },
+                label = { Text(text = "Your Title") },
+                placeholder = { Text(text = "Write Your Title") }
+            )
             Spacer(modifier = Modifier.padding(top = 15.dp))
 
 
@@ -228,8 +230,8 @@ fun CreateActivity(navController: NavHostController) {
             OutlinedTextField(
                 value = newTextDesc,
                 onValueChange = { newTextDesc = it },
-                label = { Text(text = "Your title") },
-                placeholder = { Text(text = "Write Your title") }
+                label = { Text(text = "Your Description") },
+                placeholder = { Text(text = "Write Your Description") }
             )
 
             Spacer(modifier = Modifier.padding(top = 15.dp))
@@ -238,8 +240,8 @@ fun CreateActivity(navController: NavHostController) {
             OutlinedTextField(
                 value = newTextWeek,
                 onValueChange = { newTextWeek = it },
-                label = { Text(text = "Your title") },
-                placeholder = { Text(text = "Write Your title") }
+                label = { Text(text = "Chose Week") },
+                placeholder = { Text(text = "Write Week ") }
             )
 
             Spacer(modifier = Modifier.padding(top = 15.dp))
