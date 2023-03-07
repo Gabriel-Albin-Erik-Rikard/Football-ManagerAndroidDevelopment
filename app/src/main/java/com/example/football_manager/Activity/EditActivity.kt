@@ -194,6 +194,53 @@ fun EditActivity(id: Int, navController: NavHostController) {
             ) {
                 Text(text = "Select End-Time")
             }
+
+            var updateTitleField = editedTextTitle.text
+            var updateMatchTypeField = editedTextMatchType.text
+            var updateDescriptionField = editedTextDescription.text
+            var updateDate = selectedDate.toString()
+            var updateStartTime = selectedStartTime.toString()
+            var updateFinishTime = selectedFinishTime.toString()
+
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    errors.clear()
+                    if (updateTitleField.isEmpty() || updateMatchTypeField.isEmpty() || updateDescriptionField.isEmpty()  ){
+                        errors.add("Please fill in all fields.")
+                    } else if ((updateTitleField.length < EDIT_ACTIVITY_TITLE_MIN_LENGTH || updateTitleField.length > EDIT_ACTIVITY_TITLE_MAX_LENGTH)) {
+                        errors.add("The Title Should Be Between 4-20 Characters")
+                    } else if (updateMatchTypeField.length < EDIT_ACTIVITY_MATCHTYPE_MIN_LENGTH || updateMatchTypeField.length > EDIT_ACTIVITY_MATCHTYPE_MAX_LENGTH) {
+                        errors.add("The MatchType Should Be Between 4-15 Characters")
+                    } else if (updateDescriptionField.length < EDIT_ACTIVITY_DESCRIPTION_MIN_LENGTH || updateDescriptionField.length > EDIT_ACTIVITY_DESCRIPTION_MAX_LENGTH) {
+                        errors.add("The Description Name Should Be Between 10-120 Characters")
+                    } else if (updateDate.isEmpty()) {
+                        errors.add("Please Fill A Date")
+                    } else if (updateStartTime!!.isEmpty() || updateFinishTime!!.isEmpty()) {
+                        errors.add("Please Fill Start And Finish Time")
+                    } else {
+
+                        activityRepository.updateActivityById(
+                            id,
+                            newTitle = updateTitleField,
+                            newMatchType = updateMatchTypeField,
+                            newDescription = updateDescriptionField,
+                            newDate = updateDate,
+                            newStartTime = updateStartTime ,
+                            newFinishTime = updateFinishTime
+                        )
+                        navController.popBackStack()
+                    }
+
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                Text("Submit")
+            }
+            for (error in errors) {
+                Text(error)
+            }
         }
     }
 }
