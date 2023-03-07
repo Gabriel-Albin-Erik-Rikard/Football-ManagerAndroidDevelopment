@@ -194,7 +194,9 @@ fun CreateActivity(navController: NavHostController) {
     )
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 115.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -209,6 +211,7 @@ fun CreateActivity(navController: NavHostController) {
                 label = { Text(text = "Your title") },
                 placeholder = { Text(text = "Write Your title") }
             )
+            Spacer(modifier = Modifier.padding(top = 15.dp))
 
             var newTextType by remember { mutableStateOf(TextFieldValue("")) }
             OutlinedTextField(
@@ -218,6 +221,9 @@ fun CreateActivity(navController: NavHostController) {
                 placeholder = { Text(text = "Write Your title") }
             )
 
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+
+
             var newTextDesc by remember { mutableStateOf(TextFieldValue("")) }
             OutlinedTextField(
                 value = newTextDesc,
@@ -225,6 +231,9 @@ fun CreateActivity(navController: NavHostController) {
                 label = { Text(text = "Your title") },
                 placeholder = { Text(text = "Write Your title") }
             )
+
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+
             var newTextWeek by remember { mutableStateOf(TextFieldValue("")) }
             OutlinedTextField(
                 value = newTextWeek,
@@ -232,6 +241,9 @@ fun CreateActivity(navController: NavHostController) {
                 label = { Text(text = "Your title") },
                 placeholder = { Text(text = "Write Your title") }
             )
+
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+
 
 
             Text(
@@ -241,6 +253,7 @@ fun CreateActivity(navController: NavHostController) {
                     "Please pick a date"
                 }
             )
+            Spacer(modifier = Modifier.padding(top = 5.dp))
 
             Button(
                 onClick = {
@@ -249,6 +262,8 @@ fun CreateActivity(navController: NavHostController) {
             ) {
                 Text(text = "Select a date")
             }
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+
 
             Text(
                 text = if (selectedTimeText.isNotEmpty()) {
@@ -257,6 +272,7 @@ fun CreateActivity(navController: NavHostController) {
                     "Please select the time"
                 }
             )
+            Spacer(modifier = Modifier.padding(top = 5.dp))
 
             Button(
                 onClick = {
@@ -293,7 +309,7 @@ fun CreateActivity(navController: NavHostController) {
                     },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text(text = "Create News")
+                Text(text = "Create Activity")
             }
 
         }
@@ -436,11 +452,15 @@ fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , it
                 Surface(
                     color = MaterialTheme.colorScheme.secondary,
                     shape = RoundedCornerShape(150.dp),
-                    modifier = Modifier.padding(horizontal = 100.dp, vertical = 15.dp)
-                        .width(1100.dp).height(150.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 100.dp, vertical = 15.dp)
+                        .width(1100.dp)
+                        .height(150.dp)
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp).clickable { navController.navigate("viewOne/${activities.id}") },
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .clickable { navController.navigate("viewOne/${activities.id}") },
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally // Changed from Alignment.Start
                     ) {
