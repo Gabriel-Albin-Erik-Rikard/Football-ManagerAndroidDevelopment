@@ -69,7 +69,7 @@ fun CreateActivity(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 115.dp),
+            .padding(top = 55.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -123,7 +123,8 @@ fun CreateActivity(navController: NavHostController) {
                     datePicker.show()
                 }
             ) {
-                Text(text = "Select a date")
+                Text(text = "Select a date",
+                )
             }
             Spacer(modifier = Modifier.padding(top = 15.dp))
 
@@ -145,6 +146,8 @@ fun CreateActivity(navController: NavHostController) {
                 Text(text = "Select Start-Time")
             }
 
+            Spacer(modifier = Modifier.padding(top = 20.dp))
+
             Text(
                 text = if (selectedEndTimeText.isNotEmpty()) {
                     "Selected time is $selectedEndTimeText"
@@ -165,12 +168,12 @@ fun CreateActivity(navController: NavHostController) {
 
 
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(26.dp))
 
-            var titleText = newTextTitle.text
-            var typeText = newTextType.text
-            var descText = newTextDesc.text
-            var chosenDate = selectedDateText
+            val titleText = newTextTitle.text
+            val typeText = newTextType.text
+            val descText = newTextDesc.text
+            val chosenDate = selectedDateText
 
             Button(
                 onClick = {
@@ -201,8 +204,13 @@ fun CreateActivity(navController: NavHostController) {
 
 
                 },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .width(240.dp)
+                    .padding(top = 55.dp)
+
             ) {
+
                 Text(text = "Create Activity")
             }
             for (error in errors) {

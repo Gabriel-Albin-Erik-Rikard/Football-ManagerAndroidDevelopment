@@ -29,7 +29,7 @@ val activityRepository = ActivityRepository().apply{
         matchType = "Training",
         title = "Training",
         description = "A friendly match between Team A and Team B",
-        date = "07/03/2023",
+        date = "07/02/2023",
         startTime = "14:00",
         finishTime = "17:00"
     )
