@@ -71,6 +71,8 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
                 modifier = Modifier.padding(end = 8.dp)
             ) {
                 Text(text = "Edit Activity")
+                println("funkar")
+
             }
             val openDialog = remember { mutableStateOf(false) }
 

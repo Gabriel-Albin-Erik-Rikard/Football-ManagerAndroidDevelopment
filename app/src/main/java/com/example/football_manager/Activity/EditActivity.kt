@@ -36,7 +36,6 @@ fun EditActivity(id: Int, navController: NavHostController) {
     var selectedStartTime by remember { mutableStateOf(currentActivityId?.startTime) }
     var selectedFinishTime by remember { mutableStateOf(currentActivityId?.finishTime) }
 
-
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     var currentSelectedYear = calendar[Calendar.YEAR]
@@ -58,26 +57,41 @@ fun EditActivity(id: Int, navController: NavHostController) {
         currentSelectedYear, currentSelectedMonth, currentSelectedDayOfMonth
     )
 
-
     newDatePicker.datePicker.minDate = calendar.timeInMillis
 
-    val hour = calendar[Calendar.HOUR_OF_DAY]
-    val minute = calendar[Calendar.MINUTE]
+    val startCalendar = Calendar.getInstance()
+    if (currentActivityId?.startTime != null) {
+        val startTime = currentActivityId.startTime.split(":")
+        startCalendar.set(Calendar.HOUR_OF_DAY, startTime[0].toInt())
+        startCalendar.set(Calendar.MINUTE, startTime[1].toInt())
+    }
+    val currentSelectedHour = startCalendar.get(Calendar.HOUR_OF_DAY)
+    val currentSelectedMinute = startCalendar.get(Calendar.MINUTE)
 
     val newStartTimePicker = TimePickerDialog(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
             selectedStartTime = "$selectedHour:${if (selectedMinute < 10) "0$selectedMinute" else selectedMinute}"
-        }, hour, minute, false
+        }, currentSelectedHour, currentSelectedMinute, false
     )
 
+    val finishCalendar = Calendar.getInstance()
+    if (currentActivityId?.finishTime != null) {
+        val finishTime = currentActivityId.finishTime.split(":")
+        finishCalendar.set(Calendar.HOUR_OF_DAY, finishTime[0].toInt())
+        finishCalendar.set(Calendar.MINUTE, finishTime[1].toInt())
+    }
+    val currentSelectedHourForFinish = finishCalendar.get(Calendar.HOUR_OF_DAY)
+    val currentSelectedMinuteForFinish = finishCalendar.get(Calendar.MINUTE)
 
     val newEndTimePicker = TimePickerDialog(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
             selectedFinishTime = "$selectedHour:${if (selectedMinute < 10) "0$selectedMinute" else selectedMinute}"
-        }, hour, minute, false
+        }, currentSelectedHourForFinish, currentSelectedMinuteForFinish, false
     )
+
+
 
     Box(
         modifier = Modifier.fillMaxSize(),
