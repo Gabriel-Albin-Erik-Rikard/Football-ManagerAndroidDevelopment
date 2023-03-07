@@ -1,12 +1,16 @@
 package com.example.football_manager
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.icu.util.Calendar
+import android.widget.DatePicker
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -27,9 +31,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.android.filament.Material
 import kotlin.math.ceil
 import kotlin.math.min
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 
 
 data class Activities(
@@ -45,7 +50,7 @@ data class Activities(
 val activityRepository = ActivityRepository().apply{
     addActivity(
         matchType = "Training",
-        title = "Today´s Training",
+        title = "Training",
         description = "A friendly match between Team A and Team B",
         week = 1,
         date = "2022-03-07",
@@ -53,27 +58,19 @@ val activityRepository = ActivityRepository().apply{
     )
     addActivity(
         matchType = "Match",
-        title = "Barcelona vs Real Madrid",
-        description = "A league match between Team C and Team D",
+        title = "Råslätt vs Ekhagen",
+        description = "A friendly match between Team A and Team B",
         week = 2,
-        date = "2022-03-14",
-        time = "16:00"
+        date = "2022-04-07",
+        time = "14:00-15.00"
     )
     addActivity(
         matchType = "Match",
-        title = "Barcelona vs Real Madrid",
-        description = "A league match between Team C and Team D",
-        week = 3,
-        date = "2022-03-20",
-        time = "16:00"
-    )
-    addActivity(
-        matchType = "Match",
-        title = "Barcelona vs Real Madrid",
-        description = "A league match between Team C and Team D",
-        week = 1,
-        date = "2022-03-02",
-        time = "16:00"
+        title = "Råslätt vs Ekhagen",
+        description = "A friendly match between Team A and Team B",
+        week = 2,
+        date = "2022-04-07",
+        time = "14:00-15.00"
     )
 }
 
@@ -157,12 +154,12 @@ fun CalenderScreen(){
             ViewOneScreen(id, navController)
         }
 
-        composable("viewOneEditedNews/{id}"){
+        composable("viewOneEditedActivity/{id}"){
             val id  = it.arguments!!.getString("id")!!.toInt()
-            EditNews(id, navController)
+            EditActivity(id, navController)
 
         }
-        composable("createNews") {
+        composable("createActivity") {
             CreateActivity(navController = navController)
         }
     }
@@ -170,12 +167,142 @@ fun CalenderScreen(){
 
 @Composable
 fun CreateActivity(navController: NavHostController) {
-    TODO("Not yet implemented")
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+    var selectedDateText by remember { mutableStateOf("") }
+    var selectedTimeText by remember { mutableStateOf("") }
+
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH]
+    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+    val hour = calendar[Calendar.HOUR_OF_DAY]
+    val minute = calendar[Calendar.MINUTE]
+
+
+    val datePicker = DatePickerDialog(
+        context,
+        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
+            selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+        }, year, month, dayOfMonth
+    )
+
+    val timePicker = TimePickerDialog(
+        context,
+        { _, selectedHour: Int, selectedMinute: Int ->
+            selectedTimeText = "$selectedHour:$selectedMinute"
+        }, hour, minute, false
+    )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            var newTextTitle by remember { mutableStateOf(TextFieldValue("")) }
+            OutlinedTextField(
+                value = newTextTitle,
+                onValueChange = { newTextTitle = it },
+                label = { Text(text = "Your title") },
+                placeholder = { Text(text = "Write Your title") }
+            )
+
+            var newTextType by remember { mutableStateOf(TextFieldValue("")) }
+            OutlinedTextField(
+                value = newTextType,
+                onValueChange = { newTextType = it },
+                label = { Text(text = "Your title") },
+                placeholder = { Text(text = "Write Your title") }
+            )
+
+            var newTextDesc by remember { mutableStateOf(TextFieldValue("")) }
+            OutlinedTextField(
+                value = newTextDesc,
+                onValueChange = { newTextDesc = it },
+                label = { Text(text = "Your title") },
+                placeholder = { Text(text = "Write Your title") }
+            )
+            var newTextWeek by remember { mutableStateOf(TextFieldValue("")) }
+            OutlinedTextField(
+                value = newTextWeek,
+                onValueChange = { newTextWeek = it },
+                label = { Text(text = "Your title") },
+                placeholder = { Text(text = "Write Your title") }
+            )
+
+
+            Text(
+                text = if (selectedDateText.isNotEmpty()) {
+                    "Selected date is $selectedDateText"
+                } else {
+                    "Please pick a date"
+                }
+            )
+
+            Button(
+                onClick = {
+                    datePicker.show()
+                }
+            ) {
+                Text(text = "Select a date")
+            }
+
+            Text(
+                text = if (selectedTimeText.isNotEmpty()) {
+                    "Selected time is $selectedTimeText"
+                } else {
+                    "Please select the time"
+                }
+            )
+
+            Button(
+                onClick = {
+                    timePicker.show()
+                }
+            ) {
+                Text(text = "Select time")
+            }
+
+
+
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            var titleText = newTextTitle.text
+            var typeText = newTextType.text
+            var descText = newTextDesc.text
+            var weekText = newTextWeek.text
+            var chosenDate = selectedDateText
+            var chosenTime = selectedTimeText
+
+           Button(
+                onClick = {
+
+                        activityRepository.addActivity(
+                            title = titleText,
+                            matchType = typeText,
+                            description = descText,
+                            week = weekText.toInt(),
+                            date = chosenDate,
+                            time = chosenTime
+                        )
+                        navController.popBackStack()
+                    },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                Text(text = "Create News")
+            }
+
+        }
+    }
 }
 
 @Composable
-fun EditNews(id: Int, navController: NavHostController) {
-    TODO("Not yet implemented")
+fun EditActivity(id: Int, navController: NavHostController) {
+
 }
 
 @Composable
@@ -230,10 +357,10 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { navController.navigate("viewOneEditedNews/${id}") },
+                onClick = { navController.navigate("viewOneEditedActivity/${id}") },
                 modifier = Modifier.padding(end = 8.dp)
             ) {
-                Text(text = "Edit News")
+                Text(text = "Edit Activity")
             }
             val openDialog = remember { mutableStateOf(false) }
 
@@ -241,7 +368,7 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
                 onClick = { openDialog.value = true },
                 modifier = Modifier.padding(start = 8.dp)
             ) {
-                Text(text = "Delete News")
+                Text(text = "Delete Activity")
             }
             if (openDialog.value) {
                 androidx.compose.material3.AlertDialog(
@@ -275,7 +402,7 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
 
 
 @Composable
-fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , itemsPerPage: Int = 2) {
+fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , itemsPerPage: Int = 3) {
     val sortedList = listy.sortedBy { it.date }
     val pageCount = ceil(sortedList.size.toFloat() / itemsPerPage).toInt()
     var currentPage by remember { mutableStateOf(1) }
@@ -306,101 +433,48 @@ fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , it
             val sublist = sortedList.subList(startIndex, endIndex)
 
             items(sublist) { activities ->
-                Column(modifier = Modifier.padding(vertical = 15.dp)
-                    .clickable { navController.navigate("ViewOne/${activities.id}") }) {
-                    Surface(
-                        color = MaterialTheme.colorScheme.secondary,
-                        shape = RoundedCornerShape(150.dp),
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp, vertical = 10.dp)
-                            .width(600.dp)
-                            .height(165.dp)
-                    ) { Column() {
+                Surface(
+                    color = MaterialTheme.colorScheme.secondary,
+                    shape = RoundedCornerShape(150.dp),
+                    modifier = Modifier.padding(horizontal = 100.dp, vertical = 15.dp)
+                        .width(1100.dp).height(150.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp).clickable { navController.navigate("viewOne/${activities.id}") },
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally // Changed from Alignment.Start
+                    ) {
+                        Text(
+                            text = activities.title,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = "Week " + activities.week.toString(),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
 
-
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            if (activities.matchType === "Match") {
-                                Text(
-                                    text = activities.title,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 55.dp, bottom = 10.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-                                Text(
-                                    text = "Week " + activities.week.toString(),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 45.dp, bottom = 10.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-
-                                Text(
-                                    text = activities.date,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 45.dp, bottom = 10.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-                                Text(
-                                    text = activities.time,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 40.dp, bottom = 10.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-                            } else if (activities.matchType === "Training") {
-                                Text(
-                                    text = activities.matchType,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 105.dp, bottom = 10.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-                                Text(
-                                    text = "Week " + activities.week.toString(),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 105.dp, bottom = 15.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-
-                                Text(
-                                    text = activities.date,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 110.dp, bottom = 10.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-                                Text(
-                                    text = activities.time,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 100.dp, bottom = 10.dp)
-                                        .align(Alignment.CenterHorizontally),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
+                        Text(
+                            text = activities.date,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = activities.time,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
                     }
-                    }
+
                 }
             }
+
+
             item {
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
@@ -432,9 +506,11 @@ fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , it
                         )
 
                     }
+                    }
                 }
             }
         }
-    }
 }
+
+
 
