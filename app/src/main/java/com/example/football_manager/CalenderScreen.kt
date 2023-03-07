@@ -53,7 +53,7 @@ val activityRepository = ActivityRepository().apply{
         title = "Training",
         description = "A friendly match between Team A and Team B",
         week = 1,
-        date = "2022-03-07",
+        date = "07/03/2023",
         time = "14:00-15.00"
     )
     addActivity(
@@ -61,7 +61,7 @@ val activityRepository = ActivityRepository().apply{
         title = "Råslätt vs Ekhagen",
         description = "A friendly match between Team A and Team B",
         week = 2,
-        date = "2022-04-07",
+        date = "08/03/2023",
         time = "14:00-15.00"
     )
     addActivity(
@@ -69,7 +69,7 @@ val activityRepository = ActivityRepository().apply{
         title = "Råslätt vs Ekhagen",
         description = "A friendly match between Team A and Team B",
         week = 2,
-        date = "2022-04-07",
+        date = "12/03/2023",
         time = "14:00-15.00"
     )
 }
@@ -343,6 +343,12 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
         )
         Text(
             text = "Type : ${singleActivity?.matchType}",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Text(
+            text = "Description : ${singleActivity?.description}",
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.height(60.dp))
