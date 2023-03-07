@@ -6,6 +6,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,86 +16,114 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 
-
-
 @Composable
-fun LoginScreen(
-    navController: NavHostController,
+fun LoginOverlay(
+    onDismiss: () -> Unit,
+    navController: NavHostController
 ) {
-    // State for the username/email and password text fields. Makes sure the values entered remain even if, for example, the user tilts their phone.
     val emailState = remember { mutableStateOf(TextFieldValue()) }
     val passwordState = remember { mutableStateOf(TextFieldValue()) }
-    var showLoginOverlay by remember { mutableStateOf(true) }   //Show the login-screen as an overlay
+    var showLoginOverlay by remember { mutableStateOf(true) }
 
-    if (!isUserLoggedIn()) {
-        if (showLoginOverlay) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                // Username/email text field
-                OutlinedTextField(
-                    value = emailState.value,
-                    onValueChange = { emailState.value = it },
-                    label = { Text("Username/Email") },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-
-                // Password text field
-                OutlinedTextField(
-                    value = passwordState.value,
-                    onValueChange = { passwordState.value = it },
-                    label = { Text("Password") },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
-                    ),
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-
-                // Login button
-                Button(
-                    onClick = {
-                        // Handle login logic here
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+    if (showLoginOverlay) {
+        Dialog(
+            onDismissRequest = onDismiss,
+            content = {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = 8.dp,
                 ) {
-                    Text("Login")
-                }
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            // Username/email text field
+                            OutlinedTextField(
+                                value = emailState.value,
+                                onValueChange = { emailState.value = it },
+                                label = { Text("Username/Email") },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Email,
+                                    imeAction = ImeAction.Next
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            )
 
-                // Register button that navigates to RegisterScreen
-                TextButton(
-                    onClick = { navController.navigate("RegisterScreen") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Text("Register")
-                }
+                            // Password text field
+                            OutlinedTextField(
+                                value = passwordState.value,
+                                onValueChange = { passwordState.value = it },
+                                label = { Text("Password") },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Password,
+                                    imeAction = ImeAction.Done
+                                ),
+                                visualTransformation = PasswordVisualTransformation(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            )
 
+                            // Login button
+                            Button(
+                                onClick = {
+                                    // Handle login logic here
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            ) {
+                                Text("Login")
+                            }
+
+                            // Register button that navigates to RegisterScreen
+                            TextButton(
+                                onClick = { navController.navigate("RegisterScreen") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            ) {
+                                Text("Register")
+                            }
+
+/*
+                            // Skip login button. TODO Should this be possible!?
+                            TextButton(
+                                onClick = {
+                                    onDismiss()
+                                    // Navigate to HomeScreen here
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                            ) {
+                                Text("Skip Login")
+                            }
+ */
+                        }
+                    }
+                }
             }
-            }
-        else
-            navController.navigate("HomeScreen")
-        }
+        )
     }
+}
+
 
 
 // Check if user is logged in. TODO
@@ -102,10 +131,15 @@ fun isUserLoggedIn(): Boolean {
     return false
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-            LoginScreen(navController = rememberNavController())
+    val navController = rememberNavController()
+    LoginOverlay(
+        onDismiss = { /* Handle onDismiss logic here */ },
+        navController = navController
+    )
 }
 
 
