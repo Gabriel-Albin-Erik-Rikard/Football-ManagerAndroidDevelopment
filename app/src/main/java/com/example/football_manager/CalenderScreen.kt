@@ -42,7 +42,6 @@ data class Activities(
     var matchType: String,
     var title: String ,
     var description: String ,
-    var week: Int,
     var date: String,
     var time: String
 )
@@ -52,7 +51,6 @@ val activityRepository = ActivityRepository().apply{
         matchType = "Training",
         title = "Training",
         description = "A friendly match between Team A and Team B",
-        week = 1,
         date = "07/03/2023",
         time = "14:00-15.00"
     )
@@ -60,7 +58,6 @@ val activityRepository = ActivityRepository().apply{
         matchType = "Match",
         title = "Råslätt vs Ekhagen",
         description = "A friendly match between Team A and Team B",
-        week = 2,
         date = "08/03/2023",
         time = "14:00-15.00"
     )
@@ -68,7 +65,6 @@ val activityRepository = ActivityRepository().apply{
         matchType = "Match",
         title = "Råslätt vs Ekhagen",
         description = "A friendly match between Team A and Team B",
-        week = 2,
         date = "12/03/2023",
         time = "14:00-15.00"
     )
@@ -81,7 +77,6 @@ class ActivityRepository {
         matchType: String,
         title: String,
         description: String,
-        week: Int,
         date: String,
         time: String
     ): Int {
@@ -95,7 +90,6 @@ class ActivityRepository {
                 matchType,
                 title,
                 description,
-                week,
                 date,
                 time
             )
@@ -130,7 +124,6 @@ class ActivityRepository {
             matchType = newMatchType
             title = newTitle
             description = newDescription
-            week = newWeek
             date = newDate
             time = newTime
         }
@@ -170,7 +163,8 @@ fun CreateActivity(navController: NavHostController) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     var selectedDateText by remember { mutableStateOf("") }
-    var selectedTimeText by remember { mutableStateOf("") }
+    var selectedStartTimeText by remember { mutableStateOf("") }
+    var selectedEndTimeText by remember { mutableStateOf("") }
 
     val year = calendar[Calendar.YEAR]
     val month = calendar[Calendar.MONTH]
@@ -182,18 +176,27 @@ fun CreateActivity(navController: NavHostController) {
     val datePicker = DatePickerDialog(
         context,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-            selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+            selectedDateText = "%02d/%02d/%d".format(selectedDayOfMonth, selectedMonth + 1, selectedYear)
         }, year, month, dayOfMonth,
     )
 
     datePicker.datePicker.minDate = calendar.timeInMillis
 
-    val timePicker = TimePickerDialog(
+    val startTimePicker = TimePickerDialog(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
-            selectedTimeText = "$selectedHour:$selectedMinute"
+            selectedStartTimeText = "$selectedHour:${if (selectedMinute < 10) "0$selectedMinute" else selectedMinute}"
         }, hour, minute, false
     )
+
+
+    val endTimePicker = TimePickerDialog(
+        context,
+        { _, selectedHour: Int, selectedMinute: Int ->
+            selectedEndTimeText = "$selectedHour:${if (selectedMinute < 10) "0$selectedMinute" else selectedMinute}"
+        }, hour, minute, false
+    )
+
 
     Box(
         modifier = Modifier
@@ -238,18 +241,6 @@ fun CreateActivity(navController: NavHostController) {
 
             Spacer(modifier = Modifier.padding(top = 15.dp))
 
-            var newTextWeek by remember { mutableStateOf(TextFieldValue("")) }
-            OutlinedTextField(
-                value = newTextWeek,
-                onValueChange = { newTextWeek = it },
-                label = { Text(text = "Chose Week") },
-                placeholder = { Text(text = "Write Week ") }
-            )
-
-            Spacer(modifier = Modifier.padding(top = 15.dp))
-
-
-
             Text(
                 text = if (selectedDateText.isNotEmpty()) {
                     "Selected date is $selectedDateText"
@@ -270,8 +261,8 @@ fun CreateActivity(navController: NavHostController) {
 
 
             Text(
-                text = if (selectedTimeText.isNotEmpty()) {
-                    "Selected time is $selectedTimeText"
+                text = if (selectedStartTimeText.isNotEmpty()) {
+                    "Selected time is $selectedStartTimeText"
                 } else {
                     "Please select the time"
                 }
@@ -280,10 +271,27 @@ fun CreateActivity(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    timePicker.show()
+                    startTimePicker.show()
                 }
             ) {
-                Text(text = "Select time")
+                Text(text = "Select Start-Time")
+            }
+
+            Text(
+                text = if (selectedEndTimeText.isNotEmpty()) {
+                    "Selected time is $selectedEndTimeText"
+                } else {
+                    "Please select the time"
+                }
+            )
+            Spacer(modifier = Modifier.padding(top = 5.dp))
+
+            Button(
+                onClick = {
+                    endTimePicker.show()
+                }
+            ) {
+                Text(text = "Select End-Time")
             }
 
 
@@ -294,9 +302,8 @@ fun CreateActivity(navController: NavHostController) {
             var titleText = newTextTitle.text
             var typeText = newTextType.text
             var descText = newTextDesc.text
-            var weekText = newTextWeek.text
             var chosenDate = selectedDateText
-            var chosenTime = selectedTimeText
+            var chosenTime = "$selectedStartTimeText - $selectedEndTimeText"
 
            Button(
                 onClick = {
@@ -305,7 +312,6 @@ fun CreateActivity(navController: NavHostController) {
                             title = titleText,
                             matchType = typeText,
                             description = descText,
-                            week = weekText.toInt(),
                             date = chosenDate,
                             time = chosenTime
                         )
@@ -353,12 +359,7 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
             text = "Description : ${singleActivity?.description}",
             style = MaterialTheme.typography.titleMedium
         )
-        Spacer(modifier = Modifier.height(60.dp))
 
-        Text(
-            text = " Week : ${singleActivity?.week}",
-            style = MaterialTheme.typography.titleMedium
-        )
 
 
         Spacer(modifier = Modifier.height(60.dp))
@@ -370,7 +371,7 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
         Spacer(modifier = Modifier.height(60.dp))
 
         Text(
-            text = " Time : ${singleActivity?.time}",
+            text = " Time : ${singleActivity?.time?.format("%02d:%02d")}",
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -480,12 +481,7 @@ fun ViewAllScreen(navController: NavHostController, listy: List<Activities> , it
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )
-                        Text(
-                            text = "Week " + activities.week.toString(),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White,
-                            textAlign = TextAlign.Center
-                        )
+
 
                         Text(
                             text = activities.date,
