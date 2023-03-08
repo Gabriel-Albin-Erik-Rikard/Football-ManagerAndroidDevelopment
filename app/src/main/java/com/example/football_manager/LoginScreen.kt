@@ -25,18 +25,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 
 @Composable
-fun LoginOverlay(
-    onDismiss: () -> Unit,
-    navController: NavHostController
+fun LoginScreen(
 ) {
+    var userLoggedIn by remember { mutableStateOf(false) }
     val emailState = remember { mutableStateOf(TextFieldValue()) }
     val passwordState = remember { mutableStateOf(TextFieldValue()) }
-    var showLoginOverlay by remember { mutableStateOf(true) }
+    val navController = rememberNavController()
 
-    if (showLoginOverlay) {
-        Dialog(
-            onDismissRequest = onDismiss,
-            content = {
+
+    if (!userLoggedIn) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     elevation = 8.dp,
@@ -102,12 +99,12 @@ fun LoginOverlay(
                                 Text("Register")
                             }
 
-/*
+
                             // Skip login button. TODO Should this be possible!?
                             TextButton(
                                 onClick = {
-                                    onDismiss()
-                                    // Navigate to HomeScreen here
+                                    userLoggedIn = true
+
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -115,14 +112,15 @@ fun LoginOverlay(
                             ) {
                                 Text("Skip Login")
                             }
- */
+
                         }
                     }
                 }
-            }
-        )
     }
+    else
+        MainScreen()
 }
+
 
 
 
@@ -132,23 +130,22 @@ fun isUserLoggedIn(): Boolean {
 }
 
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
     val navController = rememberNavController()
-    LoginOverlay(
-        onDismiss = { /* Handle onDismiss logic here */ },
+    LoginScreen(
         navController = navController
     )
 }
-
-
+*/
+/*
 // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
 var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
     .requestEmail()
     .build()
-
+*/
 
 
 //SHA1 Fingerprint
