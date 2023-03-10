@@ -19,10 +19,7 @@ class NewsViewModel: ViewModel() {
             val apiService = fmAPIService.getInstance()
             try {
                 val response = apiService.getPersonNews(id)
-                println("NEWS: ")
-                println("Response: $response")
                 newsList = response
-                println(newsList)
             } catch (e: Exception) {
                 errorCode = e.message.toString()
             }

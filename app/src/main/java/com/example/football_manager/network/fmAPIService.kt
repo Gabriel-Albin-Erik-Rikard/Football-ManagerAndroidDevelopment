@@ -13,7 +13,6 @@ interface fmAPIService {
     companion object {
         var apiService: fmAPIService? = null
         fun getInstance(): fmAPIService {
-            println("Hello api")
             if (apiService == null) {
                 apiService = Retrofit.Builder()
                     .baseUrl("http://10.0.2.2:8080/")
