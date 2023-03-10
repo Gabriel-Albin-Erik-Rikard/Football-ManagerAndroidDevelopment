@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface fmAPIService {
     @GET("person/{id}/news")
-    suspend fun getNews(@Path("id") id: Int): List<News>
+    suspend fun getPersonNews(@Path("id") id: Int): List<News>
 
     companion object {
         var apiService: fmAPIService? = null
