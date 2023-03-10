@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,6 +35,7 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxSize(),
                 shape = RoundedCornerShape(8.dp),
+                elevation = 4.dp
             ) {
                 Column(
                     modifier = Modifier
@@ -73,8 +73,46 @@ fun ProfileScreen() {
                         Text(
                             text = "Name",
                             style = MaterialTheme.typography.titleLarge,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
+                    }
+                    // Update and logout buttons
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Button(
+                            modifier = Modifier
+                                .height(60.dp)
+                                .width(150.dp),
+                            onClick = { /*TODO*/ },
+                            shape = RoundedCornerShape(8.dp),
+                            elevation = ButtonDefaults.elevation(4.dp)
+                        ) {
+                            Text(
+                                text = "Update",
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center,
+                                color = androidx.compose.ui.graphics.Color.White
+                            )
+                        }
+                        Button(
+                            modifier = Modifier
+                                .height(50.dp)
+                                .width(150.dp),
+                            onClick = { /*TODO*/ },
+                            shape = RoundedCornerShape(8.dp),
+                            elevation = ButtonDefaults.elevation(4.dp)
+                        ) {
+                            Text(
+                                text = "Logout",
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center,
+                                color = androidx.compose.ui.graphics.Color.White
+                            )
+                        }
                     }
                 }
             }
@@ -127,8 +165,8 @@ fun ProfileScreen() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("email: ")
-                        Text("mail.mail@mail.com")
+                        Text("Phone ")
+                        Text("+123456789")
                     }
                 }
             }
