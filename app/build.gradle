@@ -48,6 +48,7 @@ android {
 
 dependencies {
     implementation 'com.google.ar.sceneform:filament-android:1.17.1'
+    implementation 'androidx.wear.tiles:tiles-material:1.1.0-alpha04'
 
     //Navigation Compose
     def nav_version = "2.5.3"
@@ -73,4 +74,9 @@ dependencies {
 
     implementation("androidx.compose.material3:material3:1.0.1")
     implementation("androidx.compose.material3:material3-window-size-class:1.0.1")
+
+    //Login implementation, Erik
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.facebook.android:facebook-login:11.2.0'
+
 }
