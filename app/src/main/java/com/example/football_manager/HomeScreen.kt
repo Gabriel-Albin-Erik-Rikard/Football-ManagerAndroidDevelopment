@@ -47,8 +47,6 @@ import java.util.Collections.min
 import kotlin.math.ceil
 import kotlin.math.min
 
-
-
 val now = LocalDateTime.now()
 val newsRepository = NewsRepository().apply {
     addNews(
