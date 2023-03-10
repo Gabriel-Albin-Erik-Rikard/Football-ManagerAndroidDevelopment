@@ -13,11 +13,11 @@ class NewsViewModel: ViewModel() {
     var newsList: List<News> by mutableStateOf(listOf())
     var errorCode: String by mutableStateOf("")
 
-    fun getNews(){
+    fun getNews(id: Int){
         viewModelScope.launch {
             val apiService = fmAPIService.getInstance()
             try {
-                val response = apiService.getNews()
+                val response = apiService.getNews(id)
                 println("NEWS: ")
                 println("Response: $response")
                 newsList = response
