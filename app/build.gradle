@@ -72,6 +72,9 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
+    implementation("androidx.compose.material3:material3:1.0.1")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.1")
+
     //Login implementation, Erik
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
     implementation 'com.facebook.android:facebook-login:11.2.0'
