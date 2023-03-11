@@ -58,9 +58,9 @@ fun CreateNews(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            var titleText = newTextTitle.text
-            var contentText = newTextContent.text
-            var writerText = newWriter.text
+            val titleText = newTextTitle.text
+            val contentText = newTextContent.text
+            val writerText = newWriter.text
             Button(
                 onClick = {
                     errors.clear()
