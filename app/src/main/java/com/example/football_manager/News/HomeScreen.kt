@@ -1,14 +1,7 @@
 package com.example.football_manager.News
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -106,7 +99,6 @@ class NewsRepository {
 }
 
 
-@ExperimentalMaterial3Api
 @Composable
 fun HomeScreen() {
     val navController = rememberNavController()
