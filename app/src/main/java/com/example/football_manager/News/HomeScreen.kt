@@ -1,4 +1,4 @@
-package com.example.football_manager
+package com.example.football_manager.News
 
 import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.background
