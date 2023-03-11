@@ -36,6 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.football_manager.model.News
 import com.google.android.filament.Box
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import java.lang.Math.ceil
@@ -45,17 +46,6 @@ import java.util.*
 import java.util.Collections.min
 import kotlin.math.ceil
 import kotlin.math.min
-
-
-data class News(
-    val id: Int,
-    var title: String,
-    var content: String,
-    var date: String,
-    var writer: String
-)
-
-
 
 val now = LocalDateTime.now()
 val newsRepository = NewsRepository().apply {
