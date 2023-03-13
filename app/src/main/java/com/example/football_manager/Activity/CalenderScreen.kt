@@ -147,6 +147,11 @@ class ActivityRepository {
     }
 }
 
+const val ACTIVITY_TITLE_MIN_LENGTH = 4
+const val ACTIVITY_TITLE_MAX_LENGTH = 20
+const val ACTIVITY_MATCHTYPE_MIN_LENGTH = 4
+const val ACTIVITY_MATCHTYPE_MAX_LENGTH = 15
+const val ACTIVITY_DESCRIPTION_MIN_LENGTH = 10
 
 @Composable
 fun CalenderScreen(){
