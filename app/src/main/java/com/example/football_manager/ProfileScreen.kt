@@ -148,7 +148,7 @@ fun ProfileScreen() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("email: ")
-                        Text("mail.mail@mail.com")
+                        Text(personViewModel.person.email)
                     }
                 }
             }
