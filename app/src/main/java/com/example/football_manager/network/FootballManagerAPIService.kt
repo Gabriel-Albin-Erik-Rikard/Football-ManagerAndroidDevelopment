@@ -1,6 +1,7 @@
 package com.example.football_manager.network
 
 import com.example.football_manager.model.News
+import com.example.football_manager.model.Person
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -9,6 +10,10 @@ import retrofit2.http.Path
 interface FootballManagerAPIService {
     @GET("person/{id}/news")
     suspend fun getPersonNews(@Path("id") id: Int): List<News>
+
+    // Get details of a person
+    @GET("person/{id}")
+    suspend fun getPerson(@Path("id") id: Int): Person
 
     companion object {
         var apiService: FootballManagerAPIService? = null
