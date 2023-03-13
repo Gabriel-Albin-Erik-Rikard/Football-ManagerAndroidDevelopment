@@ -171,7 +171,7 @@ fun ProfileScreen() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("Phone ")
-                        Text("+123456789")
+                        Text(personViewModel.person.phoneNumber)
                     }
                 }
             }
