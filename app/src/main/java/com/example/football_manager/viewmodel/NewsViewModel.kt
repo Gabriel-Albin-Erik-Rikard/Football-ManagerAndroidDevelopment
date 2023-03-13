@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.football_manager.model.News
-import com.example.football_manager.network.fmAPIService
+import com.example.football_manager.network.FootballManagerAPIService
 import kotlinx.coroutines.launch
 
 class NewsViewModel: ViewModel() {
@@ -16,7 +16,7 @@ class NewsViewModel: ViewModel() {
     // Param: id of the person
     fun getPersonNews(id: Int){
         viewModelScope.launch {
-            val apiService = fmAPIService.getInstance()
+            val apiService = FootballManagerAPIService.getInstance()
             try {
                 val response = apiService.getPersonNews(id)
                 newsList = response
