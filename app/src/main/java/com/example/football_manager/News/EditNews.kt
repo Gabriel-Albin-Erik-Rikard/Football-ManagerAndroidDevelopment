@@ -16,10 +16,7 @@ import androidx.navigation.NavHostController
 fun EditNews(id: Int, navController: NavHostController){
 
     val errors = remember { mutableStateListOf<String>() }
-    val EDIT_NEWS_TITLE_MIN_LENGTH = 3
-    val EDIT_NEWS_TITLE_MAX_LENGTH = 30
-    val EDIT_NEWS_CONTENT_MIN_LENGTH = 10
-    val EDIT_NEWS_CONTENT_MAX_LENGTH = 120
+
 
     val currentTaskID = newsRepository.getNewsById(id)
     val currentTitle = currentTaskID?.title
@@ -61,13 +58,12 @@ fun EditNews(id: Int, navController: NavHostController){
             Button(
                 onClick = {
                     errors.clear()
-                    if (updateTitleField.isEmpty() or updateContentField.isEmpty()) {
+                    if (updateTitleField.isEmpty() || updateContentField.isEmpty()) {
                         errors.add("Check So No Fields Are Empty")
-                        println("Hello")
-                    } else if ((updateTitleField.length < EDIT_NEWS_TITLE_MIN_LENGTH || updateTitleField.length > EDIT_NEWS_TITLE_MAX_LENGTH)) {
+                    } else if ((updateTitleField.length < NEWS_TITLE_MIN_LENGTH || updateTitleField.length > NEWS_TITLE_MAX_LENGTH)) {
                         errors.add("The Title Should Be Between 3-30 Characters")
-                    } else if (updateContentField.length < EDIT_NEWS_CONTENT_MIN_LENGTH || updateContentField.length > EDIT_NEWS_CONTENT_MAX_LENGTH) {
-                        errors.add("The Content Should Be Between 10-120 Characters")
+                    } else if (updateContentField.length < NEWS_CONTENT_MIN_LENGTH ) {
+                        errors.add("The Content Should Have At Least 10 Characters")
                     } else {
 
                         newsRepository.updateNewsById(

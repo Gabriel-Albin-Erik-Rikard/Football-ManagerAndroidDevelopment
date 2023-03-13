@@ -15,14 +15,6 @@ import androidx.navigation.NavHostController
 @Composable
 fun CreateNews(navController: NavHostController) {
     val errors = remember { mutableStateListOf<String>() }
-    val NEWS_TITLE_MIN_LENGTH = 3
-    val NEWS_TITLE_MAX_LENGTH = 30
-    val NEWS_WRITER_NAME_MIN_LENGTH = 4
-    val NEWS_WRITER_NAME_MAX_LENGTH = 10
-    val NEWS_CONTENT_MIN_LENGTH = 10
-    val NEWS_CONTENT_MAX_LENGTH = 120
-
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -67,8 +59,8 @@ fun CreateNews(navController: NavHostController) {
                         println("Hello")
                     } else if ((titleText.length < NEWS_TITLE_MIN_LENGTH || titleText.length > NEWS_TITLE_MAX_LENGTH)) {
                         errors.add("The Title Should Be Between 3-30 Characters")
-                    } else if (contentText.length < NEWS_CONTENT_MIN_LENGTH || contentText.length > NEWS_CONTENT_MAX_LENGTH) {
-                        errors.add("The Content Should Be Between 10-120 Characters")
+                    } else if (contentText.length < NEWS_CONTENT_MIN_LENGTH ) {
+                        errors.add("The Content Should Be At Least 10 Characters")
                     } else if (writerText.length < NEWS_WRITER_NAME_MIN_LENGTH || writerText.length > NEWS_WRITER_NAME_MAX_LENGTH) {
                         errors.add("The Writers Name Should Be Between 4-10 Characters")
                     } else {

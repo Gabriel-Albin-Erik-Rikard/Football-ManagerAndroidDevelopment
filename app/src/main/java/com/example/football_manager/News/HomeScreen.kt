@@ -1,6 +1,7 @@
 package com.example.football_manager.News
 
 
+
 import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +13,24 @@ import java.time.LocalDateTime
 
 val now = LocalDateTime.now()
 val newsRepository = NewsRepository().apply {
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
+    addNews(
+        "Welcome to Ekhagen",
+        "In ekhagen you can find........",
+        date = now.toString(),
+        "Gabriel Adward"
+    )
     addNews(
         "Welcome to Ekhagen",
         "In ekhagen you can find........",
@@ -98,6 +117,12 @@ class NewsRepository {
 
 }
 
+const val NEWS_TITLE_MIN_LENGTH = 3
+const val NEWS_TITLE_MAX_LENGTH = 30
+const val NEWS_WRITER_NAME_MIN_LENGTH = 4
+const val NEWS_WRITER_NAME_MAX_LENGTH = 10
+const val NEWS_CONTENT_MIN_LENGTH = 10
+
 
 @Composable
 fun HomeScreen() {
@@ -125,6 +150,7 @@ fun HomeScreen() {
         }
     }
 }
+
 
 
 

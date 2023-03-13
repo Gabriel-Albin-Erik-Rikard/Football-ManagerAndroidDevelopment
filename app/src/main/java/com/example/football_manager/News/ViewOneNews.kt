@@ -1,3 +1,5 @@
+package com.example.football_manager.News
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -10,9 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.football_manager.News.newsRepository
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 @Composable
 fun ViewOneScreen(id: Int, navController: NavHostController) {
@@ -103,3 +106,4 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
         }
     }
 }
+
