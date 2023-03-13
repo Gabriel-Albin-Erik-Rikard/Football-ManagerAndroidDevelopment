@@ -49,6 +49,38 @@ val activityRepository = ActivityRepository().apply{
         startTime = "14:00",
         finishTime = "17:00"
     )
+    addActivity(
+        matchType = "Match",
+        title = "Råslätt vs Ekhagen",
+        description = "A friendly match between Team A and Team B",
+        date = "12/03/2023",
+        startTime = "14:00",
+        finishTime = "17:00"
+    )
+    addActivity(
+        matchType = "Match",
+        title = "Råslätt vs Ekhagen",
+        description = "A friendly match between Team A and Team B",
+        date = "12/03/2023",
+        startTime = "14:00",
+        finishTime = "17:00"
+    )
+    addActivity(
+        matchType = "Match",
+        title = "Råslätt vs Ekhagen",
+        description = "A friendly match between Team A and Team B",
+        date = "12/03/2023",
+        startTime = "14:00",
+        finishTime = "17:00"
+    )
+    addActivity(
+        matchType = "Match",
+        title = "Råslätt vs Ekhagen",
+        description = "A friendly match between Team A and Team B",
+        date = "12/03/2023",
+        startTime = "14:00",
+        finishTime = "17:00"
+    )
 }
 
 class ActivityRepository {
