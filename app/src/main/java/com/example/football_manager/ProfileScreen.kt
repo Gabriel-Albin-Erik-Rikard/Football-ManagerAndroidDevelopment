@@ -16,11 +16,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.football_manager.viewmodel.PersonViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun ProfileScreen() {
+
+    var personViewModel = PersonViewModel()
+    personViewModel.getPerson(1)
+
     Column(
 
     ) {
@@ -71,7 +76,7 @@ fun ProfileScreen() {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Name",
+                            text = personViewModel.person.firstName + " " + personViewModel.person.lastName,
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center,
                         )
@@ -143,7 +148,7 @@ fun ProfileScreen() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("email: ")
-                        Text("mail.mail@mail.com")
+                        Text(personViewModel.person.email)
                     }
                 }
             }
@@ -166,7 +171,7 @@ fun ProfileScreen() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("Phone ")
-                        Text("+123456789")
+                        Text(personViewModel.person.phoneNumber)
                     }
                 }
             }
