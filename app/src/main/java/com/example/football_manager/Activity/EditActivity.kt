@@ -15,23 +15,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.football_manager.activityRepository
+import com.example.football_manager.*
 
 @Composable
 fun EditActivity(id: Int, navController: NavHostController) {
     val errors = remember { mutableStateListOf<String>() }
 
-    val EDIT_ACTIVITY_TITLE_MIN_LENGTH = 4
-    val EDIT_ACTIVITY_TITLE_MAX_LENGTH = 20
-    val EDIT_ACTIVITY_MATCHTYPE_MIN_LENGTH = 4
-    val EDIT_ACTIVITY_MATCHTYPE_MAX_LENGTH = 15
-    val EDIT_ACTIVITY_DESCRIPTION_MIN_LENGTH = 10
-    val EDIT_ACTIVITY_DESCRIPTION_MAX_LENGTH = 120
-
     val currentActivityId = activityRepository.getActivityById(id)
-    var currentTitle = currentActivityId?.title
-    var currentMatchType = currentActivityId?.matchType
-    var currentDescription = currentActivityId?.description
+    val currentTitle = currentActivityId?.title
+    val currentMatchType = currentActivityId?.matchType
+    val currentDescription = currentActivityId?.description
     var selectedDate by remember { mutableStateOf(currentActivityId?.date) }
     var selectedStartTime by remember { mutableStateOf(currentActivityId?.startTime) }
     var selectedFinishTime by remember { mutableStateOf(currentActivityId?.finishTime) }
@@ -195,12 +188,12 @@ fun EditActivity(id: Int, navController: NavHostController) {
                 Text(text = "Select End-Time")
             }
 
-            var updateTitleField = editedTextTitle.text
-            var updateMatchTypeField = editedTextMatchType.text
-            var updateDescriptionField = editedTextDescription.text
-            var updateDate = selectedDate.toString()
-            var updateStartTime = selectedStartTime.toString()
-            var updateFinishTime = selectedFinishTime.toString()
+            val updateTitleField = editedTextTitle.text
+            val updateMatchTypeField = editedTextMatchType.text
+            val updateDescriptionField = editedTextDescription.text
+            val updateDate = selectedDate.toString()
+            val updateStartTime = selectedStartTime.toString()
+            val updateFinishTime = selectedFinishTime.toString()
 
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -209,11 +202,11 @@ fun EditActivity(id: Int, navController: NavHostController) {
                     errors.clear()
                     if (updateTitleField.isEmpty() || updateMatchTypeField.isEmpty() || updateDescriptionField.isEmpty()  ){
                         errors.add("Please fill in all fields.")
-                    } else if ((updateTitleField.length < EDIT_ACTIVITY_TITLE_MIN_LENGTH || updateTitleField.length > EDIT_ACTIVITY_TITLE_MAX_LENGTH)) {
+                    } else if ((updateTitleField.length < ACTIVITY_TITLE_MIN_LENGTH || updateTitleField.length > ACTIVITY_TITLE_MAX_LENGTH)) {
                         errors.add("The Title Should Be Between 4-20 Characters")
-                    } else if (updateMatchTypeField.length < EDIT_ACTIVITY_MATCHTYPE_MIN_LENGTH || updateMatchTypeField.length > EDIT_ACTIVITY_MATCHTYPE_MAX_LENGTH) {
+                    } else if (updateMatchTypeField.length < ACTIVITY_MATCHTYPE_MIN_LENGTH || updateMatchTypeField.length > ACTIVITY_MATCHTYPE_MAX_LENGTH) {
                         errors.add("The MatchType Should Be Between 4-15 Characters")
-                    } else if (updateDescriptionField.length < EDIT_ACTIVITY_DESCRIPTION_MIN_LENGTH || updateDescriptionField.length > EDIT_ACTIVITY_DESCRIPTION_MAX_LENGTH) {
+                    } else if (updateDescriptionField.length < ACTIVITY_DESCRIPTION_MIN_LENGTH) {
                         errors.add("The Description Name Should Be Between 10-120 Characters")
                     } else if (updateDate.isEmpty()) {
                         errors.add("Please Fill A Date")
