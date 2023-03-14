@@ -29,4 +29,11 @@ sealed class BottomBarScreen(
         title = "Profile",
         icon = Icons.Default.AccountCircle
     )
+
+    object QR : BottomBarScreen(
+        route = "QR",
+        title = "QR Code",
+        icon = Icons.Default.QrCode
+    )
+
 }
