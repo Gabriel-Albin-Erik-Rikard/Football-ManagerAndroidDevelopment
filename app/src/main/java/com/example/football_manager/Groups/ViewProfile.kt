@@ -23,6 +23,9 @@ import com.example.football_manager.viewmodel.PersonViewModel
 
 class ViewProfile {
 }
+
+//shows strings in a nice way on a card like this:
+//str1                                  str2
 @Composable
 fun showCard(str1: String, str2: String){
     Row(
@@ -45,7 +48,6 @@ fun showCard(str1: String, str2: String){
             ) {
                 Text(str1)
                 Text(str2)
-                //Text(personViewModel.person.email)
             }
         }
     }

@@ -18,46 +18,6 @@ import com.example.football_manager.groupRepository
 
 @Composable
 fun PlayerPage(navController: NavController, groupID: Int, playerID: Int){
-    //println(name)
     val player = groupRepository.getGroupById(groupID).getPlayerById(playerID)
     showProfile(human = player)
-    /*Box( modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 50.dp)
-        //.background(Color.Blue)
-    ) {
-        // TODO import an Image here
-        Icon(
-            imageVector = Icons.Default.AccountCircle,
-            contentDescription = "Favorite",
-            modifier = Modifier
-                .size(200.dp)
-                .align(Alignment.TopCenter),
-            tint = Color.Red
-        )
-        Card(
-            modifier = Modifier
-                .height(300.dp)
-                .align(Alignment.BottomCenter)
-                .width(480.dp)
-                //.padding(12.dp)
-                .background(Color.LightGray)
-        ) {
-            Text(
-                //text = "testing"
-                text = "Name: ${player.name} \n" +
-                        "Games Played: ${player.gamesPlayed} \n"+
-                        "Goals: ${player.goals} \n"+
-                        "Assists: ${player.assists} \n"+
-                        "Yellow Cards: ${player.yellowCards} \n"+
-                        "Red Cards: ${player.redCards}",
-                style = MaterialTheme.typography.h4,
-                //textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(Color.LightGray)
-                    .padding(6.dp)
-
-            )
-        }
-    }*/
 }

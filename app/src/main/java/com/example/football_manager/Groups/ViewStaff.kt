@@ -18,49 +18,6 @@ import com.example.football_manager.groupRepository
 
 @Composable
 fun StaffPage(navController: NavController, groupID: Int, staffID: Int){
-    println(groupID)
-
     val staff = groupRepository.getGroupById(groupID).getStaffById(staffID)
     showProfile(human = staff)
-/*
-    Box( modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 50.dp)
-        //.background(Color.Blue)
-    ) {
-        // TODO import an Image here
-        Icon(
-            imageVector = Icons.Default.AccountCircle,
-            contentDescription = "Favorite",
-            modifier = Modifier
-                .size(200.dp)
-                .align(Alignment.TopCenter),
-            tint = Color.Red
-        )
-        Card(
-            //shape =
-            //shape = RoundedCornerShape(12.dp),
-
-            modifier = Modifier
-                .height(300.dp)
-                .align(Alignment.BottomCenter)
-                .width(480.dp)
-                //.padding(12.dp)
-                .background(Color.LightGray)
-        ) {
-            Text(
-                //text = "testing"
-                text = "Name: ${staff.name} \n" +
-                        "Role:  ${staff.role}",
-
-
-                style = MaterialTheme.typography.h4,
-                //textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(Color.LightGray)
-                    .padding(6.dp)
-
-            )
-        }
-    }*/
 }
