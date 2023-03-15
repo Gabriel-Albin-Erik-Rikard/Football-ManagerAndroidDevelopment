@@ -20,8 +20,8 @@ import com.example.football_manager.groupRepository
 fun PlayerPage(navController: NavController, groupID: Int, playerID: Int){
     //println(name)
     val player = groupRepository.getGroupById(groupID).getPlayerById(playerID)
-    println("kanske hit 4")
-    Box( modifier = Modifier
+    showProfile(human = player)
+    /*Box( modifier = Modifier
         .fillMaxSize()
         .padding(bottom = 50.dp)
         //.background(Color.Blue)
@@ -59,5 +59,5 @@ fun PlayerPage(navController: NavController, groupID: Int, playerID: Int){
 
             )
         }
-    }
+    }*/
 }

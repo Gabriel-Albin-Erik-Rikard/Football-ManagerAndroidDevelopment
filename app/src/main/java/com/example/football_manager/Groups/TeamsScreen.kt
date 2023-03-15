@@ -53,10 +53,12 @@ class Group(var id : Int, var name : String ){
     }
 }
 
-data class Staff( val id : Int, val name: String){
+
+open class Human(open val name : String)
+data class Staff(val id : Int, override val name: String): Human(name) {
     var role: String = ""
 }
-data class Player(val id : Int, val name : String){
+data class Player(val id : Int, override val name : String): Human(name){
     var assists : Int = 0
     var yellowCards : Int = 0
     var gamesPlayed : Int = 0
@@ -120,13 +122,6 @@ class GroupRepository(){
             )
         )
     }
-    /*fun addGroup(group: com.example.football_manager.Group) {
-        val id = when {
-            listOfGroups.isEmpty() -> 0
-            else -> listOfGroups.last().id +1
-        }
-        listOfGroups.add(group)
-    }*/
 
     fun getAllGroups() = listOfGroups
     fun getGroupById(id: Int): com.example.football_manager.Group  {
@@ -149,17 +144,13 @@ fun TeamsScreen(){
             GroupPage(navController, id)
         }
         composable("PlayerPage/{groupID}/{playerID}") {
-            println("kanske hit 0")
             val groupID = it.arguments!!.getString("groupID")!!.toInt()
             val playerID = it.arguments!!.getString("playerID")!!.toInt()
-            println("kanske hit 1")
             PlayerPage(navController, groupID, playerID)
         }
         composable("StaffPage/{groupID}/{staffID}") {
-            println("kanske hit 0")
             val groupID = it.arguments!!.getString("groupID")!!.toInt()
             val staffID = it.arguments!!.getString("staffID")!!.toInt()
-            println("kanske hit 1")
             StaffPage(navController, groupID, staffID)
         }
     }

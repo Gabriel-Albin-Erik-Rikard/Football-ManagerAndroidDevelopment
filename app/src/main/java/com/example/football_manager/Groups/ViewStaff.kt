@@ -19,10 +19,10 @@ import com.example.football_manager.groupRepository
 @Composable
 fun StaffPage(navController: NavController, groupID: Int, staffID: Int){
     println(groupID)
-    println("kanske hit 3")
-    //println(name)
+
     val staff = groupRepository.getGroupById(groupID).getStaffById(staffID)
-    println("kanske hit 4")
+    showProfile(human = staff)
+/*
     Box( modifier = Modifier
         .fillMaxSize()
         .padding(bottom = 50.dp)
@@ -62,5 +62,5 @@ fun StaffPage(navController: NavController, groupID: Int, staffID: Int){
 
             )
         }
-    }
+    }*/
 }

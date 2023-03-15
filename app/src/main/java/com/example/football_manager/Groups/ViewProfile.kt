@@ -1,4 +1,4 @@
-package com.example.football_manager
+package com.example.football_manager.Groups
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.background
@@ -16,6 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.football_manager.Human
+import com.example.football_manager.Player
 import com.example.football_manager.viewmodel.PersonViewModel
 
 class ViewProfile {
@@ -23,6 +25,9 @@ class ViewProfile {
 
 @Composable
 fun showProfile(human: Human){
+    if (human is Player){
+
+    }
     Column(
 
     ) {
