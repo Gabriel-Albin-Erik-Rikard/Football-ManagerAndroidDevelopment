@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.football_manager.Human
 import com.example.football_manager.Player
 import com.example.football_manager.Staff
+import com.example.football_manager.model.Person
 import com.example.football_manager.viewmodel.PersonViewModel
 
 class ViewProfile {
@@ -111,8 +112,8 @@ fun showProfile(human: Human){
                                 textAlign = TextAlign.Center,
                         )
                     }
-                    // Update and logout buttons, skrottar dom för nu(for now)
-                    Row(
+                    // Update and logout buttons, not used for now
+                    /*Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
@@ -148,7 +149,7 @@ fun showProfile(human: Human){
                                  color = androidx.compose.ui.graphics.Color.White
                              )
                          }*/
-                    }
+                    }*/
                 }
             }
             // Cards with user info
@@ -168,6 +169,12 @@ fun showProfile(human: Human){
                 showCard(str1 = "Games played:", str2 = human.gamesPlayed.toString())
                 showCard(str1 = "Yellow cards:", str2 = human.yellowCards.toString())
                 showCard(str1 = "Red cards:", str2 = human.redCards.toString())
+            }
+            else if (human is Person){
+                showCard(str1 = "USE", str2 ="THIS :)" )
+            }
+            else{
+                showCard(str1 = "Error", str2 ="Cant handle input" )
             }
         }
     }

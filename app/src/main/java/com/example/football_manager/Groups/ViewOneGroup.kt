@@ -24,6 +24,7 @@ fun GroupPage(navController: NavController, id: Int){
     Box(
         modifier = Modifier
             .padding(bottom = 50.dp)
+            .padding(top = 30.dp)
     ){
         LazyColumn(
             modifier = Modifier
@@ -34,12 +35,13 @@ fun GroupPage(navController: NavController, id: Int){
             verticalArrangement = Arrangement.spacedBy(2.dp)
         )
         {
+            //not implemented button
             item{
-                Button(onClick = { /*TODO*/ },
+                /*Button(onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
                 )   {
                     Text(text = "Add(implement later,mby)")
-                }
+                }*/
                 Text(
                     text = "Staff",
                     style = MaterialTheme.typography.titleLarge

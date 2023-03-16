@@ -23,6 +23,7 @@ fun GroupScreenStart(navController: NavController, groups : List<com.example.foo
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 50.dp)
+            .padding(top = 30.dp)
         //.background(Color.Green),
     ) {
         LazyColumn(
@@ -34,14 +35,15 @@ fun GroupScreenStart(navController: NavController, groups : List<com.example.foo
 
         )
         {
-            item {
+            //have not implemented this button.
+            /*item {
                 Button(
                     onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
                 ) {
                     Text(text = "Create(implement later)")
                 }
-            }
+            }*/
             items(groups) { group ->
                 Column(modifier = Modifier.padding(vertical = 15.dp)
                     .clickable { navController.navigate("GroupPage/${group.id}") }) {
