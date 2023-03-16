@@ -55,6 +55,8 @@ fun showCard(str1: String, str2: String){
 }
 
 
+
+//shows info about a human with nice profile picture att the top
 @Composable
 fun showProfile(human: Human){
     Column(
