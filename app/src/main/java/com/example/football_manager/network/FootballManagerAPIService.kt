@@ -15,6 +15,11 @@ interface FootballManagerAPIService {
     @GET("person/{id}")
     suspend fun getPerson(@Path("id") id: Int): Person
 
+    // Groups
+    // Gets all teams for a person
+    @GET("team/{id}")
+    suspend fun getPersonTeams(@Path("id") id: Int): List<Team>
+
     companion object {
         var apiService: FootballManagerAPIService? = null
         fun getInstance(): FootballManagerAPIService {
