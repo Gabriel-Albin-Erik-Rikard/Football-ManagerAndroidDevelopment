@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.football_manager.model.News
 
-
 @Composable
 fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
     val sortedList = listy.sortedBy { it.date }
@@ -25,6 +24,7 @@ fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .padding(bottom = 56.dp) // add bottom padding
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -68,5 +68,6 @@ fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
         }
     }
 }
+
 
 
