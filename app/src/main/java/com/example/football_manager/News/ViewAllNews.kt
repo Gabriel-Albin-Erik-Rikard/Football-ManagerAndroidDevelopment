@@ -48,7 +48,7 @@ fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
             Column(
                 modifier = Modifier
                     .padding(vertical = 15.dp)
-                    .clickable { navController.navigate("ViewOne/${news.id}") }
+                    .clickable { navController.navigate("ViewOneNews/${news.id}") }
             ) {
                 Surface(
                     color = MaterialTheme.colorScheme.secondary,
