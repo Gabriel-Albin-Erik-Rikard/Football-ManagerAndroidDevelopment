@@ -31,7 +31,8 @@ fun ViewAllScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(top = 16.dp, bottom = 16.dp),
+                .padding(top = 16.dp, bottom = 56.dp, start = 16.dp, end = 16.dp),
+
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -62,7 +63,7 @@ fun ViewAllScreen(
                         modifier = Modifier
                             .padding(16.dp),
                         verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally // Changed from Alignment.Start
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
                             text = activities.title,
@@ -70,7 +71,6 @@ fun ViewAllScreen(
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )
-
 
                         Text(
                             text = activities.date,
@@ -90,3 +90,4 @@ fun ViewAllScreen(
         }
     }
 }
+
