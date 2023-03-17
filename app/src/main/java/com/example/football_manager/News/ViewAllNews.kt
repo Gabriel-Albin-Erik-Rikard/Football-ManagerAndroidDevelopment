@@ -18,7 +18,7 @@ import com.example.football_manager.model.News
 
 
 @Composable
-fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
+fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
     val sortedList = listy.sortedBy { it.date }
 
     Column(
@@ -68,4 +68,5 @@ fun ViewAllScreen(navController: NavHostController, listy: List<News>) {
         }
     }
 }
+
 

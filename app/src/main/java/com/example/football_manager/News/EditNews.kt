@@ -2,8 +2,6 @@ package com.example.football_manager.News
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,8 +33,8 @@ fun EditNews(id: Int, navController: NavHostController){
                 onValueChange = {
                     InputTitleTextOfNews = it
                 },
-                label = { Text("Your Title") },
-                placeholder = { Text("Write your title") }
+                label = { androidx.compose.material3.Text("Your Title") },
+                placeholder = { androidx.compose.material3.Text("Write your title") }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -46,8 +44,8 @@ fun EditNews(id: Int, navController: NavHostController){
                 onValueChange = {
                     InputContentOfNews = it
                 },
-                label = { Text("Your Content") },
-                placeholder = { Text("Write Your Content") }
+                label = { androidx.compose.material3.Text("Your Content") },
+                placeholder = { androidx.compose.material3.Text("Write Your Content") }
             )
 
 
@@ -55,14 +53,14 @@ fun EditNews(id: Int, navController: NavHostController){
             val updateContentField = InputContentOfNews.text
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
+            androidx.compose.material3.Button(
                 onClick = {
                     errors.clear()
                     if (updateTitleField.isEmpty() || updateContentField.isEmpty()) {
                         errors.add("Check So No Fields Are Empty")
                     } else if ((updateTitleField.length < NEWS_TITLE_MIN_LENGTH || updateTitleField.length > NEWS_TITLE_MAX_LENGTH)) {
                         errors.add("The Title Should Be Between 3-30 Characters")
-                    } else if (updateContentField.length < NEWS_CONTENT_MIN_LENGTH ) {
+                    } else if (updateContentField.length < NEWS_CONTENT_MIN_LENGTH) {
                         errors.add("The Content Should Have At Least 10 Characters")
                     } else {
 
@@ -77,17 +75,11 @@ fun EditNews(id: Int, navController: NavHostController){
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text("Submit")
+                androidx.compose.material3.Text("Submit")
             }
             for (error in errors) {
-                Text(error)
+                androidx.compose.material3.Text(error)
             }
         }
     }
 }
-
-
-
-
-
-

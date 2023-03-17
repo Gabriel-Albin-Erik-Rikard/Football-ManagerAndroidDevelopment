@@ -2,13 +2,33 @@ package com.example.football_manager.News
 
 
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.football_manager.Activity.ViewOneScreen
 import com.example.football_manager.model.News
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
 
 
 val now = LocalDateTime.now()
@@ -133,11 +153,11 @@ fun HomeScreen() {
         startDestination = "viewAll"
     ) {
         composable("viewAll") {
-            ViewAllScreen(navController, newsRepository.getAllNews())
+            ViewAllNewsScreen(navController, newsRepository.getAllNews())
         }
         composable("viewOne/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
-            ViewOneScreen(id, navController)
+            ViewOneNewsScreen(id, navController)
         }
 
         composable("viewOneEditedNews/{id}"){
@@ -150,6 +170,13 @@ fun HomeScreen() {
         }
     }
 }
+
+
+
+
+
+
+
 
 
 
