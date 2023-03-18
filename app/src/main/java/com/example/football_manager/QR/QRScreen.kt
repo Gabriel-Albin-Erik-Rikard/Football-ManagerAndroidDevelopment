@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.sp
 fun QRScreen() {
     QRGenerator()
 }
+
+
 @Composable
 fun QRGenerator() {
     Box(
