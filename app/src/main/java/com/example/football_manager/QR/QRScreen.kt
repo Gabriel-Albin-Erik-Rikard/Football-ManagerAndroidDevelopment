@@ -39,6 +39,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.football_manager.Activity.CreateActivity
 import com.example.football_manager.Activity.EditActivity
+import com.example.football_manager.QR.QRGenerator
+import com.example.football_manager.QR.ScanQR
+import com.example.football_manager.QR.ScanQrViewModel
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -53,35 +56,46 @@ import kotlin.coroutines.suspendCoroutine
 fun QRScreen() {
     val navController = rememberNavController()
 
+    NavHost(navController = navController, startDestination = "QR-Screen") {
+        composable("QR-Screen") {
+            QRViewScreen(navController)
+        }
+        composable("QR-Scanner") {
+            ScanQR(scanQrViewModel = ScanQrViewModel())
 
-
+        }
+    }
 }
 
-
-
 @Composable
-fun CalenderScreen(){
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = "viewAll"
+fun QRViewScreen(navController: NavController) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        composable("viewAll") {
-            com.example.football_manager.Activity.ViewAllScreen(navController, activityRepository.getAllActivities())
-        }
-        composable("viewOne/{id}") {
-            val id = it.arguments!!.getString("id")!!.toInt()
-            com.example.football_manager.Activity.ViewOneScreen(id, navController)
+        // Top half of screen
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = {
+                    navController.navigate("QR-Scanner")
+                }
+            ) {
+                Text("Scan QR Code")
+            }
         }
 
-        composable("viewOneEditedActivity/{id}"){
-            val id  = it.arguments!!.getString("id")!!.toInt()
-            EditActivity(id, navController)
-
-        }
-        composable("createActivity") {
-            CreateActivity(navController = navController)
+        // Bottom half of screen
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            QRGenerator()
         }
     }
 }

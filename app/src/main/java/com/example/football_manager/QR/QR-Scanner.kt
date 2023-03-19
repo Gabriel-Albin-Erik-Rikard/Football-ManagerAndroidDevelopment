@@ -3,6 +3,8 @@ package com.example.football_manager.QR
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,7 +34,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class ScanQrViewModel : ViewModel() {
-    val isCameraPermissionGranted = mutableStateOf(false)
+    val isCameraPermissionGranted = mutableStateOf(true)
 
 }
 
@@ -83,9 +85,12 @@ fun ScanQR(scanQrViewModel: ScanQrViewModel){
         barcodeScanner: BarcodeScanner,
         imageProxy: ImageProxy,
         cameraProvider: ProcessCameraProvider
-    ){
+    ) {
         imageProxy.image?.let { image ->
-            val inputImage = InputImage.fromMediaImage( image, imageProxy.imageInfo.rotationDegrees)
+            val inputImage = InputImage.fromMediaImage(
+                image,
+                imageProxy.imageInfo.rotationDegrees
+            )
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodeList ->
                     val barcode = barcodeList.getOrNull(0)
@@ -93,6 +98,15 @@ fun ScanQR(scanQrViewModel: ScanQrViewModel){
                     barcode?.rawValue?.let { value ->
                         cameraProvider.unbindAll()
                         Toast.makeText(context, value, Toast.LENGTH_LONG).show()
+                        // Delay the re-binding of the camera by 5 seconds
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            cameraProvider.bindToLifecycle(
+                                lifecycleOwner,
+                                cameraSelector,
+                                preview,
+                                analysisUseCase
+                            )
+                        }, 5000)
                     }
                 }
                 .addOnFailureListener {}
@@ -100,9 +114,9 @@ fun ScanQR(scanQrViewModel: ScanQrViewModel){
                     imageProxy.image?.close()
                     imageProxy.close()
                 }
-
         }
     }
+
 
 
     LaunchedEffect(key1 = true ) {
