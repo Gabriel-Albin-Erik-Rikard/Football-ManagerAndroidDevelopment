@@ -24,7 +24,7 @@ import com.example.football_manager.viewmodel.PersonViewModel
 fun ProfileScreen() {
 
     var personViewModel = PersonViewModel()
-    personViewModel.getPerson(1)
+     personViewModel.getPerson(1)
 
     Column(
 
@@ -178,4 +178,5 @@ fun ProfileScreen() {
             // TODO: Add more cards
         }
     }
+
 }
