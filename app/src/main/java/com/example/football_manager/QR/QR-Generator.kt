@@ -17,28 +17,25 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
-
 @Composable
 fun QRGenerator() {
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(10.dp, 15.dp)
             .wrapContentHeight()
     ) {
         Text(
             text = "Want To Become A Football-Coach?",
             textAlign = TextAlign.Center,
             style = TextStyle(fontSize = 20.sp),
-            modifier = Modifier
-                .align(Alignment.Center)
-
+            modifier = Modifier.align(Alignment.Center)
         )
         AndroidView(
             factory = { ctx ->
                 ImageView(ctx).apply {
-                    val size = 256
+                    val size = 512
                     val hints = hashMapOf<EncodeHintType, Int>().also {
                         it[EncodeHintType.MARGIN] = 1
                     }
@@ -65,8 +62,8 @@ fun QRGenerator() {
                     setImageBitmap(bitmap)
                 }
             }, modifier = Modifier
-                .width(250.dp)
-                .height(1500.dp)
+                .width(500.dp)
+                .height(5000.dp)
                 .padding(top = 300.dp)
         )
     }

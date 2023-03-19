@@ -70,7 +70,6 @@ fun QRScreen() {
 @Composable
 fun QRViewScreen(navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -87,13 +86,13 @@ fun QRViewScreen(navController: NavController) {
             ) {
                 Text("Scan QR Code")
             }
+
+
         }
 
         // Bottom half of screen
         Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.weight(5f).padding(bottom = 175.dp)
         ) {
             QRGenerator()
         }
