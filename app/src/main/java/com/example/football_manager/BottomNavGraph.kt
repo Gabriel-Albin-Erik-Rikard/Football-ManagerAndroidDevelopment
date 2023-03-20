@@ -29,7 +29,11 @@ fun BottomNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Profile.route){
             ProfileScreen()
         }
+        composable(route = BottomBarScreen.QR.route){
+            QRScreen()
+        }
     }
 }
+
 
 
