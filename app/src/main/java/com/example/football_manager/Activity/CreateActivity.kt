@@ -15,18 +15,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.football_manager.activityRepository
+import com.example.football_manager.*
 
 @Composable
 fun CreateActivity(navController: NavHostController) {
 
     val errors = remember { mutableStateListOf<String>() }
-    val ACTIVITY_TITLE_MIN_LENGTH = 4
-    val ACTIVITY_TITLE_MAX_LENGTH = 20
-    val ACTIVITY_MATCHTYPE_MIN_LENGTH = 4
-    val ACTIVITY_MATCHTYPE_MAX_LENGTH = 15
-    val ACTIVITY_DESCRIPTION_MIN_LENGTH = 10
-    val ACTIVITY_DESCRIPTION_MAX_LENGTH = 120
+
 
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -184,8 +179,8 @@ fun CreateActivity(navController: NavHostController) {
                         errors.add("The Title Should Be Between 4-20 Characters")
                     } else if (typeText.length < ACTIVITY_MATCHTYPE_MIN_LENGTH || typeText.length > ACTIVITY_MATCHTYPE_MAX_LENGTH) {
                         errors.add("The MatchType Should Be Between 4-15 Characters")
-                    } else if (descText.length < ACTIVITY_DESCRIPTION_MIN_LENGTH || descText.length > ACTIVITY_DESCRIPTION_MAX_LENGTH) {
-                        errors.add("The Description Name Should Be Between 10-120 Characters")
+                    } else if (descText.length < ACTIVITY_DESCRIPTION_MIN_LENGTH ) {
+                        errors.add("The Description Should At Least 10 Characters")
                     } else if (chosenDate.isEmpty()) {
                         errors.add("Please Fill A Date")
                     } else if (selectedStartTimeText.isEmpty() || selectedEndTimeText.isEmpty()) {
