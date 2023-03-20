@@ -17,14 +17,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.football_manager.Activities
+import com.example.football_manager.model.Activity
 
 @Composable
 fun ViewAllScreen(
     navController: NavHostController,
-    listy: List<Activities>,
 ) {
-    val sortedList = listy.sortedBy { it.date }
+
+    val activities: List<Activity> = listOf()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -49,7 +49,7 @@ fun ViewAllScreen(
                 )
             }
 
-            sortedList.forEach { activities ->
+            activities.forEach { activity ->
                 Surface(
                     color = MaterialTheme.colorScheme.secondary,
                     shape = RoundedCornerShape(150.dp),
@@ -57,7 +57,7 @@ fun ViewAllScreen(
                         .padding(horizontal = 100.dp, vertical = 15.dp)
                         .width(1100.dp)
                         .height(150.dp)
-                        .clickable { navController.navigate("viewOne/${activities.id}") }
+                        .clickable { navController.navigate("viewOne/${activity.id}") }
                 ) {
                     Column(
                         modifier = Modifier
@@ -65,21 +65,25 @@ fun ViewAllScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = activities.title,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White,
-                            textAlign = TextAlign.Center
-                        )
+                        activity.title?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White,
+                                textAlign = TextAlign.Center
+                            )
+                        }
 
+                        activity.date?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                         Text(
-                            text = activities.date,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White,
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = "${activities.startTime} - ${activities.finishTime}",
+                            text = "${activity.startTime} - ${activity.finishTime}",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.White,
                             textAlign = TextAlign.Center

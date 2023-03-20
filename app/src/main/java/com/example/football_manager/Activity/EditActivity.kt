@@ -16,12 +16,21 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.football_manager.*
+import com.example.football_manager.model.Activity
 
 @Composable
 fun EditActivity(id: Int, navController: NavHostController) {
     val errors = remember { mutableStateListOf<String>() }
 
-    val currentActivityId = activityRepository.getActivityById(id)
+    val currentActivityId = Activity(
+        id = id,
+        title = "title",
+        matchType = "matchType",
+        description = "description",
+        date = "date",
+        startTime = "startTime",
+        finishTime = "finishTime"
+    )
     val currentTitle = currentActivityId?.title
     val currentMatchType = currentActivityId?.matchType
     val currentDescription = currentActivityId?.description
@@ -36,7 +45,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
     var currentSelectedDayOfMonth = calendar[Calendar.DAY_OF_MONTH]
 
     if (currentActivityId?.date != null) {
-        val currentDate = currentActivityId.date.split("/")
+        val currentDate = currentActivityId.date!!.split("/")
         currentSelectedYear = currentDate[2].toInt()
         currentSelectedMonth = currentDate[1].toInt() - 1
         currentSelectedDayOfMonth = currentDate[0].toInt()
@@ -54,7 +63,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
 
     val startCalendar = Calendar.getInstance()
     if (currentActivityId?.startTime != null) {
-        val startTime = currentActivityId.startTime.split(":")
+        val startTime = currentActivityId.startTime!!.split(":")
         startCalendar.set(Calendar.HOUR_OF_DAY, startTime[0].toInt())
         startCalendar.set(Calendar.MINUTE, startTime[1].toInt())
     }
@@ -70,7 +79,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
 
     val finishCalendar = Calendar.getInstance()
     if (currentActivityId?.finishTime != null) {
-        val finishTime = currentActivityId.finishTime.split(":")
+        val finishTime = currentActivityId.finishTime!!.split(":")
         finishCalendar.set(Calendar.HOUR_OF_DAY, finishTime[0].toInt())
         finishCalendar.set(Calendar.MINUTE, finishTime[1].toInt())
     }
@@ -213,16 +222,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
                     } else if (updateStartTime!!.isEmpty() || updateFinishTime!!.isEmpty()) {
                         errors.add("Please Fill Start And Finish Time")
                     } else {
-
-                        activityRepository.updateActivityById(
-                            id,
-                            newTitle = updateTitleField,
-                            newMatchType = updateMatchTypeField,
-                            newDescription = updateDescriptionField,
-                            newDate = updateDate,
-                            newStartTime = updateStartTime ,
-                            newFinishTime = updateFinishTime
-                        )
+                        // TODO Sent to the backend
                         navController.popBackStack()
                     }
 

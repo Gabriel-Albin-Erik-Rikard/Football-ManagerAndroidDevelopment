@@ -12,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.football_manager.activityRepository
+import com.example.football_manager.model.Activity
 
 @Composable
 fun ViewOneScreen(id: Int, navController: NavHostController) {
-    val singleActivity = activityRepository.getActivityById(id)
+    val singleActivity: Activity? = Activity(id = id)
 
     Column(
         modifier = Modifier
@@ -93,7 +93,7 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
                     confirmButton = {
                         Button(onClick = {
                             openDialog.value = false
-                            activityRepository.deleteActivityById(id)
+                            // activityRepository.deleteActivityById(id)
                             navController.popBackStack()
                         }) {
                             Text(text = "Yes!")
