@@ -1,5 +1,6 @@
 package com.example.football_manager.network
 
+import com.example.football_manager.model.Activity
 import com.example.football_manager.model.News
 import com.example.football_manager.model.Person
 import com.example.football_manager.model.PersonTeams
@@ -20,6 +21,9 @@ interface FootballManagerAPIService {
     // Gets all teams for a person
     @GET("team/{id}")
     suspend fun getPersonTeams(@Path("id") id: Int): PersonTeams
+
+    @GET("person/{id}/activities")
+    suspend fun getPersonActivities(@Path("id") id: Int): List<Activity>
 
     companion object {
         var apiService: FootballManagerAPIService? = null

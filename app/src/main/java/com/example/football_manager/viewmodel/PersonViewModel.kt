@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.football_manager.model.Activity
 import com.example.football_manager.model.Person
 import com.example.football_manager.model.PersonTeams
 import com.example.football_manager.model.Team
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 class PersonViewModel: ViewModel() {
     var person: Person by mutableStateOf(Person(0, "", "", "", "", ""))
     var teams: PersonTeams by mutableStateOf(PersonTeams(listOf(), listOf()))
+    var activities: List<Activity> by mutableStateOf(listOf())
     var errorCode: String by mutableStateOf("")
 
     // Param: id of the person
@@ -33,6 +35,18 @@ class PersonViewModel: ViewModel() {
             try {
                 val response = apiService.getPersonTeams(id)
                 teams = response
+            } catch (e: Exception) {
+                errorCode = e.message.toString()
+            }
+        }
+    }
+
+    fun getPersonActivites(id: Int) {
+        viewModelScope.launch {
+            val apiService = FootballManagerAPIService.getInstance()
+            try {
+                val response = apiService.getPersonActivities(id)
+                activities = response
             } catch (e: Exception) {
                 errorCode = e.message.toString()
             }
