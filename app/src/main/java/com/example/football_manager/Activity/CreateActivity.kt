@@ -186,14 +186,7 @@ fun CreateActivity(navController: NavHostController) {
                     } else if (selectedStartTimeText.isEmpty() || selectedEndTimeText.isEmpty()) {
                         errors.add("Please Fill Start And Finish Time")
                     } else {
-                        activityRepository.addActivity(
-                            title = titleText,
-                            matchType = typeText,
-                            description = descText,
-                            date = chosenDate,
-                            startTime = "$selectedStartTimeText ",
-                            finishTime = "$selectedEndTimeText"
-                        )
+                        // TODO send to backend
                         navController.popBackStack()
                     }
 

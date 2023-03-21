@@ -12,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.football_manager.activityRepository
+import com.example.football_manager.model.Activity
 
 @Composable
 fun ViewOneScreen(id: Int, navController: NavHostController) {
-    val singleActivity = activityRepository.getActivityById(id)
+    val singleActivity: Activity? = Activity(id = id, type = "")
 
     Column(
         modifier = Modifier
@@ -27,88 +27,6 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
             text = " ${singleActivity?.title}",
             style = MaterialTheme.typography.titleLarge
         )
-        Spacer(
-            modifier = Modifier
-                .height(50.dp)
-                .padding(10.dp)
-        )
-        Text(
-            text = "Type : ${singleActivity?.matchType}",
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.height(60.dp))
-
-        Text(
-            text = "Description : ${singleActivity?.description}",
-            style = MaterialTheme.typography.titleMedium
-        )
-
-
-
-        Spacer(modifier = Modifier.height(60.dp))
-        Text(
-            text = "Date : ${singleActivity?.date}",
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        Spacer(modifier = Modifier.height(60.dp))
-
-        Text(
-            text = " Time : ${singleActivity?.startTime?.format("%02d:%02d")} - ${singleActivity?.finishTime?.format("%02d:%02d")}",
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        Spacer(modifier = Modifier.height(60.dp))
-
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Button(
-                onClick = { navController.navigate("viewOneEditedActivity/${id}") },
-                modifier = Modifier.padding(end = 8.dp)
-            ) {
-                Text(text = "Edit Activity")
-                println("funkar")
-
-            }
-            val openDialog = remember { mutableStateOf(false) }
-
-            Button(
-                onClick = { openDialog.value = true },
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Text(text = "Delete Activity")
-            }
-            if (openDialog.value) {
-                AlertDialog(
-                    onDismissRequest = {
-                        openDialog.value = false
-                    },
-                    title = {
-                        Text(text = "Are You Sure?")
-                    },
-                    confirmButton = {
-                        Button(onClick = {
-                            openDialog.value = false
-                            activityRepository.deleteActivityById(id)
-                            navController.popBackStack()
-                        }) {
-                            Text(text = "Yes!")
-                        }
-                    },
-                    dismissButton = {
-                        Button(
-                            onClick = { openDialog.value = false }
-                        ) {
-                            Text(text = "No!")
-                        }
-                    }
-                )
-            }
-        }
     }
 }
 

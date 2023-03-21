@@ -16,74 +16,20 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.football_manager.*
+import com.example.football_manager.model.Activity
 
 @Composable
 fun EditActivity(id: Int, navController: NavHostController) {
     val errors = remember { mutableStateListOf<String>() }
 
-    val currentActivityId = activityRepository.getActivityById(id)
-    val currentTitle = currentActivityId?.title
-    val currentMatchType = currentActivityId?.matchType
-    val currentDescription = currentActivityId?.description
-    var selectedDate by remember { mutableStateOf(currentActivityId?.date) }
-    var selectedStartTime by remember { mutableStateOf(currentActivityId?.startTime) }
-    var selectedFinishTime by remember { mutableStateOf(currentActivityId?.finishTime) }
-
-    val context = LocalContext.current
-    val calendar = Calendar.getInstance()
-    var currentSelectedYear = calendar[Calendar.YEAR]
-    var currentSelectedMonth = calendar[Calendar.MONTH]
-    var currentSelectedDayOfMonth = calendar[Calendar.DAY_OF_MONTH]
-
-    if (currentActivityId?.date != null) {
-        val currentDate = currentActivityId.date.split("/")
-        currentSelectedYear = currentDate[2].toInt()
-        currentSelectedMonth = currentDate[1].toInt() - 1
-        currentSelectedDayOfMonth = currentDate[0].toInt()
-    }
-
-    val newDatePicker = DatePickerDialog(
-        context,
-        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-            selectedDate = "%02d/%02d/%d".format(selectedDayOfMonth, selectedMonth + 1, selectedYear)
-        },
-        currentSelectedYear, currentSelectedMonth, currentSelectedDayOfMonth
+    val currentActivityId = Activity(
+        id = id,
+        startDate = "startTime",
+        stopDate = "finishTime",
+        type = "matchType",
     )
-
-    newDatePicker.datePicker.minDate = calendar.timeInMillis
-
-    val startCalendar = Calendar.getInstance()
-    if (currentActivityId?.startTime != null) {
-        val startTime = currentActivityId.startTime.split(":")
-        startCalendar.set(Calendar.HOUR_OF_DAY, startTime[0].toInt())
-        startCalendar.set(Calendar.MINUTE, startTime[1].toInt())
-    }
-    val currentSelectedHour = startCalendar.get(Calendar.HOUR_OF_DAY)
-    val currentSelectedMinute = startCalendar.get(Calendar.MINUTE)
-
-    val newStartTimePicker = TimePickerDialog(
-        context,
-        { _, selectedHour: Int, selectedMinute: Int ->
-            selectedStartTime = "$selectedHour:${if (selectedMinute < 10) "0$selectedMinute" else selectedMinute}"
-        }, currentSelectedHour, currentSelectedMinute, false
-    )
-
-    val finishCalendar = Calendar.getInstance()
-    if (currentActivityId?.finishTime != null) {
-        val finishTime = currentActivityId.finishTime.split(":")
-        finishCalendar.set(Calendar.HOUR_OF_DAY, finishTime[0].toInt())
-        finishCalendar.set(Calendar.MINUTE, finishTime[1].toInt())
-    }
-    val currentSelectedHourForFinish = finishCalendar.get(Calendar.HOUR_OF_DAY)
-    val currentSelectedMinuteForFinish = finishCalendar.get(Calendar.MINUTE)
-
-    val newEndTimePicker = TimePickerDialog(
-        context,
-        { _, selectedHour: Int, selectedMinute: Int ->
-            selectedFinishTime = "$selectedHour:${if (selectedMinute < 10) "0$selectedMinute" else selectedMinute}"
-        }, currentSelectedHourForFinish, currentSelectedMinuteForFinish, false
-    )
-
+    var selectedStartTime by remember { mutableStateOf(currentActivityId?.startDate) }
+    var selectedFinishTime by remember { mutableStateOf(currentActivityId?.stopDate) }
 
 
     Box(
@@ -93,7 +39,10 @@ fun EditActivity(id: Int, navController: NavHostController) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var editedTextTitle by remember { mutableStateOf(TextFieldValue(currentTitle ?: "")) }
+            var editedTextTitle by remember {
+                val currentTitle = null
+                mutableStateOf(TextFieldValue(currentTitle ?: ""))
+            }
             OutlinedTextField(
                 value = editedTextTitle,
                 onValueChange = { editedTextTitle = it },
@@ -104,6 +53,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
             Spacer(modifier = Modifier.padding(top = 15.dp))
 
             var editedTextMatchType by remember {
+                val currentMatchType = ""
                 mutableStateOf(
                     TextFieldValue(
                         currentMatchType ?: ""
@@ -120,6 +70,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
             Spacer(modifier = Modifier.padding(top = 15.dp))
 
             var editedTextDescription by remember {
+                val currentDescription = null
                 mutableStateOf(
                     TextFieldValue(
                         currentDescription ?: ""
@@ -135,6 +86,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
 
             Spacer(modifier = Modifier.padding(top = 15.dp))
 
+            val selectedDate = ""
             Text(
                 text = if (selectedDate!!.isNotEmpty()) {
                     "Selected date is $selectedDate"
@@ -146,7 +98,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
 
             Button(
                 onClick = {
-                    newDatePicker.show()
+                    // TODO
                 }
             ) {
                 Text(text = "Select a date")
@@ -165,7 +117,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
 
             Button(
                 onClick = {
-                    newStartTimePicker.show()
+                    // TODO
                 }
             ) {
                 Text(text = "Select Start-Time")
@@ -182,7 +134,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
 
             Button(
                 onClick = {
-                    newEndTimePicker.show()
+                    // TODO
                 }
             ) {
                 Text(text = "Select End-Time")
@@ -213,16 +165,7 @@ fun EditActivity(id: Int, navController: NavHostController) {
                     } else if (updateStartTime!!.isEmpty() || updateFinishTime!!.isEmpty()) {
                         errors.add("Please Fill Start And Finish Time")
                     } else {
-
-                        activityRepository.updateActivityById(
-                            id,
-                            newTitle = updateTitleField,
-                            newMatchType = updateMatchTypeField,
-                            newDescription = updateDescriptionField,
-                            newDate = updateDate,
-                            newStartTime = updateStartTime ,
-                            newFinishTime = updateFinishTime
-                        )
+                        // TODO Sent to the backend
                         navController.popBackStack()
                     }
 
