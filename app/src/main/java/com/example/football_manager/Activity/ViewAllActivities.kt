@@ -23,7 +23,6 @@ import com.example.football_manager.model.Activity
 fun ViewAllScreen(
     navController: NavHostController,
 ) {
-
     val activities: List<Activity> = listOf()
 
     Box(modifier = Modifier.fillMaxSize()) {
