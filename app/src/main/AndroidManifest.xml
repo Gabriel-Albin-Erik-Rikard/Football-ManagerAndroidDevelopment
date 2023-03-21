@@ -17,6 +17,11 @@
         android:theme="@style/Theme.Footballmanager"
         tools:targetApi="31">
         <activity
+            android:name=".RegisterScreenActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register_screen"
+            android:theme="@style/Theme.Footballmanager" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
