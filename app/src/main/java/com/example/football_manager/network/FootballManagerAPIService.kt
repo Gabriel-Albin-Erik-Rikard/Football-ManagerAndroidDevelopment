@@ -22,7 +22,7 @@ interface FootballManagerAPIService {
     @GET("team/{id}")
     suspend fun getPersonTeams(@Path("id") id: Int): PersonTeams
 
-    @GET("person/{id}/activities")
+    @GET("person/{id}/activites")
     suspend fun getPersonActivities(@Path("id") id: Int): List<Activity>
 
     companion object {

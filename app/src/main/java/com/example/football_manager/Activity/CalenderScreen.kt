@@ -11,6 +11,7 @@ import com.example.football_manager.Activity.CreateActivity
 import com.example.football_manager.Activity.EditActivity
 import com.example.football_manager.Activity.ViewAllScreen
 import com.example.football_manager.Activity.ViewOneScreen
+import com.example.football_manager.viewmodel.PersonViewModel
 
 
 const val ACTIVITY_TITLE_MIN_LENGTH = 4
@@ -23,12 +24,15 @@ const val ACTIVITY_DESCRIPTION_MIN_LENGTH = 10
 fun CalenderScreen(){
     val navController = rememberNavController()
 
+    val personViewModel = PersonViewModel()
+
     NavHost(
         navController = navController,
         startDestination = "viewAll"
     ) {
         composable("viewAll") {
-            ViewAllScreen(navController)
+            personViewModel.getPersonActivites(1)
+            ViewAllScreen(navController, personViewModel.activities)
         }
         composable("viewOne/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()

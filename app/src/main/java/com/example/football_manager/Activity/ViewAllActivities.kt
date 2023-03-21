@@ -22,8 +22,8 @@ import com.example.football_manager.model.Activity
 @Composable
 fun ViewAllScreen(
     navController: NavHostController,
+    activities: List<Activity>,
 ) {
-    val activities: List<Activity> = listOf()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -47,7 +47,6 @@ fun ViewAllScreen(
                     color = Color.White
                 )
             }
-
             activities.forEach { activity ->
                 Surface(
                     color = MaterialTheme.colorScheme.secondary,
@@ -64,25 +63,15 @@ fun ViewAllScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        activity.title?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = Color.White,
-                                textAlign = TextAlign.Center
-                            )
-                        }
 
-                        activity.date?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = Color.White,
-                                textAlign = TextAlign.Center
-                            )
-                        }
                         Text(
-                            text = "${activity.startTime} - ${activity.finishTime}",
+                            text = activity.type,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.White,
+                            textAlign = TextAlign.Center)
+
+                        Text(
+                            text = "${activity.startDate} - ${activity.stopDate}",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.White,
                             textAlign = TextAlign.Center

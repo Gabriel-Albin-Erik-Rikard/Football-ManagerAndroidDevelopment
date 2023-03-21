@@ -46,6 +46,11 @@ class PersonViewModel: ViewModel() {
             val apiService = FootballManagerAPIService.getInstance()
             try {
                 val response = apiService.getPersonActivities(id)
+                // Trim startDate and stopDate to yyyy-mm-dd
+                for (activity in response) {
+                    activity.startDate = activity.startDate?.substring(0, 10)
+                    activity.stopDate = activity.stopDate?.substring(0, 10)
+                }
                 activities = response
             } catch (e: Exception) {
                 errorCode = e.message.toString()
