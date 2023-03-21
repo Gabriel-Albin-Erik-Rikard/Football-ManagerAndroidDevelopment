@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "78102962497",
+    "project_id": "football-manager-db",
+    "storage_bucket": "football-manager-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78102962497:android:cefe2246bb190e3745c1c0",
+        "android_client_info": {
+          "package_name": "com.example.football_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78102962497-8difmte5gou5lmoi34vnsp2g889jf8uc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.football_manager",
+            "certificate_hash": "323619e4d3b5da24553459124cb55ac3e890c69b"
+          }
+        },
+        {
+          "client_id": "78102962497-7b7tp1mbddjlu1a54r4qprbk2dufvjkj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC17B4bUxvQWUkW0BUd5I5mmICZbPmySMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78102962497-7b7tp1mbddjlu1a54r4qprbk2dufvjkj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

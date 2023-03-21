@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Football-manager</string>
+    <string name="web_client_id">78102962497-7b7tp1mbddjlu1a54r4qprbk2dufvjkj.apps.googleusercontent.com</string>
+
+    <string name="sign_in_with_gmail">Sign in with gmail</string>
+    <string name="title_activity_register_screen">RegisterScreenActivity</string>
+
+
 </resources>

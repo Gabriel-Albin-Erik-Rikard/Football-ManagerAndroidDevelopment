@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 
@@ -12,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.football_manager"
-        minSdk 30
+        minSdk 29
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -52,6 +53,8 @@ android {
 dependencies {
     implementation 'com.google.ar.sceneform:filament-android:1.17.1'
     implementation 'androidx.wear.tiles:tiles-material:1.1.0-alpha04'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
 
     //Navigation Compose
     def nav_version = "2.5.3"
@@ -76,7 +79,10 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
     //Login implementation, Erik
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
-    implementation 'com.facebook.android:facebook-login:11.2.0'
+    implementation(platform("com.google.firebase:firebase-bom:28.2.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:19.0.0")
+
+
 
 }
