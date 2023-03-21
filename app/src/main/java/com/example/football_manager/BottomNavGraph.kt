@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.football_manager.News.HomeScreen
 
 @ExperimentalMaterial3Api
 
@@ -28,7 +29,11 @@ fun BottomNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Profile.route){
             ProfileScreen()
         }
+        composable(route = BottomBarScreen.QR.route){
+            QRScreen()
+        }
     }
 }
+
 
 
