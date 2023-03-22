@@ -34,8 +34,9 @@ fun CalenderScreen(){
             personViewModel.getPersonActivites(1)
             ViewAllScreen(navController, personViewModel.activities)
         }
-        composable("viewOne/{id}") {
+        composable("viewOne/{activity}") {
             val id = it.arguments!!.getString("id")!!.toInt()
+            
             ViewOneScreen(id, navController)
         }
 

@@ -71,7 +71,7 @@ fun ViewAllScreen(
                             textAlign = TextAlign.Center)
 
                         Text(
-                            text = "${activity.startDate} - ${activity.stopDate}",
+                            text = "${activity.startDate}",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.White,
                             textAlign = TextAlign.Center

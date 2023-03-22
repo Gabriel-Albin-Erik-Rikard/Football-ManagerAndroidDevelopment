@@ -15,8 +15,8 @@ import androidx.navigation.NavHostController
 import com.example.football_manager.model.Activity
 
 @Composable
-fun ViewOneScreen(id: Int, navController: NavHostController) {
-    val singleActivity: Activity? = Activity(id = id, type = "")
+fun ViewOneScreen(id: Int, navController: NavHostController, activity:Activity) {
+    val singleActivity: Activity? = Activity(id = id, type = "Training")
 
     Column(
         modifier = Modifier
@@ -24,7 +24,7 @@ fun ViewOneScreen(id: Int, navController: NavHostController) {
             .fillMaxSize()
     ) {
         Text(
-            text = " ${singleActivity?.title}",
+            text = " ${singleActivity?.type}",
             style = MaterialTheme.typography.titleLarge
         )
     }
