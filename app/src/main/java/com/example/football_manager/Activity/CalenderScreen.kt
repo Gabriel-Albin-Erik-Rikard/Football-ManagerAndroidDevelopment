@@ -36,7 +36,7 @@ fun CalenderScreen(){
         }
         composable("viewOne/{activity}") {
             val id = it.arguments!!.getString("id")!!.toInt()
-            
+
             ViewOneScreen(id, navController)
         }
 
