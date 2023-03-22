@@ -26,120 +26,124 @@ import com.example.football_manager.viewmodel.PersonViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 //@Preview
 @Composable
-fun ProfileScreen(person : Person) {
+fun ProfileScreen(person : Human) {
     var test = 666
+
     //why is dis not the da working way?????
     //funkar att skicka in en person som inte är i viewModel.
     showProfile(human = person)
     //showCard(str1 = person.firstName, str2 =person.lastName )
-
-    Column(
-
-    ) {
+}/*
+    if(person is Person) {
         Column(
-            modifier = Modifier
-                .height(300.dp)
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
+
         ) {
-            Card(
+            Column(
                 modifier = Modifier
-                    .fillMaxSize(),
-                shape = RoundedCornerShape(8.dp),
-                elevation = 4.dp
+                    .height(300.dp)
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.SpaceEvenly,
             ) {
-                Column(
+                Card(
                     modifier = Modifier
                         .fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceEvenly,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    shape = RoundedCornerShape(8.dp),
+                    elevation = 4.dp
                 ) {
-                    // Profile picture
-                    Box(
+                    Column(
                         modifier = Modifier
-                            .size(120.dp)
-                            .padding(4.dp)
-                            .clip(RoundedCornerShape(50.dp))
-                            .border(
-                                2.dp,
-                                androidx.compose.ui.graphics.Color.Black,
-                                RoundedCornerShape(50.dp)
-                            ),
-                        contentAlignment = Alignment.Center
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // TODO: Add profile picture
-                        Text(
-                            text = "Profile picture",
-                            style = MaterialTheme.typography.titleLarge,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    // Name
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = person.firstName + " " + person.lastName,
-                            style = MaterialTheme.typography.titleLarge,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-                    // Update and logout buttons
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Button(
+                        // Profile picture
+                        Box(
                             modifier = Modifier
-                                .height(60.dp)
-                                .width(150.dp),
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(8.dp),
-                            elevation = ButtonDefaults.elevation(4.dp)
+                                .size(120.dp)
+                                .padding(4.dp)
+                                .clip(RoundedCornerShape(50.dp))
+                                .border(
+                                    2.dp,
+                                    androidx.compose.ui.graphics.Color.Black,
+                                    RoundedCornerShape(50.dp)
+                                ),
+                            contentAlignment = Alignment.Center
                         ) {
+                            // TODO: Add profile picture
                             Text(
-                                text = "Update",
+                                text = "Profile picture",
                                 style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center,
-                                color = androidx.compose.ui.graphics.Color.White
+                                textAlign = TextAlign.Center
                             )
                         }
-                        Button(
+                        // Name
+                        Box(
                             modifier = Modifier
-                                .height(50.dp)
-                                .width(150.dp),
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(8.dp),
-                            elevation = ButtonDefaults.elevation(4.dp)
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Logout",
+                                text = person.firstName + " " + person.lastName,
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Center,
-                                color = androidx.compose.ui.graphics.Color.White
                             )
+                        }
+                        // Update and logout buttons
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Button(
+                                modifier = Modifier
+                                    .height(60.dp)
+                                    .width(150.dp),
+                                onClick = { /*TODO*/ },
+                                shape = RoundedCornerShape(8.dp),
+                                elevation = ButtonDefaults.elevation(4.dp)
+                            ) {
+                                Text(
+                                    text = "Update",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    textAlign = TextAlign.Center,
+                                    color = androidx.compose.ui.graphics.Color.White
+                                )
+                            }
+                            Button(
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .width(150.dp),
+                                onClick = { /*TODO*/ },
+                                shape = RoundedCornerShape(8.dp),
+                                elevation = ButtonDefaults.elevation(4.dp)
+                            ) {
+                                Text(
+                                    text = "Logout",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    textAlign = TextAlign.Center,
+                                    color = androidx.compose.ui.graphics.Color.White
+                                )
+                            }
                         }
                     }
                 }
+                // Cards with user info
+                //is working like this, but I want it to work in another way
             }
-            // Cards with user info
-            //is working like this, but I want it to work in another way
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            showCard(str1 = "first Name", str2 = person.firstName)
-            showCard(str1 = "first Name", str2 = person.lastName)
-            showCard(str1 = "first Name", str2 = person.phoneNumber)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                showCard(str1 = "Email:", str2 = person.email)
+                showCard(str1 = "Phone number:", str2 = person.phoneNumber)
+                showCard(str1 = "Gender:", str2 = person.gender)
+            }
         }
     }
 }
+*/

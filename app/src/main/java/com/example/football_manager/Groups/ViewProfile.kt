@@ -58,8 +58,10 @@ fun showCard(str1: String, str2: String){
 
 //shows info about a human with nice profile picture att the top
 @Composable
-fun showProfile(human: Human){
-    showCard(str1 = "yeye", str2 ="coool" )
+fun showProfile(human: Human) {
+    if (human is Person)
+    showCard(str1 = "yeye", str2 = human.email)
+
     Column(
 
     ) {
@@ -109,11 +111,20 @@ fun showProfile(human: Human){
                             .height(50.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
+                        if (human is Person){
+                            Text(
+                                text = human.firstName,
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                        else {
+                            Text(
                                 text = human.name,
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Center,
-                        )
+                            )
+                        }
                     }
                     // Update and logout buttons, not used for now
                     /*Row(
@@ -174,7 +185,9 @@ fun showProfile(human: Human){
                 showCard(str1 = "Red cards:", str2 = human.redCards.toString())
             }
             else if (human is Person){
-                showCard(str1 = "First Name:", str2 =human.firstName )
+                showCard(str1 = "Email:", str2 = human.email)
+                showCard(str1 = "Phone number:", str2 = human.phoneNumber)
+                showCard(str1 = "Gender:", str2 = human.gender)
             }
             else{
                 showCard(str1 = "Error", str2 ="Cant handle input" )
