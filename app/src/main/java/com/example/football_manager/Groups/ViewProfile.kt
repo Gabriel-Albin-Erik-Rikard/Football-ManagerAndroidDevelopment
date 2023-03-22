@@ -59,6 +59,7 @@ fun showCard(str1: String, str2: String){
 //shows info about a human with nice profile picture att the top
 @Composable
 fun showProfile(human: Human){
+    showCard(str1 = "yeye", str2 ="coool" )
     Column(
 
     ) {
@@ -173,7 +174,7 @@ fun showProfile(human: Human){
                 showCard(str1 = "Red cards:", str2 = human.redCards.toString())
             }
             else if (human is Person){
-                showCard(str1 = "USE", str2 ="THIS :)" )
+                showCard(str1 = "First Name:", str2 =human.firstName )
             }
             else{
                 showCard(str1 = "Error", str2 ="Cant handle input" )

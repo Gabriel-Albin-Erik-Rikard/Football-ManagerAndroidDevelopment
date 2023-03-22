@@ -6,12 +6,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.football_manager.viewmodel.PersonViewModel
 
 @ExperimentalMaterial3Api
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
-
+    var personViewModel = PersonViewModel()
     NavHost(
         navController = navController,
         startDestination = BottomBarScreen.Home.route
@@ -26,7 +27,9 @@ fun BottomNavGraph(navController: NavHostController) {
             TeamsScreen()
         }
         composable(route = BottomBarScreen.Profile.route){
-            ProfileScreen()
+            personViewModel.getPerson(1)
+
+            ProfileScreen(personViewModel.person)
         }
     }
 }

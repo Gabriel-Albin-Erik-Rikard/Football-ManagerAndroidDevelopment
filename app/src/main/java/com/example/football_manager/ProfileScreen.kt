@@ -10,21 +10,28 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.football_manager.Groups.showCard
+import com.example.football_manager.Groups.showProfile
+import com.example.football_manager.model.Person
 import com.example.football_manager.viewmodel.PersonViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
+//@Preview
 @Composable
-fun ProfileScreen() {
-
-    var personViewModel = PersonViewModel()
-     personViewModel.getPerson(1)
+fun ProfileScreen(person : Person) {
+    var test = 666
+    //why is dis not the da working way?????
+    //funkar att skicka in en person som inte är i viewModel.
+    showProfile(human = person)
+    //showCard(str1 = person.firstName, str2 =person.lastName )
 
     Column(
 
@@ -76,7 +83,7 @@ fun ProfileScreen() {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = personViewModel.person.firstName + " " + personViewModel.person.lastName,
+                            text = person.firstName + " " + person.lastName,
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center,
                         )
@@ -122,6 +129,7 @@ fun ProfileScreen() {
                 }
             }
             // Cards with user info
+            //is working like this, but I want it to work in another way
         }
         Column(
             modifier = Modifier
@@ -129,54 +137,9 @@ fun ProfileScreen() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-            ) {
-                Card(
-                    modifier = Modifier
-                        .height(70.dp)
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
-                    elevation = 4.dp
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("email: ")
-                        Text(personViewModel.person.email)
-                    }
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-            ) {
-                Card(
-                    modifier = Modifier
-                        .height(70.dp)
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
-                    elevation = 4.dp
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Phone ")
-                        Text(personViewModel.person.phoneNumber)
-                    }
-                }
-            }
-            // TODO: Add more cards
+            showCard(str1 = "first Name", str2 = person.firstName)
+            showCard(str1 = "first Name", str2 = person.lastName)
+            showCard(str1 = "first Name", str2 = person.phoneNumber)
         }
     }
-
 }

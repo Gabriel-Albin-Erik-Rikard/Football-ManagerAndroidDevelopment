@@ -9,4 +9,5 @@ data class Person(
     val email: String,
     val gender: String,
     val phoneNumber: String,
+    val password: String,
 ):Human(firstName)

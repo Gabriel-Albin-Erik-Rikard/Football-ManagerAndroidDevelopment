@@ -11,7 +11,7 @@ import com.example.football_manager.network.FootballManagerAPIService
 import kotlinx.coroutines.launch
 
 class PersonViewModel: ViewModel() {
-    var person: Person by mutableStateOf(Person(0, "", "", "", "", ""))
+    var person: Person by mutableStateOf(Person(0, "", "", "", "", "",""))
     var teams: PersonTeams by mutableStateOf(PersonTeams(listOf(), listOf()))
     var errorCode: String by mutableStateOf("")
 
