@@ -17,56 +17,20 @@ val newsRepository = NewsRepository().apply {
         "Gabriel Adward"
     )
     addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
+        "Training cancelled",
+        "No Training Today because of ........",
         date = now.toString(),
         "Gabriel Adward"
     )
     addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
+        "Squad For Upcoming Games",
+        "Following players will start........",
         date = now.toString(),
         "Gabriel Adward"
     )
     addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
-        date = now.toString(),
-        "Gabriel Adward"
-    )
-    addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
-        date = now.toString(),
-        "Gabriel Adward"
-    )
-    addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
-        date = now.toString(),
-        "Gabriel Adward"
-    )
-    addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
-        date = now.toString(),
-        "Gabriel Adward"
-    )
-    addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
-        date = now.toString(),
-        "Gabriel Adward"
-    )
-    addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
-        date = now.toString(),
-        "Gabriel Adward"
-    )
-    addNews(
-        "Welcome to Ekhagen",
-        "In ekhagen you can find........",
+        "Game Cancelled",
+        "Yesterdays game was cancelled........",
         date = now.toString(),
         "Gabriel Adward"
     )
