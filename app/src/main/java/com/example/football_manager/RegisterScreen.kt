@@ -22,7 +22,7 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun RegisterScreen(navController: NavHostController) {
-    // State for the username/email and password text fields. Makes sure the values entered remain even if, for example, the user tilts their phone.
+    // State for the username/email and password text fields. CHECKED: Does not cahnge if user tilts phone.
     val emailState = remember { mutableStateOf(TextFieldValue()) }
     val confirmEmailState = remember { mutableStateOf(TextFieldValue()) }
 
@@ -86,7 +86,7 @@ fun RegisterScreen(navController: NavHostController) {
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
-        // Confirm Register
+        // Send register info to database TODO Handle how to send the data.
         Button(
             onClick = {
             },

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+//Viewmodel for login. Courtesy of Eric Ampire
 class LoginScreenViewModel : ViewModel() {
 
   val loadingState = MutableStateFlow(LoadingState.IDLE)

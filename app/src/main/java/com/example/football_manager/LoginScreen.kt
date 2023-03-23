@@ -1,15 +1,14 @@
 package com.example.football_manager
 
 import android.content.Intent
-import android.os.Bundle
+import android.database.SQLException
 import android.util.Log
-import android.view.Gravity
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +16,7 @@ import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -32,7 +32,6 @@ import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
 import com.example.football_manager.Activity.RegisterScreenActivity
 import com.example.football_manager.util.userData
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -42,7 +41,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-
+import java.sql.DriverManager
 
 
 private const val TAG = "SignInWithGoogle"
@@ -60,197 +59,241 @@ fun LoginScreen() {
     mAuth = FirebaseAuth.getInstance()
     val viewModel: LoginScreenViewModel = viewModel()
 
-    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-        try {
-            val account = task.getResult(ApiException::class.java)!!
-            val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
-            viewModel.signWithCredential(credential)
+    //Login with google.
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+                viewModel.signWithCredential(credential)
 
-            Firebase.auth.signInWithCredential(credential).addOnCompleteListener {
-                    task ->
-                if(task.isSuccessful){
-                    val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
-                    val gmailId=firebaseUser.uid
+                Firebase.auth.signInWithCredential(credential).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
+                        val gmailId = firebaseUser.uid
 
-                    Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
-                    Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
 
-                    userLoggedIn = true
+                        userLoggedIn = true
 
-                }else {
-                    Toast.makeText(context, "Sign in Failed", Toast.LENGTH_LONG).show()
-                    // UpdateUI(null)
+                    } else {
+                        Toast.makeText(context, "Sign in Failed", Toast.LENGTH_LONG).show()
+                        // UpdateUI(null)
+                    }
+                }
+
+
+            } catch (e: ApiException) {
+                Log.w("TAG", "Google sign in failed", e)
+            }
+        }
+
+
+    //If user is not logged in, open Login screen.
+    if (!userLoggedIn) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_footman_launcher_playstore),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 1.dp)
+                    .clip(RoundedCornerShape(16.dp))
+            )
+            Surface(
+                modifier = Modifier.fillMaxWidth().padding(top = 200.dp),
+                elevation = 8.dp,
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        // Username/email text field
+                        OutlinedTextField(
+                            value = emailState.value,
+                            onValueChange = { emailState.value = it },
+                            label = { Text("Username/Email") },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Email,
+                                imeAction = ImeAction.Next
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+
+                        // Password text field
+                        OutlinedTextField(
+                            value = passwordState.value,
+                            onValueChange = { passwordState.value = it },
+                            label = { Text("Password") },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done
+                            ),
+                            visualTransformation = PasswordVisualTransformation(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+
+                        // Login button
+                        Button(
+                            onClick = {
+                                val email = emailState.value.text
+                                val password = passwordState.value.text
+                                val result = sendLoginInfoToDatabase(email, password)
+
+                                if (result != null) {
+                                    userLoggedIn = true;
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        ) {
+                            Text("Login")
+                        }
+
+                        // Register button that navigates to RegisterScreen
+                        TextButton(
+                            onClick = {
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        RegisterScreenActivity::class.java
+                                    )
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        ) {
+                            Text("Register")
+                        }
+
+
+                        val context = LocalContext.current
+                        val token = stringResource(R.string.web_client_id)
+                        OutlinedButton(
+                            border = ButtonDefaults.outlinedBorder.copy(width = 1.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            onClick = {
+                                val gso =
+                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .requestIdToken(token)
+                                        .requestEmail()
+                                        .build()
+                                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                                launcher.launch(googleSignInClient.signInIntent)
+                            },
+                            content = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    content = {
+                                        Icon(
+                                            tint = Color.Unspecified,
+                                            painter = painterResource(id = R.drawable.ic_google_logo),
+                                            contentDescription = null,
+                                        )
+                                        Text(
+                                            style = MaterialTheme.typography.button,
+                                            color = MaterialTheme.colors.onSurface,
+                                            text = "Google"
+                                        )
+                                        Icon(
+                                            tint = Color.Transparent,
+                                            imageVector = Icons.Default.MailOutline,
+                                            contentDescription = null,
+                                        )
+                                    }
+                                )
+                            }
+                        )
+
+
+                        // Skip login button. TODO USE ONLY FOR TESTING!
+                        TextButton(
+                            onClick = {
+                                userLoggedIn = true
+
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        ) {
+                            Text("Skip Login")
+                        }
+
+                    }
                 }
             }
-
-
-
-
-        } catch (e: ApiException) {
-            Log.w("TAG", "Google sign in failed", e)
         }
+    }
+        else
+        MainScreen()
     }
 
 
 
 
-    if (!userLoggedIn) {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = 8.dp,
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    // Username/email text field
-                    OutlinedTextField(
-                        value = emailState.value,
-                        onValueChange = { emailState.value = it },
-                        label = { Text("Username/Email") },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Email,
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-
-                    // Password text field
-                    OutlinedTextField(
-                        value = passwordState.value,
-                        onValueChange = { passwordState.value = it },
-                        label = { Text("Password") },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Done
-                        ),
-                        visualTransformation = PasswordVisualTransformation(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-
-                    // Login button
-                    Button(
-                        onClick = {
-                            val email = emailState.value.text
-                            val password = passwordState.value.text
-                            val result = sendLoginInfoToDatabase(email, password)
-
-                            if (result != null) {
-                                val (userId, isCoach) = result
-                                userLoggedIn = true;
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        Text("Login")
-                    }
-
-                    // Register button that navigates to RegisterScreen
-                    TextButton(
-                        onClick = {
-                            context.startActivity(Intent(context, RegisterScreenActivity::class.java))
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        Text("Register")
-                    }
-
-
-                    val context = LocalContext.current
-                    val token = stringResource(R.string.web_client_id)
-                    OutlinedButton(
-                        border = ButtonDefaults.outlinedBorder.copy(width = 1.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        onClick = {
-                            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                .requestIdToken(token)
-                                .requestEmail()
-                                .build()
-                            val googleSignInClient = GoogleSignIn.getClient(context, gso)
-                            launcher.launch(googleSignInClient.signInIntent)
-                        },
-                        content = {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                                content = {
-                                    Icon(
-                                        tint = Color.Unspecified,
-                                        painter = painterResource(id = R.drawable.ic_google_logo),
-                                        contentDescription = null,
-                                    )
-                                    Text(
-                                        style = MaterialTheme.typography.button,
-                                        color = MaterialTheme.colors.onSurface,
-                                        text = "Google"
-                                    )
-                                    Icon(
-                                        tint = Color.Transparent,
-                                        imageVector = Icons.Default.MailOutline,
-                                        contentDescription = null,
-                                    )
-                                }
-                            )
-                        }
-                    )
-
-
-                    // Skip login button. TODO USE ONLY FOR TESTING!
-                    TextButton(
-                        onClick = {
-                            userLoggedIn = true
-
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                    ) {
-                        Text("Skip Login")
-                    }
-
-                }
-            }
-        }
-    } else
-        MainScreen()
-}
-
-
-// Check if user is logged in. TODO
-fun isUserLoggedIn(): Boolean {
-    return false
-}
-
 fun sendLoginInfoToDatabase(email: String, password: String): Pair<Int, Boolean>? {
     // Send email and password to the database
-    // ...
+    val user = userData()
+
+    try {
+        // Establish a connection to the database running in Docker
+        val conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "password")
+
+        // Prep to insert (Search?) the email and password into database.
+        val statement = conn.prepareStatement("INSERT INTO users (email, password) VALUES (?, ?)")
+        statement.setString(1, email)
+        statement.setString(2, password)
+
+        // Execute
+        val rowsAffected = statement.executeUpdate()
+
+        // Retrieve the user's information from the database if there is a match.
+        if (rowsAffected == 1) {
+
+            val selectStatement = conn.prepareStatement("SELECT id, is_coach FROM users WHERE email = ?")
+            selectStatement.setString(1, email)
+
+            val resultSet = selectStatement.executeQuery()
+
+            if (resultSet.next()) {
+                user.setUserId(resultSet.getInt("id"))
+                user.setIsCoach(resultSet.getBoolean("is_coach"))
+            }
+            //TODO do we need to handle anything if user does not exist?
+        }
+
+        // Close connection.
+        conn.close()
+    } catch (e: SQLException) {
+        e.printStackTrace()
+    }
 
     // Assign the values retrieved from database.
-    val user = userData()
-    user.setUserId(123)
-    user.setIsCoach(true)
     val userId = user.getUserId()
     val isCoach = user.getIsCoach()
-    return Pair(userId, isCoach)
+    return if (userId != null && isCoach != null) Pair(userId, isCoach) else null
 }
 
 
