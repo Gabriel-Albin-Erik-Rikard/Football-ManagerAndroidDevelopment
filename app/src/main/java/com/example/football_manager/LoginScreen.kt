@@ -43,7 +43,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-private const val RC_SIGN_IN = 123 //Sign in value
+
 
 private const val TAG = "SignInWithGoogle"
 
