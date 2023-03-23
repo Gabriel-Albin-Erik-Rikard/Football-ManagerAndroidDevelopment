@@ -1,10 +1,12 @@
 package com.example.football_manager
 
 import android.content.Intent
-import android.database.SQLException
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -28,12 +30,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
-import com.example.football_manager.Activity.RegisterScreenActivity
-import com.example.football_manager.network.FootballManagerAPIService
-import com.example.football_manager.util.userData
-import com.example.football_manager.viewmodel.LoginViewModel
-import com.example.football_manager.viewmodel.PersonViewModel
+import com.example.football_manager.ui.theme.FootballmanagerTheme
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -44,7 +43,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.sql.DriverManager
+
 
 
 private const val TAG = "SignInWithGoogle"
@@ -60,6 +59,7 @@ fun LoginScreen() {
     val passwordState = remember { mutableStateOf(TextFieldValue()) }
     val context = LocalContext.current
     mAuth = FirebaseAuth.getInstance()
+    val navController = rememberNavController()
     val viewModel: LoginScreenViewModel = viewModel()
 
     //If user is not logged in, open Login screen.
@@ -124,7 +124,7 @@ fun LoginScreen() {
                             onClick = {
                                 val email = emailState.value.text
                                 val password = passwordState.value.text
-                                viewModel.login(email, password) //TODO Backend needs a login handler.
+                              //  viewModel.login(email, password) //TODO Backend needs a login handler.
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -134,7 +134,7 @@ fun LoginScreen() {
                         }
 
                         // Register button that navigates to RegisterScreen
-                        TextButton(
+                        Button(
                             onClick = {
                                 context.startActivity(
                                     Intent(
@@ -254,4 +254,3 @@ fun PreviewLoginScreen() {
     LoginScreen()
 
 }
-

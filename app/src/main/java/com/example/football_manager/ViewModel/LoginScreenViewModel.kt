@@ -49,11 +49,11 @@ class LoginViewModel : ViewModel() {
     viewModelScope.launch {
       try {
         // Make a POST request to the login endpoint with email and password
-        val response = FootballManagerAPIService.getInstance().login(LoginRequest(email, password)) //TODO Need backend to get the data
-
+       //  val response = FootballManagerAPIService.getInstance().login(LoginRequest(email, password)) //TODO Need backend to get data
         // Retrieve the ID from the response
-        val id = response.id
-        val isCoach = response.isCoach
+
+      //  val id = response.id
+      //  val isCoach = response.isCoach
 
         // Set the userLoggedIn flag to true
         userLoggedIn.value = true
