@@ -38,7 +38,7 @@ fun RegisterScreen(navController: NavHostController) {
     fun register(email: String, password: String) {
         var errorCode: String by mutableStateOf("")
         try {
-            // Make a POST request to the login endpoint with email and password
+            // Send register request to database.
             //FootballManagerAPIService.getInstance().register(RegisterRequest(email, password)) //TODO Needs to be set up on backend.
             registerSuccessfulState.value = true
         } catch (e: Exception) {
