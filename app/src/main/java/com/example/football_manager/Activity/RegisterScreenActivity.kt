@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
+import com.example.football_manager.R
 import com.example.football_manager.ui.theme.FootballmanagerTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

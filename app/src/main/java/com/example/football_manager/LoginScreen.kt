@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
 import com.example.football_manager.Activity.RegisterScreenActivity
+import com.example.football_manager.util.userData
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -243,10 +244,12 @@ fun sendLoginInfoToDatabase(email: String, password: String): Pair<Int, Boolean>
     // Send email and password to the database
     // ...
 
-    // Assign the retrieved values.
-    val userId = 123    //TODO
-    val isCoach = true  //TODO
-
+    // Assign the values retrieved from database.
+    val user = userData()
+    user.setUserId(123)
+    user.setIsCoach(true)
+    val userId = user.getUserId()
+    val isCoach = user.getIsCoach()
     return Pair(userId, isCoach)
 }
 
