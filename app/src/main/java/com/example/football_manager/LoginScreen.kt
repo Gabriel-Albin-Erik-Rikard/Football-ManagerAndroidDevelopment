@@ -43,7 +43,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-val meepmorp = 1;
 
 private const val TAG = "SignInWithGoogle"
 
