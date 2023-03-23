@@ -30,7 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
 import com.example.football_manager.Activity.RegisterScreenActivity
+import com.example.football_manager.network.FootballManagerAPIService
 import com.example.football_manager.util.userData
+import com.example.football_manager.viewmodel.LoginViewModel
+import com.example.football_manager.viewmodel.PersonViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -58,38 +61,6 @@ fun LoginScreen() {
     val context = LocalContext.current
     mAuth = FirebaseAuth.getInstance()
     val viewModel: LoginScreenViewModel = viewModel()
-
-    //Login with google.
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
-                viewModel.signWithCredential(credential)
-
-                Firebase.auth.signInWithCredential(credential).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
-                        val gmailId = firebaseUser.uid
-
-                        Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
-                        Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
-
-                        userLoggedIn = true
-
-                    } else {
-                        Toast.makeText(context, "Sign in Failed", Toast.LENGTH_LONG).show()
-                        // UpdateUI(null)
-                    }
-                }
-
-
-            } catch (e: ApiException) {
-                Log.w("TAG", "Google sign in failed", e)
-            }
-        }
-
 
     //If user is not logged in, open Login screen.
     if (!userLoggedIn) {
@@ -153,11 +124,7 @@ fun LoginScreen() {
                             onClick = {
                                 val email = emailState.value.text
                                 val password = passwordState.value.text
-                                val result = sendLoginInfoToDatabase(email, password)
-
-                                if (result != null) {
-                                    userLoggedIn = true;
-                                }
+                                viewModel.login(email, password) //TODO Backend needs a login handler.
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -182,6 +149,37 @@ fun LoginScreen() {
                         ) {
                             Text("Register")
                         }
+
+                        //Login with google.
+                        val launcher =
+                            rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+                                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                                try {
+                                    val account = task.getResult(ApiException::class.java)!!
+                                    val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+                                    viewModel.signWithCredential(credential)
+
+                                    Firebase.auth.signInWithCredential(credential).addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
+                                            val gmailId = firebaseUser.uid
+
+                                            Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
+
+                                            userLoggedIn = true
+
+                                        } else {
+                                            Toast.makeText(context, "Sign in Failed", Toast.LENGTH_LONG).show()
+                                            // UpdateUI(null)
+                                        }
+                                    }
+
+
+                                } catch (e: ApiException) {
+                                    Log.w("TAG", "Google sign in failed", e)
+                                }
+                            }
 
 
                         val context = LocalContext.current
@@ -249,54 +247,6 @@ fun LoginScreen() {
         else
         MainScreen()
     }
-
-
-
-
-fun sendLoginInfoToDatabase(email: String, password: String): Pair<Int, Boolean>? {
-    // Send email and password to the database
-    val user = userData()
-
-    try {
-        // Establish a connection to the database running in Docker
-        val conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "password")
-
-        // Prep to insert (Search?) the email and password into database.
-        val statement = conn.prepareStatement("INSERT INTO users (email, password) VALUES (?, ?)")
-        statement.setString(1, email)
-        statement.setString(2, password)
-
-        // Execute
-        val rowsAffected = statement.executeUpdate()
-
-        // Retrieve the user's information from the database if there is a match.
-        if (rowsAffected == 1) {
-
-            val selectStatement = conn.prepareStatement("SELECT id, is_coach FROM users WHERE email = ?")
-            selectStatement.setString(1, email)
-
-            val resultSet = selectStatement.executeQuery()
-
-            if (resultSet.next()) {
-                user.setUserId(resultSet.getInt("id"))
-                user.setIsCoach(resultSet.getBoolean("is_coach"))
-            }
-            //TODO do we need to handle anything if user does not exist?
-        }
-
-        // Close connection.
-        conn.close()
-    } catch (e: SQLException) {
-        e.printStackTrace()
-    }
-
-    // Assign the values retrieved from database.
-    val userId = user.getUserId()
-    val isCoach = user.getIsCoach()
-    return if (userId != null && isCoach != null) Pair(userId, isCoach) else null
-}
-
-
 
 @Preview(showBackground = true)
 @Composable
