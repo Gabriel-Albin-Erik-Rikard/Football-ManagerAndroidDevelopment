@@ -88,20 +88,20 @@ class PlayerGroupConnector {
 }
 
 val groupRepository = GroupRepository().apply {
-    addGroup("SexySwingers")
-    addGroup("FinaFynd")
-    addGroup("SexySwingers")
-    addGroup("FinaFynd")
-    addGroup("SexySwingers")
-    addGroup("FinaFynd")
-    addGroup("SexySwingers")
-    addGroup("FinaFynd")
+    addGroup("Mullsjö IF")
+    addGroup("Ekhagens IF")
+
 
     getGroupById(0).addStaff("Herman")
     getGroupById(0).addStaff("Börje")
     getGroupById(0).addPlayer("Dala")
     getGroupById(0).addPlayer("Jöken")
     getGroupById(0).addPlayer("Kroken")
+    getGroupById(1).addStaff("Gabriel")
+    getGroupById(1).addStaff("Rikard")
+    getGroupById(1).addPlayer("Erik")
+    getGroupById(1).addPlayer("Albin")
+    getGroupById(1).addPlayer("Peter")
 
     getGroupById(0).players[0].goals = 2
 }
