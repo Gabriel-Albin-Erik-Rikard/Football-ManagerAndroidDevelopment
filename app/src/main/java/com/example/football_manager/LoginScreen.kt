@@ -47,7 +47,8 @@ private const val RC_SIGN_IN = 123 //Sign in value
 private const val REQ_ONE_TAP = 456
 private const val TAG = "SignInWithGoogle"
 
-
+lateinit var oneTapClient: SignInClient
+lateinit var signInRequest: BeginSignInRequest
 private var mAuth: FirebaseAuth? = null
 
 @Composable
