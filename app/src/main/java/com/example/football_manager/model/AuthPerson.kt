@@ -6,5 +6,6 @@ data class AuthPerson(
     val lastName: String,
     val firebaseId: String? = null,
     val isStaff: Boolean? = false,
-    val JWT: String? = null
+    val JWT: String? = null,
+    val loggedIn: Boolean? = false
 )

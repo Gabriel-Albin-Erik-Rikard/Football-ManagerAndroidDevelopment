@@ -46,6 +46,30 @@ class LoginViewModel : ViewModel() {
   var userLoggedIn = mutableStateOf(false)
   var errorCode: String by mutableStateOf("")
 
+  fun loginWithEmailAndPassword(email: String, password: String) {
+    viewModelScope.launch {
+      try {
+        // Make a POST request to the login endpoint with email and password
+        val response = FootballManagerAPIService.getInstance().loginWithEmailAndPassword(email, password)
+        // Retrieve the ID from the response
+
+        val id = response.id
+        val isCoach = response.isStaff
+        val JWT = response.JWT
+
+        println("Person ID")
+        println(id)
+
+        // Set the userLoggedIn flag to true
+        if(response.loggedIn == true) {
+          userLoggedIn.value = true
+        }
+      } catch (e: Exception) {
+        errorCode = e.message.toString()
+      }
+    }
+  }
+
   fun login(email: String, password: String) {
     viewModelScope.launch {
       try {

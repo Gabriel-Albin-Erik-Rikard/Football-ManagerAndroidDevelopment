@@ -25,8 +25,8 @@ interface FootballManagerAPIService {
 
     // Login with email and password
     // with query parameters email and password
-    @GET("/auth/login?")
-    suspend fun login(@Query("email") email: String, @Query("password") password: String): AuthPerson
+    @GET("/auth/login")
+    suspend fun loginWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String): AuthPerson
 
 
     companion object {

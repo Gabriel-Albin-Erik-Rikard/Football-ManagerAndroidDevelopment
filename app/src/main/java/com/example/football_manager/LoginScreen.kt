@@ -26,8 +26,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
+import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginViewModel
 import com.example.football_manager.util.RegisterScreenActivity
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -50,12 +52,14 @@ private var mAuth: FirebaseAuth? = null
 
 @Composable
 fun LoginScreen() {
-    var userLoggedIn by remember { mutableStateOf(false) }
+    //var userLoggedIn by remember { mutableStateOf(false) }
     val emailState = remember { mutableStateOf(TextFieldValue()) }
     val passwordState = remember { mutableStateOf(TextFieldValue()) }
     val context = LocalContext.current
     mAuth = FirebaseAuth.getInstance()
     val viewModel: LoginScreenViewModel = viewModel()
+    val loginViewModel: LoginViewModel = viewModel()
+    val userLoggedIn = loginViewModel.userLoggedIn.value
 
     //If user is not logged in, open Login screen.
     if (!userLoggedIn) {
@@ -72,7 +76,9 @@ fun LoginScreen() {
                     .clip(RoundedCornerShape(16.dp))
             )
             Surface(
-                modifier = Modifier.fillMaxWidth().padding(top = 200.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 200.dp),
                 elevation = 8.dp,
             ) {
                 Column(
@@ -119,7 +125,25 @@ fun LoginScreen() {
                             onClick = {
                                 val email = emailState.value.text
                                 val password = passwordState.value.text
-                              //  viewModel.login(email, password) //TODO Backend needs a login handler.
+                                loginViewModel.loginWithEmailAndPassword(email, password)
+
+                                // If login is successful, navigate to HomeScreen
+
+                                if (loginViewModel.userLoggedIn.value) {
+                                    context.startActivity(
+                                        Intent(
+                                            context,
+                                            MainActivity()::class.java
+                                        )
+                                    )
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Login failed. Please try again.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -162,7 +186,7 @@ fun LoginScreen() {
                                             Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
                                             Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
 
-                                            userLoggedIn = true
+                                            //userLoggedIn = true
 
                                         } else {
                                             Toast.makeText(context, "Sign in Failed", Toast.LENGTH_LONG).show()
@@ -224,7 +248,7 @@ fun LoginScreen() {
                         // Skip login button. TODO USE ONLY FOR TESTING! 
                         TextButton(
                             onClick = {
-                                userLoggedIn = true
+                                //userLoggedIn = true
 
                             },
                             modifier = Modifier
