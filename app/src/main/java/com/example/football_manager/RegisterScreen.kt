@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
+import com.example.football_manager.network.FootballManagerAPIService
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -141,7 +142,7 @@ fun RegisterScreen() {
             var errorCode: String by mutableStateOf("")
             try {
                 // Send register request to database.
-                //FootballManagerAPIService.getInstance().register(RegisterRequest(email, password)) //TODO Needs to be set up on backend.
+                FootballManagerAPIService.getInstance().register(RegisterRequest(email, password)) //TODO Needs to be set up on backend.
                 registerSuccessfulState.value = true
             } catch (e: Exception) {
                 errorCode = e.message.toString()
@@ -179,7 +180,7 @@ fun RegisterScreen() {
                         if (task.isSuccessful) {
                             val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
                             val gmailId = firebaseUser.uid
-
+                            FootballManagerAPIService.getInstance().gmailRegister(RegisterRequest(gmailId)) //TODO Needs to be set up on backend.
                             Toast.makeText(
                                 context,
                                 "User Registered Successfully",

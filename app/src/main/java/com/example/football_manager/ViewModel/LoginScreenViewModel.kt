@@ -52,7 +52,8 @@ class LoginViewModel : ViewModel() {
     viewModelScope.launch {
       try {
         // Make a POST request to the login endpoint with email and password
-        val response = FootballManagerAPIService.getInstance().loginWithEmailAndPassword(email, password)
+        val response =
+          FootballManagerAPIService.getInstance().loginWithEmailAndPassword(email, password)
         // Retrieve the ID from the response
 
         val id = response.id
@@ -63,7 +64,7 @@ class LoginViewModel : ViewModel() {
         println(id)
 
         // Set the userLoggedIn flag to true
-        if(response.loggedIn == true) {
+        if (response.loggedIn == true) {
           // Save the ID to shared preferences
 
           println("Saving id: $id to shared preferences")
@@ -78,7 +79,9 @@ class LoginViewModel : ViewModel() {
       }
     }
   }
+}
 
+/* //Old login code.
   fun login(email: String, password: String) {
     viewModelScope.launch {
       try {
@@ -97,3 +100,5 @@ class LoginViewModel : ViewModel() {
     }
   }
 }
+
+ */
