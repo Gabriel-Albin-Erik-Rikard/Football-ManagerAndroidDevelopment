@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface FootballManagerAPIService {
     @GET("person/{id}/news")
@@ -20,6 +21,12 @@ interface FootballManagerAPIService {
     // Gets all teams for a person
     @GET("team/{id}")
     suspend fun getPersonTeams(@Path("id") id: Int): PersonTeams
+
+    // Login with email and password
+    // with query parameters email and password
+    @GET("/auth/login?")
+    suspend fun login(@Query("email") email: String, @Query("password") password: String): AuthPerson
+
 
     companion object {
         var apiService: FootballManagerAPIService? = null
