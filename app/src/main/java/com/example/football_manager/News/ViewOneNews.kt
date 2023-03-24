@@ -9,7 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.football_manager.model.News
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,8 +19,9 @@ import java.util.*
 
 
 @Composable
-fun ViewOneNewsScreen(id: Int, navController: NavHostController) {
-    val singleNews = newsRepository.getNewsById(id)
+fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
+
+
 
     Column(
         modifier = Modifier
@@ -63,7 +66,7 @@ fun ViewOneNewsScreen(id: Int, navController: NavHostController) {
             modifier = Modifier.fillMaxWidth()
         ) {
             androidx.compose.material3.Button(
-                onClick = { navController.navigate("viewOneEditedNews/${id}") },
+                onClick = { navController.navigate("viewOneEditedNews/${singleNews.id}") },
                 modifier = Modifier.padding(end = 8.dp)
             ) {
                 androidx.compose.material3.Text(text = "Edit News")
@@ -87,7 +90,7 @@ fun ViewOneNewsScreen(id: Int, navController: NavHostController) {
                     confirmButton = {
                         androidx.compose.material3.Button(onClick = {
                             openDialog.value = false
-                            newsRepository.deleteNewsById(id)
+                            newsRepository.deleteNewsById(singleNews.id)
                             navController.popBackStack()
                         }) {
                             androidx.compose.material3.Text(text = "Yes!")
