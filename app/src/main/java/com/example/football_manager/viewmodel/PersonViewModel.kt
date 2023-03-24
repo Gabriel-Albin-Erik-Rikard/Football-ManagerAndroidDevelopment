@@ -22,6 +22,7 @@ class PersonViewModel: ViewModel() {
             try {
                 val response = apiService.getPerson(id)
                 person = response
+                println(response)
             } catch (e: Exception) {
                 errorCode = e.message.toString()
             }

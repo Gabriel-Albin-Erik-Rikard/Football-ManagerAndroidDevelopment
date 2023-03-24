@@ -107,4 +107,7 @@ dependencies {
     //MLkit Barcode Scanning
     implementation "com.google.mlkit:barcode-scanning:17.0.3"
 
+    implementation "androidx.preference:preference-ktx:1.2.0"
+
+
 }
