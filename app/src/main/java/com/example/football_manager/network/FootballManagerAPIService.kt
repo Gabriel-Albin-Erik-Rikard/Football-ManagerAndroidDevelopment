@@ -1,5 +1,6 @@
 package com.example.football_manager.network
 
+import com.example.football_manager.model.AuthPerson
 import com.example.football_manager.model.News
 import com.example.football_manager.model.Person
 import com.example.football_manager.model.PersonTeams
