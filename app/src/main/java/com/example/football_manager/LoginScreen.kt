@@ -1,5 +1,6 @@
 package com.example.football_manager
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -26,7 +27,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginViewModel
@@ -60,6 +60,9 @@ fun LoginScreen() {
     val viewModel: LoginScreenViewModel = viewModel()
     val loginViewModel: LoginViewModel = viewModel()
     val userLoggedIn = loginViewModel.userLoggedIn.value
+
+    val sharedPre = context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+    val editor = sharedPre.edit()
 
     //If user is not logged in, open Login screen.
     if (!userLoggedIn) {
@@ -125,7 +128,7 @@ fun LoginScreen() {
                             onClick = {
                                 val email = emailState.value.text
                                 val password = passwordState.value.text
-                                loginViewModel.loginWithEmailAndPassword(email, password)
+                                loginViewModel.loginWithEmailAndPassword(email, password, sharedPre)
 
                                 // If login is successful, navigate to HomeScreen
 

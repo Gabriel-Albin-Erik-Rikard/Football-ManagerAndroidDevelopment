@@ -7,6 +7,6 @@ data class Person(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val gender: String,
-    val phoneNumber: String,
+    val gender: String ?= null,
+    val phoneNumber: String ?= null,
 ):Human(firstName)

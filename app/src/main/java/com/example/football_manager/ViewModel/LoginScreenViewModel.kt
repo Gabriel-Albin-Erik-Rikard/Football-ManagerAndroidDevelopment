@@ -1,14 +1,16 @@
 package com.ericampire.mobile.firebaseauthcompose.ui.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericampire.mobile.firebaseauthcompose.util.LoadingState
+import com.example.football_manager.MainActivity
 import com.example.football_manager.network.FootballManagerAPIService
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,7 +48,7 @@ class LoginViewModel : ViewModel() {
   var userLoggedIn = mutableStateOf(false)
   var errorCode: String by mutableStateOf("")
 
-  fun loginWithEmailAndPassword(email: String, password: String) {
+  fun loginWithEmailAndPassword(email: String, password: String, sharedPre: SharedPreferences) {
     viewModelScope.launch {
       try {
         // Make a POST request to the login endpoint with email and password
@@ -62,7 +64,14 @@ class LoginViewModel : ViewModel() {
 
         // Set the userLoggedIn flag to true
         if(response.loggedIn == true) {
+          // Save the ID to shared preferences
+
+          println("Saving id: $id to shared preferences")
+
+          sharedPre.edit().putInt("id", id).apply()
+
           userLoggedIn.value = true
+
         }
       } catch (e: Exception) {
         errorCode = e.message.toString()

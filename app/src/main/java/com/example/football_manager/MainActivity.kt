@@ -1,5 +1,6 @@
 package com.example.football_manager
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,10 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.football_manager.ui.theme.FootballmanagerTheme
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Create shared preferences
+        context = applicationContext
+
+        val sharedPref = context?.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        val editor = sharedPref?.edit()
+
+        if (sharedPref != null) {
+            sharedPref.edit().putInt("id", 1).apply()
+        }
+
         setContent {
             FootballmanagerTheme {
                 // A surface container using the 'background' color from the theme
@@ -30,6 +40,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+    companion object {
+        var context: Context? = null
+    }
 }
 
 @Composable
