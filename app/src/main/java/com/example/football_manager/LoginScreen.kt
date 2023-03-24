@@ -1,15 +1,13 @@
 package com.example.football_manager
 
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +15,7 @@ import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,10 +27,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
+import com.example.football_manager.util.RegisterScreenActivity
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -43,61 +41,38 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-private const val RC_SIGN_IN = 123 //Sign in value
-private const val REQ_ONE_TAP = 456
+
 private const val TAG = "SignInWithGoogle"
 
 lateinit var oneTapClient: SignInClient
 lateinit var signInRequest: BeginSignInRequest
 private var mAuth: FirebaseAuth? = null
 
-    @Composable
-    fun LoginScreen() {
-        var userLoggedIn by remember { mutableStateOf(false) }
-        val emailState = remember { mutableStateOf(TextFieldValue()) }
-        val passwordState = remember { mutableStateOf(TextFieldValue()) }
-        val context = LocalContext.current
-        mAuth = FirebaseAuth.getInstance()
-        val viewModel: LoginScreenViewModel = viewModel()
+@Composable
+fun LoginScreen() {
+    var userLoggedIn by remember { mutableStateOf(false) }
+    val emailState = remember { mutableStateOf(TextFieldValue()) }
+    val passwordState = remember { mutableStateOf(TextFieldValue()) }
+    val context = LocalContext.current
+    mAuth = FirebaseAuth.getInstance()
+    val viewModel: LoginScreenViewModel = viewModel()
 
-        val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
-                viewModel.signWithCredential(credential)
-
-                Firebase.auth.signInWithCredential(credential).addOnCompleteListener {
-                    task ->
-                    if(task.isSuccessful){
-                        val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
-                        val gmailId=firebaseUser.uid
-
-                        Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
-                        Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
-
-                        userLoggedIn = true
-
-                    }else {
-                        Toast.makeText(context, "Sign in Failed", Toast.LENGTH_LONG).show()
-                        // UpdateUI(null)
-                    }
-                }
-
-
-
-
-            } catch (e: ApiException) {
-                Log.w("TAG", "Google sign in failed", e)
-            }
-        }
-
-
-
-
-        if (!userLoggedIn) {
+    //If user is not logged in, open Login screen.
+    if (!userLoggedIn) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_footman_launcher_playstore),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 1.dp)
+                    .clip(RoundedCornerShape(16.dp))
+            )
             Surface(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(top = 200.dp),
                 elevation = 8.dp,
             ) {
                 Column(
@@ -142,7 +117,9 @@ private var mAuth: FirebaseAuth? = null
                         // Login button
                         Button(
                             onClick = {
-                                // Handle login logic here
+                                val email = emailState.value.text
+                                val password = passwordState.value.text
+                              //  viewModel.login(email, password) //TODO Backend needs a login handler.
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -152,10 +129,15 @@ private var mAuth: FirebaseAuth? = null
                         }
 
                         // Register button that navigates to RegisterScreen
-                        TextButton(
+                        Button(
                             onClick = {
-                                context.startActivity(Intent(context, RegisterScreenActivity::class.java))
-                                      },
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        RegisterScreenActivity::class.java
+                                    )
+                                )
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -163,31 +145,36 @@ private var mAuth: FirebaseAuth? = null
                             Text("Register")
                         }
 
+                        //Login with google.
+                        val launcher =
+                            rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+                                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                                try {
+                                    val account = task.getResult(ApiException::class.java)!!
+                                    val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+                                    viewModel.signWithCredential(credential)
 
-//                        Button(
-//                            onClick = {
-//                                oneTapClient.beginSignIn(signInRequest)
-//                                    .addOnSuccessListener(this) { result ->
-//                                        try {
-//                                            startIntentSenderForResult(
-//                                                result.pendingIntent.intentSender, REQ_ONE_TAP,
-//                                                null, 0, 0, 0, null)
-//                                        } catch (e: IntentSender.SendIntentException) {
-//                                            Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
-//                                        }
-//                                    }
-//                                    .addOnFailureListener(this) { e ->
-//                                        // No saved credentials found. Launch the One Tap sign-up flow, or
-//                                        // do nothing and continue presenting the signed-out UI.
-//                                        Log.d(TAG, e.localizedMessage)
-//                                    }
-//                            },
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .padding(horizontal = 16.dp, vertical = 8.dp)
-//                        ) {
-//                            Text("Sign in with Google")
-//                        }
+                                    Firebase.auth.signInWithCredential(credential).addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
+                                            val gmailId = firebaseUser.uid
+
+                                            Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
+
+                                            userLoggedIn = true
+
+                                        } else {
+                                            Toast.makeText(context, "Sign in Failed", Toast.LENGTH_LONG).show()
+                                            // UpdateUI(null)
+                                        }
+                                    }
+
+
+                                } catch (e: ApiException) {
+                                    Log.w("TAG", "Google sign in failed", e)
+                                }
+                            }
 
 
                         val context = LocalContext.current
@@ -199,11 +186,11 @@ private var mAuth: FirebaseAuth? = null
                                 .height(50.dp)
                                 .padding(horizontal = 16.dp, vertical = 8.dp),
                             onClick = {
-                                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                    .requestIdToken(token)
-                                    .requestEmail()
-                                    .build()
-
+                                val gso =
+                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .requestIdToken(token)
+                                        .requestEmail()
+                                        .build()
                                 val googleSignInClient = GoogleSignIn.getClient(context, gso)
                                 launcher.launch(googleSignInClient.signInIntent)
                             },
@@ -234,7 +221,7 @@ private var mAuth: FirebaseAuth? = null
                         )
 
 
-                        // Skip login button. TODO Should this be possible!?
+                        // Skip login button. TODO USE ONLY FOR TESTING! 
                         TextButton(
                             onClick = {
                                 userLoggedIn = true
@@ -250,140 +237,14 @@ private var mAuth: FirebaseAuth? = null
                     }
                 }
             }
-        } else
-            MainScreen()
+        }
     }
-
-
-    // Check if user is logged in. TODO
-    fun isUserLoggedIn(): Boolean {
-        return false
+        else
+        MainScreen()
     }
-
-
-
-
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
     LoginScreen()
-
-}
-
-
-
-class GoogleAccountCreate : AppCompatActivity() {
-    class YourActivity : AppCompatActivity() {
-        // ...
-
-        private lateinit var oneTapClient: SignInClient
-        private lateinit var signUpRequest: BeginSignInRequest
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
-            //Google Login Layout
-            val loginLayout = LinearLayout(this)
-            loginLayout.orientation = LinearLayout.VERTICAL
-            loginLayout.gravity = Gravity.CENTER
-
-            oneTapClient = Identity.getSignInClient(this)
-            signUpRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(
-                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
-                        .setServerClientId(getString(R.string.web_client_id))
-                        // Show all accounts on the device.
-                        .setFilterByAuthorizedAccounts(false)
-                        .build()
-                )
-                .build()
-            // ...
-        }
-        // ...
-    }
-
-
-    class GoogleSignIn : AppCompatActivity() {
-        // ...
-        // ...
-
-        private lateinit var oneTapClient: SignInClient
-        private lateinit var signInRequest: BeginSignInRequest
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
-            //Google Login Layout
-            val loginLayout = LinearLayout(this)
-            loginLayout.orientation = LinearLayout.VERTICAL
-            loginLayout.gravity = Gravity.CENTER
-
-            oneTapClient = Identity.getSignInClient(this)
-            signInRequest = BeginSignInRequest.builder()
-                .setPasswordRequestOptions(
-                    BeginSignInRequest.PasswordRequestOptions.builder()
-                        .setSupported(true)
-                        .build()
-                )
-                .setGoogleIdTokenRequestOptions(
-                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
-                        .setServerClientId(getString(R.string.web_client_id))
-                        // Only show accounts previously used to sign in.
-                        .setFilterByAuthorizedAccounts(true)
-                        .build()
-                )
-                // Automatically sign in when exactly one credential is retrieved.
-                .setAutoSelectEnabled(true)
-                .build()
-            // ...
-        }
-        // ...
-    }
-}
-
-class YourActivity : AppCompatActivity() {
-
-    // ...
-    private val REQ_ONE_TAP = 2  // Can be any integer unique to the Activity
-    private var showOneTapUI = true
-    // ...
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            REQ_ONE_TAP -> {
-                try {
-                    val credential = oneTapClient.getSignInCredentialFromIntent(data)
-                    val idToken = credential.googleIdToken
-                    val username = credential.id
-                    val password = credential.password
-                    when {
-                        idToken != null -> {
-                            // Got an ID token from Google. Use it to authenticate
-                            // with your backend.
-                            Log.d(TAG, "Got ID token.")
-                        }
-                        password != null -> {
-                            // Got a saved username and password. Use them to authenticate
-                            // with your backend.
-                            Log.d(TAG, "Got password.")
-                        }
-                        else -> {
-                            // Shouldn't happen.
-                            Log.d(TAG, "No ID token or password!")
-                        }
-                    }
-                } catch (e: ApiException) {
-                    // ...
-                }
-            }
-        }
-    }
-    // ...
 }
