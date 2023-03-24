@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
 }
 
 @Composable
@@ -45,8 +44,6 @@ fun MyUI() {
 }
 
 //@Composable
-
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {

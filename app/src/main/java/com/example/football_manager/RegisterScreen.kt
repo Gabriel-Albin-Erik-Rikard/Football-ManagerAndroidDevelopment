@@ -263,5 +263,5 @@ fun RegisterScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewRegisterScreen() {
-    RegisterScreen()
+    LoginScreen()
 }

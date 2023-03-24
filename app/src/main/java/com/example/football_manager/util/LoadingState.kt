@@ -1,5 +1,7 @@
 package com.ericampire.mobile.firebaseauthcompose.util
 
+
+//Used for Google login and register.
 data class LoadingState private constructor(val status: Status, val msg: String? = null) {
   companion object {
     val LOADED = LoadingState(Status.SUCCESS)

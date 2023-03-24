@@ -1,12 +1,9 @@
 package com.example.football_manager
 
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -30,9 +27,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
-import com.example.football_manager.ui.theme.FootballmanagerTheme
+import com.example.football_manager.util.RegisterScreenActivity
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -59,7 +55,6 @@ fun LoginScreen() {
     val passwordState = remember { mutableStateOf(TextFieldValue()) }
     val context = LocalContext.current
     mAuth = FirebaseAuth.getInstance()
-    val navController = rememberNavController()
     val viewModel: LoginScreenViewModel = viewModel()
 
     //If user is not logged in, open Login screen.
@@ -226,7 +221,7 @@ fun LoginScreen() {
                         )
 
 
-                        // Skip login button. TODO USE ONLY FOR TESTING!
+                        // Skip login button. TODO USE ONLY FOR TESTING! 
                         TextButton(
                             onClick = {
                                 userLoggedIn = true
@@ -252,5 +247,4 @@ fun LoginScreen() {
 @Composable
 fun PreviewLoginScreen() {
     LoginScreen()
-
 }

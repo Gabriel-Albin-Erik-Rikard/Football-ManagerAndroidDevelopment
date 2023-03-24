@@ -1,4 +1,4 @@
-package com.example.football_manager
+package com.example.football_manager.util
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import com.example.football_manager.RegisterScreen
 import com.example.football_manager.ui.theme.FootballmanagerTheme
 
 class RegisterScreenActivity : ComponentActivity() {

@@ -41,6 +41,7 @@ class LoginScreenViewModel : ViewModel() {
   }
 }
 
+//Viewmodel for login. Can probably be merged with the "Person" model, but functional for now.
 class LoginViewModel : ViewModel() {
   var userLoggedIn = mutableStateOf(false)
   var errorCode: String by mutableStateOf("")
@@ -52,8 +53,8 @@ class LoginViewModel : ViewModel() {
        //  val response = FootballManagerAPIService.getInstance().login(LoginRequest(email, password)) //TODO Need backend to get data
         // Retrieve the ID from the response
 
-      //  val id = response.id
-      //  val isCoach = response.isCoach
+       //  val id = response.id
+       //  val isCoach = response.isCoach
 
         // Set the userLoggedIn flag to true
         userLoggedIn.value = true
