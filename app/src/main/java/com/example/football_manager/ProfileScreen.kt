@@ -171,7 +171,7 @@ fun ProfileScreen() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("Phone ")
-                        Text(personViewModel.person.phoneNumber)
+                        personViewModel.person.phoneNumber?.let { Text(it) }
                     }
                 }
             }
