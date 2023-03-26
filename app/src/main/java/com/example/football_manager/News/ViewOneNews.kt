@@ -1,5 +1,7 @@
 package com.example.football_manager.News
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
@@ -9,9 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.football_manager.MainActivity
 import com.example.football_manager.model.News
+import com.example.football_manager.viewmodel.NewsViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,8 +23,10 @@ import java.util.*
 
 @Composable
 fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
-
-
+    var newsViewModel = NewsViewModel()
+    val sharedPreferences: SharedPreferences = MainActivity.context?.getSharedPreferences("myPref", Context.MODE_PRIVATE)!!
+    val id = sharedPreferences.getInt("id", 0)
+    newsViewModel.getSpecificNews(id)
 
     Column(
         modifier = Modifier
@@ -41,7 +46,7 @@ fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
             text = " ${singleNews?.content}",
             style = MaterialTheme.typography.titleMedium
         )
-
+/*
         Spacer(modifier = Modifier.height(60.dp))
 
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -90,7 +95,7 @@ fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
                     confirmButton = {
                         androidx.compose.material3.Button(onClick = {
                             openDialog.value = false
-                            newsRepository.deleteNewsById(singleNews.id)
+                            newsViewModel.deleteNews(singleNews.id)
                             navController.popBackStack()
                         }) {
                             androidx.compose.material3.Text(text = "Yes!")
@@ -106,5 +111,7 @@ fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
                 )
             }
         }
+        
+ */
     }
 }

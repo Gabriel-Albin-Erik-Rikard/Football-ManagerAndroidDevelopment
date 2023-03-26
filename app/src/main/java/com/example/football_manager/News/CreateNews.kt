@@ -8,12 +8,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.football_manager.viewmodel.NewsViewModel
+
+/*
 
 
 
-@Composable
 fun CreateNews(navController: NavHostController) {
     val errors = remember { mutableStateListOf<String>() }
+    var newsViewModel = NewsViewModel()
+    newsViewModel.addNews(title = "", content = "", date = "", writer = "")
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -63,12 +67,7 @@ fun CreateNews(navController: NavHostController) {
                     } else if (writerText.length < NEWS_WRITER_NAME_MIN_LENGTH || writerText.length > NEWS_WRITER_NAME_MAX_LENGTH) {
                         errors.add("The Writers Name Should Be Between 4-10 Characters")
                     } else {
-                        newsRepository.addNews(
-                            title = titleText,
-                            content = contentText,
-                            date = now.toString(),
-                            writer = writerText
-                        )
+                        newsViewModel.addNews(title = titleText, content = contentText, date = "", writer = writerText)
                         navController.popBackStack()
 
                     }
@@ -83,3 +82,4 @@ fun CreateNews(navController: NavHostController) {
         }
     }
 }
+*/

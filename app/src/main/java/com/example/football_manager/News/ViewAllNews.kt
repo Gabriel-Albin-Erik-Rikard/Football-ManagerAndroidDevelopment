@@ -1,5 +1,7 @@
 package com.example.football_manager.News
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,11 +16,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.football_manager.MainActivity.Companion.context
 import com.example.football_manager.model.News
+import com.example.football_manager.viewmodel.NewsViewModel
 
 @Composable
-fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
-    val sortedList = listy.sortedBy { it.date }
+fun ViewAllNewsScreen(navController: NavHostController, news: List<News>) {
+    var newsViewModel = NewsViewModel()
+    val sharedPreferences: SharedPreferences = context?.getSharedPreferences("myPref", Context.MODE_PRIVATE)!!
+    val id = sharedPreferences.getInt("id", 0)
+    newsViewModel.getPersonNews(id)
+    news.sortedBy { it.date }
 
     Column(
         modifier = Modifier
@@ -44,7 +52,7 @@ fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
             }
         }
 
-        sortedList.forEach { news ->
+        news.forEach { news ->
             Column(
                 modifier = Modifier
                     .padding(vertical = 15.dp)
