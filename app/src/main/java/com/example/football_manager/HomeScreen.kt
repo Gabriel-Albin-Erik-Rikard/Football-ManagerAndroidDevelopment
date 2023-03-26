@@ -146,7 +146,13 @@ fun HomeScreen() {
         startDestination = "viewAll"
     ) {
         composable("viewAll") {
+<<<<<<< Updated upstream
             ViewAllScreen(navController, newsRepository.getAllNews())
+=======
+            newsViewModel.getPersonNews(1)
+            ViewAllScreen(navController, newsViewModel.newsList)
+            //ViewAllScreen(navController, newsRepository.getAllNews())
+>>>>>>> Stashed changes
         }
         composable("viewOne/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
@@ -165,9 +171,9 @@ fun HomeScreen() {
 }
 
 @Composable
-fun ViewAllScreen(navController: NavHostController, listy: List<News>, itemsPerPage: Int = 4) {
-    val sortedList = listy.sortedByDescending { it.date } // sort the list in reverse chronological order
-    val pageCount = ceil(sortedList.size.toFloat() / itemsPerPage).toInt()
+fun ViewAllScreen(navController: NavHostController, listy: List<News>?, itemsPerPage: Int = 4) {
+    val sortedList = listy?.sortedByDescending { it.date } // sort the list in reverse chronological order
+    val pageCount = ceil(sortedList!!.size.toFloat() / itemsPerPage).toInt()
     var currentPage by remember { mutableStateOf(1) }
 
     Box(modifier = Modifier.fillMaxSize()) {

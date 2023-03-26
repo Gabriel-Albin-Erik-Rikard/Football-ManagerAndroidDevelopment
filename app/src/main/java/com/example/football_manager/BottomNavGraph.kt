@@ -30,8 +30,8 @@ fun BottomNavGraph(navController: NavHostController) {
         }
         composable(route = BottomBarScreen.Profile.route){
             val person = personViewModel.getPerson(1)
-            //showProfile(human = personViewModel.person)
-            ProfileScreen(personViewModel.person)
+            showProfile(human = personViewModel.person)
+            //ProfileScreen(personViewModel.person)
         }
     }
 }
