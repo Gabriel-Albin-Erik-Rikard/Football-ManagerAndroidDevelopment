@@ -45,69 +45,6 @@ data class Player(
     var redCards : Int,
 ):Human(name)
 
-//test class, använder ej nu
-/*class PlayerGroupConnector {
-    private val playerToGroups = mutableMapOf<Int, MutableList<Int>>()
-
-    fun addPlayerToGroup(playerId: Int, groupId: Int) {
-        if (!playerToGroups.containsKey(playerId)) {
-            playerToGroups[playerId] = mutableListOf()
-        }
-        playerToGroups[playerId]?.add(groupId)
-    }
-
-    fun getGroupsForPlayer(playerId: Int): MutableList<com.example.football_manager.Group> {
-        val groupIds = playerToGroups[playerId]
-        val groups = mutableListOf<com.example.football_manager.Group>()
-        groupIds?.forEach {
-            groups.add(Group(it, "Group $it")) // You can replace this with your own logic for fetching the group data
-        }
-        return groups
-    }
-}*/
-
-/*val groupRepository = GroupRepository().apply {
-    addGroup("Mullsjö IF")
-    addGroup("Ekhagens IF")
-
-
-    getGroupById(0).addStaff("Herman")
-    getGroupById(0).addStaff("Börje")
-    getGroupById(0).addPlayer("Dala")
-    getGroupById(0).addPlayer("Jöken")
-    getGroupById(0).addPlayer("Kroken")
-    getGroupById(1).addStaff("Gabriel")
-    getGroupById(1).addStaff("Rikard")
-    getGroupById(1).addPlayer("Erik")
-    getGroupById(1).addPlayer("Albin")
-    getGroupById(1).addPlayer("Peter")
-
-    getGroupById(0).players[0].goals = 2
-}*/
-
-
-/*class GroupRepository(){
-    private val listOfGroups = mutableListOf<com.example.football_manager.Group>()
-
-    fun addGroup(name: String)  {
-        val id = when {
-            listOfGroups.isEmpty() -> 0
-            else -> listOfGroups.last().id +1
-        }
-        listOfGroups.add(
-            com.example.football_manager.Group(
-                id,
-                name
-            )
-        )
-    }
-
-    fun getAllGroups() = listOfGroups
-    fun getGroupById(id: Int): com.example.football_manager.Group  {
-        return listOfGroups[id]
-    }
-}*/
-
 @Composable
 fun TeamsScreen(teams: PersonTeams){
     val navController = rememberNavController()
@@ -125,18 +62,13 @@ fun TeamsScreen(teams: PersonTeams){
             GroupPage(navController, teamViewModel.members)
         }
         composable("PlayerPage/{groupID}/{playerID}") {
-            //val groupID = it.arguments!!.getString("groupID")!!.toInt()
             val playerID = it.arguments!!.getString("playerID")!!.toInt()
             val singlePlayer = teamViewModel.members.players!!.find{it.id == id}
             showProfile(human = singlePlayer!!)
-            //PlayerPage(navController, groupID, playerID)
         }
         composable("StaffPage/{groupID}/{staffID}") {
-            //val groupID = it.arguments!!.getString("groupID")!!.toInt()
-            //val staffID = it.arguments!!.getString("staffID")!!.toInt()
             val singelStaff = teamViewModel.members.staff!!.find{it.id == id}
             showProfile(human = singelStaff!!)
-            //StaffPage(navController, groupID, staffID)
         }
     }
 }

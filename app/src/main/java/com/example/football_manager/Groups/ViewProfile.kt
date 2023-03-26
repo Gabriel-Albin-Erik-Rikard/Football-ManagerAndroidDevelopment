@@ -123,44 +123,7 @@ fun showProfile(human: Human){
                             )
                         }
                     }
-                    // Update and logout buttons, not used for now
-                    /*Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        /* Button(
-                             modifier = Modifier
-                                 .height(60.dp)
-                                 .width(150.dp),
-                             onClick = { /*TODO*/ },
-                             shape = RoundedCornerShape(8.dp),
-                             elevation = ButtonDefaults.elevation(4.dp)
-                         ) {
-                             Text(
-                                 text = "Update",
-                                 style = MaterialTheme.typography.titleLarge,
-                                 textAlign = TextAlign.Center,
-                                 color = androidx.compose.ui.graphics.Color.White
-                             )
-                         }
-                         Button(
-                             modifier = Modifier
-                                 .height(50.dp)
-                                 .width(150.dp),
-                             onClick = { /*TODO*/ },
-                             shape = RoundedCornerShape(8.dp),
-                             elevation = ButtonDefaults.elevation(4.dp)
-                         ) {
-                             Text(
-                                 text = "Logout",
-                                 style = MaterialTheme.typography.titleLarge,
-                                 textAlign = TextAlign.Center,
-                                 color = androidx.compose.ui.graphics.Color.White
-                             )
-                         }*/
-                    }*/
+
                 }
             }
             // Cards with user info

@@ -25,18 +25,15 @@ fun GroupScreenStart(navController: NavController, groups : PersonTeams){
             .fillMaxSize()
             .padding(bottom = 50.dp)
             .padding(top = 30.dp)
-        //.background(Color.Green),
     ) {
         LazyColumn(
             modifier = Modifier
-                //.background(color = Color.Blue)
                 .fillMaxSize(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
 
         )
         {
-
             items(groups.staffTeams!!) { group ->
                 Column(modifier = Modifier.padding(vertical = 15.dp)
                     .clickable { navController.navigate("GroupPage/${group.id}") }) {

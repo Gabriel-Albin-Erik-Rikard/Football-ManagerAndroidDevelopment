@@ -31,7 +31,6 @@ fun GroupPage(navController: NavController, members: Members){
     ){
         LazyColumn(
             modifier = Modifier
-                //.background(color = Color.Blue)
                 .padding()
                 .fillMaxSize(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
