@@ -1,20 +1,18 @@
 package com.example.football_manager
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -26,9 +24,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginScreenViewModel
-import com.example.football_manager.network.FootballManagerAPIService
+import com.ericampire.mobile.firebaseauthcompose.ui.login.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -47,6 +46,10 @@ fun RegisterScreen() {
     val passwordState = remember { mutableStateOf(TextFieldValue()) }
     val confirmPasswordState = remember { mutableStateOf(TextFieldValue()) }
 
+    val firstNameState = remember { mutableStateOf(TextFieldValue()) }
+    val lastNameState = remember { mutableStateOf(TextFieldValue()) }
+    val firebaseId = remember { mutableStateOf("") }
+
     // Check if the email and confirm email fields match
     val emailMatch = emailState.value.text == confirmEmailState.value.text
     val passwordMatch = passwordState.value.text == confirmPasswordState.value.text
@@ -55,6 +58,11 @@ fun RegisterScreen() {
     val context = LocalContext.current
     mAuth = FirebaseAuth.getInstance()
     val viewModel: LoginScreenViewModel = viewModel()
+    val loginViewModel: LoginViewModel = viewModel()
+
+    val userLoggedIn = loginViewModel.userLoggedIn.value
+
+    val sharedPre = context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
 
     val registerSuccessfulState = remember { mutableStateOf(false) }
 
@@ -138,11 +146,40 @@ fun RegisterScreen() {
             )
         }
 
-        fun register(email: String, password: String) {
+        // First name text field
+
+        OutlinedTextField(
+            value = firstNameState.value,
+            onValueChange = { firstNameState.value = it },
+            label = { Text("First Name") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+
+        // Last name text field
+
+        OutlinedTextField(
+            value = lastNameState.value,
+            onValueChange = { lastNameState.value = it },
+            label = { Text("Last Name") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+
+        fun register(email: String, password: String, firstName: String, lastName: String) {
             var errorCode: String by mutableStateOf("")
             try {
-                // Send register request to database.
-                // FootballManagerAPIService.getInstance().register(RegisterRequest(email, password)) //TODO Needs to be set up on backend.
+                loginViewModel.signUpWithEmailAndPassword(email, password, firstName, lastName, sharedPre)
                 registerSuccessfulState.value = true
             } catch (e: Exception) {
                 errorCode = e.message.toString()
@@ -154,7 +191,9 @@ fun RegisterScreen() {
             onClick = {
                 val email = emailState.value.text
                 val password = passwordState.value.text
-                register(email, password)
+                val firstName = firstNameState.value.text
+                val lastName = lastNameState.value.text
+                register(email, password,firstName, lastName)
             },
             enabled = emailMatch,
             modifier = Modifier
@@ -242,22 +281,7 @@ fun RegisterScreen() {
 
     }
     if (registerSuccessfulState.value) {
-        Snackbar(
-            action = {},
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text("Register sent!", textAlign = TextAlign.Center)
-            }
-        }
+        context.startActivity(Intent(context, MainActivity::class.java))
     }
 }
 

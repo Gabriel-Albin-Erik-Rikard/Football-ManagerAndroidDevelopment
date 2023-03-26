@@ -7,6 +7,7 @@ import com.example.football_manager.model.PersonTeams
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -27,6 +28,9 @@ interface FootballManagerAPIService {
     // with query parameters email and password
     @GET("/auth/login")
     suspend fun loginWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String): AuthPerson
+
+    @POST("/auth/signup")
+    suspend fun signUpWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String, @Query("firstName") firstName: String, @Query("lastName") lastName: String): AuthPerson
 
 
     companion object {
