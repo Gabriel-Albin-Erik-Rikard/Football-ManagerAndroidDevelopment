@@ -14,7 +14,7 @@ class NewsViewModel: ViewModel() {
     var errorCode: String by mutableStateOf("")
 
     // Param: id of the person
-    fun getPersonNews(id: Int){
+    fun getPersonNews(id: Int) {
         viewModelScope.launch {
             val apiService = FootballManagerAPIService.getInstance()
             try {
@@ -25,7 +25,6 @@ class NewsViewModel: ViewModel() {
             }
         }
     }
-
 
 
     fun getSpecificNews(id: Int) {
@@ -39,7 +38,8 @@ class NewsViewModel: ViewModel() {
             }
         }
     }
-
+}
+/*
     fun deleteNews(id: Int) {
         viewModelScope.launch {
             val apiService = FootballManagerAPIService.getInstance()
@@ -74,4 +74,4 @@ class NewsViewModel: ViewModel() {
         }
     }
 }
-
+*/
