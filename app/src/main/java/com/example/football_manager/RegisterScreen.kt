@@ -101,9 +101,9 @@ fun RegisterScreen() {
         )
 
         // Error message if the email fields don't match
-        if (!emailMatch) {
+        if (!emailMatch && emailMatch != null && confirmEmailState != null) {
             Text(
-                text = "Email does not match!",
+                text = "Email does not match and cannot be empty!",
                 color = Color.Red,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -140,7 +140,7 @@ fun RegisterScreen() {
         // Error message if the password fields don't match
         if (!passwordMatch && confirmPasswordState.value != null && passwordState.value != null) {
             Text(
-                text = "Passwords must match!",
+                text = "Passwords must match and cannot be empty!",
                 color = Color.Red,
                 modifier = Modifier.padding(bottom = 8.dp)
             )

@@ -251,7 +251,6 @@ fun LoginScreen() {
                             }
                         )
 
-
                         // Skip login button. TODO USE ONLY FOR TESTING! 
                         TextButton(
                             onClick = {
