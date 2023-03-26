@@ -142,7 +142,7 @@ fun RegisterScreen() {
             var errorCode: String by mutableStateOf("")
             try {
                 // Send register request to database.
-                FootballManagerAPIService.getInstance().register(RegisterRequest(email, password)) //TODO Needs to be set up on backend.
+                // FootballManagerAPIService.getInstance().register(RegisterRequest(email, password)) //TODO Needs to be set up on backend.
                 registerSuccessfulState.value = true
             } catch (e: Exception) {
                 errorCode = e.message.toString()
@@ -180,7 +180,7 @@ fun RegisterScreen() {
                         if (task.isSuccessful) {
                             val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
                             val gmailId = firebaseUser.uid
-                            FootballManagerAPIService.getInstance().gmailRegister(RegisterRequest(gmailId)) //TODO Needs to be set up on backend.
+                            // FootballManagerAPIService.getInstance().gmailRegister(RegisterRequest(gmailId)) //TODO Needs to be set up on backend.
                             Toast.makeText(
                                 context,
                                 "User Registered Successfully",

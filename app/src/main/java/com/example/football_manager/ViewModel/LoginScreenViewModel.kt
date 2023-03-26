@@ -70,6 +70,10 @@ class LoginViewModel : ViewModel() {
           println("Saving id: $id to shared preferences")
 
           sharedPre.edit().putInt("id", id).apply()
+          if (isCoach != null) {
+            sharedPre.edit().putBoolean("isCoach", isCoach).apply()
+          }
+            sharedPre.edit().putString("JWT", JWT).apply()
 
           userLoggedIn.value = true
 
