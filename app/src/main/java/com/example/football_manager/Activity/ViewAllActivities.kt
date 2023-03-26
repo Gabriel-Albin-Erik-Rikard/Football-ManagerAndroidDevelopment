@@ -1,7 +1,5 @@
 package com.example.football_manager.Activity
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,9 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.football_manager.MainActivity
 import com.example.football_manager.model.Activities
-import com.example.football_manager.viewmodel.PersonViewModel
 
 @Composable
 fun ViewAllScreen(
@@ -50,7 +46,7 @@ fun ViewAllScreen(
                     .fillMaxWidth()
                     .padding(10.dp)
                     .clickable {
-                        navController.navigate("viewOneActivity/${activity.id}")
+                        navController.navigate("ViewOne/${activity.id}")
                     },
                 shape = RoundedCornerShape(10.dp),
                 color = Color.LightGray
@@ -58,7 +54,7 @@ fun ViewAllScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(20.dp),
                 ) {
                     Text(
                         text = "Title : ${activity.type}",
@@ -67,10 +63,11 @@ fun ViewAllScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Time : ${activity.startDate?.format("%02d:%02d")}",
+                        text = "Time : ${activity.startDate?.substring(0, 10)})",
                         style = MaterialTheme.typography.titleMedium,
                         fontSize = 20.sp
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
             }
         }

@@ -170,7 +170,9 @@ fun CalenderScreen(){
         }
         composable("viewOne/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
-            ViewOneScreen(id, navController)
+            // Get the activity from personViewModel.activities
+            val activity = personViewModel.activities.find { it.id == id }!!
+            ViewOneScreen(activity)
         }
 
         composable("viewOneEditedActivity/{id}"){
