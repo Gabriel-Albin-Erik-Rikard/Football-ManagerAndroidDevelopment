@@ -1,6 +1,8 @@
 package com.example.football_manager
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.runtime.*
 
 import androidx.navigation.compose.NavHost
@@ -11,6 +13,8 @@ import com.example.football_manager.Activity.CreateActivity
 import com.example.football_manager.Activity.EditActivity
 import com.example.football_manager.Activity.ViewAllScreen
 import com.example.football_manager.Activity.ViewOneScreen
+import com.example.football_manager.MainActivity.Companion.context
+import com.example.football_manager.viewmodel.PersonViewModel
 
 
 data class Activities(
@@ -150,16 +154,25 @@ const val ACTIVITY_DESCRIPTION_MIN_LENGTH = 10
 fun CalenderScreen(){
     val navController = rememberNavController()
 
+    val sharedPreferences: SharedPreferences = context?.getSharedPreferences("myPref", Context.MODE_PRIVATE)!!
+    val id = sharedPreferences.getInt("id", 0)
+
+    val personViewModel = PersonViewModel()
+
+    personViewModel.getPersonActivities(id)
+
     NavHost(
         navController = navController,
         startDestination = "viewAll"
     ) {
         composable("viewAll") {
-            ViewAllScreen(navController, activityRepository.getAllActivities())
+            ViewAllScreen(navController, personViewModel.activities)
         }
         composable("viewOne/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
-            ViewOneScreen(id, navController)
+            // Get the activity from personViewModel.activities
+            val activity = personViewModel.activities.find { it.id == id }!!
+            ViewOneScreen(activity)
         }
 
         composable("viewOneEditedActivity/{id}"){
