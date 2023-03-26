@@ -17,8 +17,8 @@ import androidx.navigation.NavHostController
 import com.example.football_manager.model.News
 
 @Composable
-fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
-    val sortedList = listy.sortedBy { it.date }
+fun ViewAllNewsScreen(navController: NavHostController, news: List<News>) {
+    val sortedList = news.sortedBy { it.date }
 
     Column(
         modifier = Modifier
@@ -44,7 +44,7 @@ fun ViewAllNewsScreen(navController: NavHostController, listy: List<News>) {
             }
         }
 
-        sortedList.forEach { news ->
+        news.forEach { news ->
             Column(
                 modifier = Modifier
                     .padding(vertical = 15.dp)
