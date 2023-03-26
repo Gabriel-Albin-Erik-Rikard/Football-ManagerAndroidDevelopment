@@ -12,7 +12,10 @@ import com.example.football_manager.model.News
 import com.example.football_manager.viewmodel.NewsViewModel
 
 
-@Composable
+
+
+
+/*
 fun EditNews(singleNews: News, navController: NavHostController){
 
     val errors = remember { mutableStateListOf<String>() }
@@ -82,3 +85,4 @@ fun EditNews(singleNews: News, navController: NavHostController){
         }
     }
 }
+*/

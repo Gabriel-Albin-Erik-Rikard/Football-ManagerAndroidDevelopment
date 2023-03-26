@@ -46,7 +46,7 @@ fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
             text = " ${singleNews?.content}",
             style = MaterialTheme.typography.titleMedium
         )
-
+/*
         Spacer(modifier = Modifier.height(60.dp))
 
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -111,5 +111,7 @@ fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
                 )
             }
         }
+        
+ */
     }
 }

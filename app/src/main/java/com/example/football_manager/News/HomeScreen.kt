@@ -1,9 +1,12 @@
 package com.example.football_manager.News
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.football_manager.MainActivity
 import com.example.football_manager.viewmodel.NewsViewModel
 
 
@@ -19,13 +22,15 @@ fun HomeScreen() {
     val navController = rememberNavController()
 
     val newsViewModel = NewsViewModel()
+    val sharedPreferences: SharedPreferences = MainActivity.context?.getSharedPreferences("myPref", Context.MODE_PRIVATE)!!
+    val id = sharedPreferences.getInt("id", 0)
 
     NavHost(
         navController = navController,
         startDestination = "viewAllNews"
     ) {
         composable("viewAllNews") {
-            newsViewModel.getPersonNews(2)
+            newsViewModel.getPersonNews(id)
             ViewAllNewsScreen(navController = navController, news = newsViewModel.newsList)
         }
         composable("viewOneNews/{id}") {
@@ -34,15 +39,18 @@ fun HomeScreen() {
             ViewOneNewsScreen(singleNews!!, navController)
         }
 
-        composable("viewOneEditedNews/{id}"){
+       /* composable("viewOneEditedNews/{id}"){
             val id  = it.arguments!!.getString("id")!!.toInt()
             val singleNews = newsViewModel.newsList.find{it.id == id}
             EditNews(singleNews!! , navController )
 
-        }
+        }*/
+        /*
         composable("createNews") {
             CreateNews(navController =  navController)
         }
+
+         */
     }
 }
 

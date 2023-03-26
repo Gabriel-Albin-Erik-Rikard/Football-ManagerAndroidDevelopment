@@ -10,8 +10,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.football_manager.viewmodel.NewsViewModel
 
+/*
 
-@Composable
+
+
 fun CreateNews(navController: NavHostController) {
     val errors = remember { mutableStateListOf<String>() }
     var newsViewModel = NewsViewModel()
@@ -80,3 +82,4 @@ fun CreateNews(navController: NavHostController) {
         }
     }
 }
+*/

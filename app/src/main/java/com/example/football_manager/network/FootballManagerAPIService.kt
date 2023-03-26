@@ -20,7 +20,7 @@ interface FootballManagerAPIService {
 
     @GET("news/{id}")
     suspend fun getSpecificNews(@Path("id") id: Int): News
-
+/*
     @POST("news")
     suspend fun addNews(
         @Query("title") title: String,
@@ -33,6 +33,8 @@ interface FootballManagerAPIService {
 
     @DELETE("news/{id}")
     suspend fun deleteNews(@Path("id") id: Int)
+    */
+
     //NEWS Routes END
 
     // Get details of a person
