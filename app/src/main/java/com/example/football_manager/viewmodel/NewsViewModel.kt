@@ -25,4 +25,53 @@ class NewsViewModel: ViewModel() {
             }
         }
     }
+
+
+
+    fun getSpecificNews(id: Int) {
+        viewModelScope.launch {
+            val apiService = FootballManagerAPIService.getInstance()
+            try {
+                val response = apiService.getSpecificNews(id)
+                newsList = listOf(response)
+            } catch (e: Exception) {
+                errorCode = e.message.toString()
+            }
+        }
+    }
+
+    fun deleteNews(id: Int) {
+        viewModelScope.launch {
+            val apiService = FootballManagerAPIService.getInstance()
+            try {
+                apiService.deleteNews(id)
+            } catch (e: Exception) {
+                errorCode = e.message.toString()
+            }
+        }
+    }
+
+    fun updateNews(id: Int, title: String, content: String) {
+        viewModelScope.launch {
+            val apiService = FootballManagerAPIService.getInstance()
+            try {
+                apiService.updateNews(id, title, content)
+            } catch (e: Exception) {
+                errorCode = e.message.toString()
+            }
+        }
+    }
+
+
+    fun addNews(title: String, content: String, date: String, writer: String) {
+        viewModelScope.launch {
+            val apiService = FootballManagerAPIService.getInstance()
+            try {
+                apiService.addNews(title, content, date, writer)
+            } catch (e: Exception) {
+                errorCode = e.message.toString()
+            }
+        }
+    }
 }
+
