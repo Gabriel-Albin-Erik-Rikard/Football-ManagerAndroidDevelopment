@@ -14,10 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.football_manager.groupRepository
+//import com.example.football_manager.groupRepository
 
+/*
 @Composable
 fun PlayerPage(navController: NavController, groupID: Int, playerID: Int){
     val player = groupRepository.getGroupById(groupID).getPlayerById(playerID)
     showProfile(human = player)
-}
+}*/

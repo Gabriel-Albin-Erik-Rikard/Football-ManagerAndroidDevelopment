@@ -25,48 +25,28 @@ import com.example.football_manager.Groups.*
 import com.example.football_manager.model.PersonTeams
 import com.example.football_manager.viewmodel.TeamViewModel
 
-class Group(var id : Int, var name : String ){
-    val players = mutableListOf<Player>()
-    val listOfStaff = mutableListOf<Staff>()
-    fun addPlayer(name : String){
-        val id = when{
-            players.isEmpty() -> 0
-            else -> players.last().id + 1
-        }
-        players.add(Player(id, name))
-    }
-    fun addStaff(name: String){
-        val id = when{
-            listOfStaff.isEmpty() -> 0
-            else -> listOfStaff.last().id + 1
-        }
-        listOfStaff.add(Staff(id, name))
-    }
-    fun getPlayerById(id: Int): Player {
-        return players[id]
-    }
-
-    fun getStaffById(id: Int): Staff {
-        return listOfStaff[id]
-    }
-}
 
 
 open class Human(open val name : String)
-data class Staff(val id : Int, override val name: String): Human(name) {
-    var role: String = ""
-}
-data class Player(val id : Int, override val name : String): Human(name){
-    var assists : Int = 0
-    var yellowCards : Int = 0
-    var gamesPlayed : Int = 0
-    var goals : Int = 0
-    var redCards : Int = 0
+data class Staff(
+    val id: Int,
+    override val name: String,
+    var role: String,
+): Human(name)
 
-}
+
+data class Player(
+    val id: Int,
+    override val name: String,
+    val assists: Int,
+    var yellowCards : Int,
+    var gamesPlayed : Int,
+    var goals : Int,
+    var redCards : Int,
+):Human(name)
 
 //test class, använder ej nu
-class PlayerGroupConnector {
+/*class PlayerGroupConnector {
     private val playerToGroups = mutableMapOf<Int, MutableList<Int>>()
 
     fun addPlayerToGroup(playerId: Int, groupId: Int) {
@@ -84,9 +64,9 @@ class PlayerGroupConnector {
         }
         return groups
     }
-}
+}*/
 
-val groupRepository = GroupRepository().apply {
+/*val groupRepository = GroupRepository().apply {
     addGroup("Mullsjö IF")
     addGroup("Ekhagens IF")
 
@@ -103,10 +83,10 @@ val groupRepository = GroupRepository().apply {
     getGroupById(1).addPlayer("Peter")
 
     getGroupById(0).players[0].goals = 2
-}
+}*/
 
 
-class GroupRepository(){
+/*class GroupRepository(){
     private val listOfGroups = mutableListOf<com.example.football_manager.Group>()
 
     fun addGroup(name: String)  {
@@ -126,7 +106,7 @@ class GroupRepository(){
     fun getGroupById(id: Int): com.example.football_manager.Group  {
         return listOfGroups[id]
     }
-}
+}*/
 
 @Composable
 fun TeamsScreen(teams: PersonTeams){

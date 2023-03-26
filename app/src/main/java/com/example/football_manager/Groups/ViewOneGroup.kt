@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.football_manager.groupRepository
+//import com.example.football_manager.groupRepository
 import com.example.football_manager.model.Person
 import com.example.football_manager.viewmodel.Members
 import com.example.football_manager.viewmodel.TeamViewModel
