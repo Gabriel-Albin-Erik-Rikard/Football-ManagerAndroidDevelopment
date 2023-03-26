@@ -52,7 +52,8 @@ class LoginViewModel : ViewModel() {
     viewModelScope.launch {
       try {
         // Make a POST request to the login endpoint with email and password
-        val response = FootballManagerAPIService.getInstance().loginWithEmailAndPassword(email, password)
+        val response =
+          FootballManagerAPIService.getInstance().loginWithEmailAndPassword(email, password)
         // Retrieve the ID from the response
 
         val id = response.id
@@ -63,12 +64,16 @@ class LoginViewModel : ViewModel() {
         println(id)
 
         // Set the userLoggedIn flag to true
-        if(response.loggedIn == true) {
+        if (response.loggedIn == true) {
           // Save the ID to shared preferences
 
           println("Saving id: $id to shared preferences")
 
           sharedPre.edit().putInt("id", id).apply()
+          if (isCoach != null) {
+            sharedPre.edit().putBoolean("isCoach", isCoach).apply()
+          }
+            sharedPre.edit().putString("JWT", JWT).apply()
 
           userLoggedIn.value = true
 
@@ -79,6 +84,49 @@ class LoginViewModel : ViewModel() {
     }
   }
 
+  fun signUpWithEmailAndPassword(
+    email: String,
+    password: String,
+    firstName: String,
+    lastName: String,
+    sharedPre: SharedPreferences,
+    firebaseId: String? = null
+  ) {
+
+    viewModelScope.launch {
+      try {
+        // Make a POST request to the login endpoint with email and password
+        val response =
+          FootballManagerAPIService.getInstance().signUpWithEmailAndPassword(email, password, firstName, lastName, firebaseId)
+        // Retrieve the ID from the response
+
+        val id = response.id
+        val isCoach = response.isStaff
+        val JWT = response.JWT
+
+        // Set the userLoggedIn flag to true
+        if (response.loggedIn == true) {
+          // Save the ID to shared preferences
+
+          println("Saving id: $id to shared preferences")
+
+          sharedPre.edit().putInt("id", id).apply()
+          if (isCoach != null) {
+            sharedPre.edit().putBoolean("isCoach", isCoach).apply()
+          }
+          sharedPre.edit().putString("JWT", JWT).apply()
+
+          userLoggedIn.value = true
+
+        }
+      } catch (e: Exception) {
+        errorCode = e.message.toString()
+      }
+    }
+  }
+}
+
+/* //Old login code.
   fun login(email: String, password: String) {
     viewModelScope.launch {
       try {
@@ -97,3 +145,5 @@ class LoginViewModel : ViewModel() {
     }
   }
 }
+
+ */

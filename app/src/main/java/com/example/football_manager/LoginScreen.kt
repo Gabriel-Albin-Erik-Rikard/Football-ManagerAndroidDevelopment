@@ -186,6 +186,10 @@ fun LoginScreen() {
                                             val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
                                             val gmailId = firebaseUser.uid
 
+                                            val mail = firebaseUser.email
+
+                                            loginViewModel.loginWithEmailAndPassword(mail!!, gmailId, sharedPre)
+
                                             Toast.makeText(context, "Sign in Successful", Toast.LENGTH_LONG).show()
                                             Toast.makeText(context, gmailId, Toast.LENGTH_LONG).show()
 
@@ -246,7 +250,6 @@ fun LoginScreen() {
                                 )
                             }
                         )
-
 
                         // Skip login button. TODO USE ONLY FOR TESTING! 
                         TextButton(
