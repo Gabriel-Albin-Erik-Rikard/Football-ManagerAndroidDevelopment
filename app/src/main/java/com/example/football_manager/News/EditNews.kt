@@ -8,17 +8,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.football_manager.model.News
 
 
 @Composable
-fun EditNews(id: Int, navController: NavHostController){
+fun EditNews(news: News, navController: NavHostController){
 
     val errors = remember { mutableStateListOf<String>() }
 
 
-    val currentTaskID = newsRepository.getNewsById(id)
-    val currentTitle = currentTaskID?.title
-    val currentDescription = currentTaskID?.content
+    //val currentTaskID = newsRepository.getNewsById(id)
+    val currentTitle = news.title
+    val currentDescription = news.content
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -64,11 +65,8 @@ fun EditNews(id: Int, navController: NavHostController){
                         errors.add("The Content Should Have At Least 10 Characters")
                     } else {
 
-                        newsRepository.updateNewsById(
-                            id,
-                            newTitle = updateTitleField,
-                            newContent = updateContentField
-                        )
+                            news.title = updateTitleField
+                            news.content = updateContentField
                         navController.popBackStack()
                     }
 
