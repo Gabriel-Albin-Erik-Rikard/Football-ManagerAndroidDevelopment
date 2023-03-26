@@ -27,7 +27,8 @@ fun BottomNavGraph(navController: NavHostController) {
             CalenderScreen()
         }
         composable(route = BottomBarScreen.Teams.route){
-            TeamsScreen()
+            personViewModel.getPersonTeams(2)
+            TeamsScreen(personViewModel.teams)
         }
         composable(route = BottomBarScreen.Profile.route){
             personViewModel.getPerson(1)

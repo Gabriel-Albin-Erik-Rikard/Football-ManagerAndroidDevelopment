@@ -17,10 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.football_manager.groupRepository
+import com.example.football_manager.model.Person
+import com.example.football_manager.viewmodel.TeamViewModel
 
 @Composable
-fun GroupPage(navController: NavController, id: Int){
-    val group = groupRepository.getGroupById(id)
+fun GroupPage(navController: NavController, teamViewModel: TeamViewModel){
+    //val group = groupRepository.getGroupById(id)
     Box(
         modifier = Modifier
             .padding(bottom = 50.dp)
@@ -35,13 +37,7 @@ fun GroupPage(navController: NavController, id: Int){
             verticalArrangement = Arrangement.spacedBy(2.dp)
         )
         {
-            //not implemented button
             item{
-                /*Button(onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
-                )   {
-                    Text(text = "Add(implement later,mby)")
-                }*/
                 Text(
                     text = "Staff",
                     style = MaterialTheme.typography.titleLarge
@@ -52,9 +48,9 @@ fun GroupPage(navController: NavController, id: Int){
                         .padding(10.dp)
                 )
             }
-            items(group.listOfStaff) { staff ->
+            items(teamViewModel.staff!!) { staff ->
                 Column(modifier = Modifier.padding(vertical = 0.dp)
-                    .clickable { navController.navigate("StaffPage/${group.id}/${staff.id}") }) {
+                    .clickable { navController.navigate("StaffPage/${staff.id}") }) {
                     Surface(
                         color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(150.dp),
@@ -82,9 +78,9 @@ fun GroupPage(navController: NavController, id: Int){
                         .padding(10.dp)
                 )
             }
-            items(group.players) { player ->
+            items(teamViewModel.players!!) { player ->
                 Column(modifier = Modifier.padding(vertical = 0.dp)
-                    .clickable { navController.navigate("PlayerPage/${group.id}/${player.id}") }) {
+                    .clickable { navController.navigate("PlayerPage//${player.id}") }) {
                     Surface(
                         color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(150.dp),

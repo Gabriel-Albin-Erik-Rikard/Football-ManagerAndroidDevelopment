@@ -1,10 +1,5 @@
 package com.example.football_manager
 
-import com.example.football_manager.Groups.GroupScreenStart
-import com.example.football_manager.Groups.GroupPage
-import com.example.football_manager.Groups.PlayerPage
-import com.example.football_manager.Groups.StaffPage
-
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +21,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.football_manager.Groups.*
+import com.example.football_manager.model.PersonTeams
+import com.example.football_manager.viewmodel.TeamViewModel
 
 class Group(var id : Int, var name : String ){
     val players = mutableListOf<Player>()
@@ -64,6 +62,7 @@ data class Player(val id : Int, override val name : String): Human(name){
     var gamesPlayed : Int = 0
     var goals : Int = 0
     var redCards : Int = 0
+
 }
 
 //test class, använder ej nu
@@ -130,28 +129,34 @@ class GroupRepository(){
 }
 
 @Composable
-fun TeamsScreen(){
+fun TeamsScreen(teams: PersonTeams){
     val navController = rememberNavController()
+    val teamViewModel = TeamViewModel()
     NavHost(
         navController = navController,
         startDestination = "GroupScreenStart"
     ){
         composable("GroupScreenStart") {
-            GroupScreenStart(navController,  groupRepository.getAllGroups())
+            GroupScreenStart(navController,  teams)
         }
         composable("GroupPage/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
-            GroupPage(navController, id)
+            teamViewModel.getMembers(id)
+            GroupPage(navController, teamViewModel)
         }
         composable("PlayerPage/{groupID}/{playerID}") {
-            val groupID = it.arguments!!.getString("groupID")!!.toInt()
+            //val groupID = it.arguments!!.getString("groupID")!!.toInt()
             val playerID = it.arguments!!.getString("playerID")!!.toInt()
-            PlayerPage(navController, groupID, playerID)
+            val singlePlayer = teamViewModel.players!!.find{it.id == id}
+            showProfile(human = singlePlayer!!)
+            //PlayerPage(navController, groupID, playerID)
         }
         composable("StaffPage/{groupID}/{staffID}") {
-            val groupID = it.arguments!!.getString("groupID")!!.toInt()
-            val staffID = it.arguments!!.getString("staffID")!!.toInt()
-            StaffPage(navController, groupID, staffID)
+            //val groupID = it.arguments!!.getString("groupID")!!.toInt()
+            //val staffID = it.arguments!!.getString("staffID")!!.toInt()
+            val singelStaff = teamViewModel.staff!!.find{it.id == id}
+            showProfile(human = singelStaff!!)
+            //StaffPage(navController, groupID, staffID)
         }
     }
 }

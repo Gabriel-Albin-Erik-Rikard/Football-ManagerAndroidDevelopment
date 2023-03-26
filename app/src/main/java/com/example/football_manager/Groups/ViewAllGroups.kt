@@ -16,9 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.football_manager.model.PersonTeams
 
 @Composable
-fun GroupScreenStart(navController: NavController, groups : List<com.example.football_manager.Group>){
+fun GroupScreenStart(navController: NavController, groups : PersonTeams){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -35,16 +36,8 @@ fun GroupScreenStart(navController: NavController, groups : List<com.example.foo
 
         )
         {
-            //have not implemented this button.
-            /*item {
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
-                ) {
-                    Text(text = "Create(implement later)")
-                }
-            }*/
-            items(groups) { group ->
+
+            items(groups.staffTeams!!) { group ->
                 Column(modifier = Modifier.padding(vertical = 15.dp)
                     .clickable { navController.navigate("GroupPage/${group.id}") }) {
                     Surface(
@@ -55,7 +48,26 @@ fun GroupScreenStart(navController: NavController, groups : List<com.example.foo
                             .width(1100.dp)
                     ) {
                         Text(
-                            text = group.name,
+                            text = group.teamName!!,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(horizontal = 25.dp, vertical = 15.dp),
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+            items(groups.playerTeams!!) { group ->
+                Column(modifier = Modifier.padding(vertical = 15.dp)
+                    .clickable { navController.navigate("GroupPage/${group.id}") }) {
+                    Surface(
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(150.dp),
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp, vertical = 5.dp)
+                            .width(1100.dp)
+                    ) {
+                        Text(
+                            text = group.teamName!!,
                             style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.padding(horizontal = 25.dp, vertical = 15.dp),
                             color = Color.White

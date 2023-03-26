@@ -1,5 +1,7 @@
 package com.example.football_manager.network
 
+import com.example.football_manager.Player
+import com.example.football_manager.Staff
 import com.example.football_manager.model.AuthPerson
 import com.example.football_manager.model.News
 import com.example.football_manager.model.Person
@@ -14,15 +16,27 @@ interface FootballManagerAPIService {
     @GET("person/{id}/news")
     suspend fun getPersonNews(@Path("id") id: Int): List<News>
 
+
+    //get info about player
+
+    @GET("player/{id}")
+    suspend fun getPlayer(@Path("id") id: Int): Player
+
     // Get details of a person
     @GET("person/{id}")
     suspend fun getPerson(@Path("id") id: Int): Person
 
     // Groups
     // Gets all teams for a person
-    @GET("team/{id}")
+    @GET("person/{id}")
     suspend fun getPersonTeams(@Path("id") id: Int): PersonTeams
 
+    @GET("team/{id}/staff")
+    suspend fun getTeamStaff(@Path("id") id: Int): List<Staff>?
+
+    //Get all members of a team
+    @GET("team/{id}/players")
+    suspend fun getTeamPlayer(@Path("id") id: Int): List<Player>?
     // Login with email and password
     // with query parameters email and password
     @GET("/auth/login")
