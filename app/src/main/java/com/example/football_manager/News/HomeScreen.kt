@@ -4,10 +4,7 @@ import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.football_manager.model.News
 import com.example.football_manager.viewmodel.NewsViewModel
-import java.time.LocalDateTime
-
 
 
 const val NEWS_TITLE_MIN_LENGTH = 3
