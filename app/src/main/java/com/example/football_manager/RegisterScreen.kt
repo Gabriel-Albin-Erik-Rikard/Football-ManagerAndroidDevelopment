@@ -225,9 +225,10 @@ fun RegisterScreen() {
 
                             val firstName = personName?.split(" ")?.get(0)
                             val lastName = personName?.split(" ")?.get(1)
+                            val email = account.email
 
-                            if (firstName != null && lastName != null) {
-                                loginViewModel.signUpWithEmailAndPassword(gmailId, gmailId, firstName, lastName, sharedPre, firebaseId = gmailId)
+                            if (firstName != null && lastName != null && email != null) {
+                                loginViewModel.signUpWithEmailAndPassword(email, gmailId, firstName, lastName, sharedPre, firebaseId = gmailId)
                                 registerSuccessfulState.value = true
                             }
 
