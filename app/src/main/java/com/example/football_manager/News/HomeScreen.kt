@@ -29,12 +29,13 @@ fun HomeScreen() {
     ) {
         composable("viewAllNews") {
             newsViewModel.getPersonNews(2)
-            ViewAllNewsScreen(navController = navController, listy = newsViewModel.newsList)
+            ViewAllNewsScreen(navController = navController, news = newsViewModel.newsList)
         //ViewAllNewsScreen(navController, newsRepository.getAllNews())
         }
         composable("viewOneNews/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
             val singleNews = newsViewModel.newsList.find{it.id == id}
+            newsViewModel.
             ViewOneNewsScreen(singleNews!!, navController)
         }
 
