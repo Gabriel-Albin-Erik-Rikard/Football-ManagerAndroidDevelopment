@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.football_manager.MainActivity
 import com.example.football_manager.model.News
@@ -96,7 +95,7 @@ fun ViewOneNewsScreen(singleNews: News, navController: NavHostController) {
                     confirmButton = {
                         androidx.compose.material3.Button(onClick = {
                             openDialog.value = false
-                            newsRepository.deleteNewsById(singleNews.id)
+                            newsViewModel.deleteNews(singleNews.id)
                             navController.popBackStack()
                         }) {
                             androidx.compose.material3.Text(text = "Yes!")

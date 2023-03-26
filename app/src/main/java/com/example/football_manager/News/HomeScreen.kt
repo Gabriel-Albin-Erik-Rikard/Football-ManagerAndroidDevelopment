@@ -35,7 +35,6 @@ fun HomeScreen() {
         composable("viewOneNews/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
             val singleNews = newsViewModel.newsList.find{it.id == id}
-            newsViewModel.
             ViewOneNewsScreen(singleNews!!, navController)
         }
 

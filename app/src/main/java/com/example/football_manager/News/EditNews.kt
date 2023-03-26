@@ -1,5 +1,7 @@
 package com.example.football_manager.News
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.*
@@ -8,16 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.football_manager.MainActivity
 import com.example.football_manager.model.News
+import com.example.football_manager.viewmodel.NewsViewModel
 
 
 @Composable
 fun EditNews(news: News, navController: NavHostController){
 
     val errors = remember { mutableStateListOf<String>() }
+    var newsViewModel = NewsViewModel()
+    newsViewModel.updateNews( news.id, news.title, news.content)
 
-
-    //val currentTaskID = newsRepository.getNewsById(id)
     val currentTitle = news.title
     val currentDescription = news.content
 

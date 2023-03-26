@@ -22,7 +22,12 @@ interface FootballManagerAPIService {
     suspend fun getSpecificNews(@Path("id") id: Int): News
 
     @POST("news")
-    suspend fun addNews(@Query("title") title: String, @Query("content") content: String, @Query("author") author: Int): News
+    suspend fun addNews(
+        @Query("title") title: String,
+        @Query("content") content: String,
+        @Query("writer") writer: String,
+        writer1: String
+    ): News
     @PUT ("news/{id}")
     suspend fun updateNews(@Path("id") id: Int, @Query("title") title: String, @Query("content") content: String): News
 
