@@ -219,6 +219,18 @@ fun RegisterScreen() {
                         if (task.isSuccessful) {
                             val firebaseUser: FirebaseUser = mAuth!!.getCurrentUser()!!
                             val gmailId = firebaseUser.uid
+
+                            // Get first and last name from google account
+                            val personName = account.displayName
+
+                            val firstName = personName?.split(" ")?.get(0)
+                            val lastName = personName?.split(" ")?.get(1)
+
+                            if (firstName != null && lastName != null) {
+                                loginViewModel.signUpWithEmailAndPassword(gmailId, gmailId, firstName, lastName, sharedPre, firebaseId = gmailId)
+                                registerSuccessfulState.value = true
+                            }
+
                             // FootballManagerAPIService.getInstance().gmailRegister(RegisterRequest(gmailId)) //TODO Needs to be set up on backend.
                             Toast.makeText(
                                 context,

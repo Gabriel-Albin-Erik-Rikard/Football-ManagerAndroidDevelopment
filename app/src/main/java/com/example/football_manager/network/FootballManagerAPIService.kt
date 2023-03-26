@@ -30,7 +30,7 @@ interface FootballManagerAPIService {
     suspend fun loginWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String): AuthPerson
 
     @POST("/auth/signup")
-    suspend fun signUpWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String, @Query("firstName") firstName: String, @Query("lastName") lastName: String): AuthPerson
+    suspend fun signUpWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String, @Query("firstName") firstName: String, @Query("lastName") lastName: String, @Query("firebaseId") firebaseId: String? = null): AuthPerson
 
 
     companion object {

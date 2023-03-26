@@ -90,13 +90,14 @@ class LoginViewModel : ViewModel() {
     firstName: String,
     lastName: String,
     sharedPre: SharedPreferences,
+    firebaseId: String? = null
   ) {
 
     viewModelScope.launch {
       try {
         // Make a POST request to the login endpoint with email and password
         val response =
-          FootballManagerAPIService.getInstance().signUpWithEmailAndPassword(email, password, firstName, lastName)
+          FootballManagerAPIService.getInstance().signUpWithEmailAndPassword(email, password, firstName, lastName, firebaseId)
         // Retrieve the ID from the response
 
         val id = response.id
