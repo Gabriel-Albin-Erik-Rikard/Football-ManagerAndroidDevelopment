@@ -51,7 +51,9 @@ interface FootballManagerAPIService {
     @GET("/auth/login")
     suspend fun loginWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String): AuthPerson
 
-
+    //Register with email and password
+    @POST("/auth/signup")
+    suspend fun signUpWithEmailAndPassword(@Query("email") email: String, @Query("password") password: String, @Query("firstName") firstName: String, @Query("lastName") lastName: String, @Query("firebaseId") firebaseId: String? = null): AuthPerson
     companion object {
         var apiService: FootballManagerAPIService? = null
         fun getInstance(): FootballManagerAPIService {
