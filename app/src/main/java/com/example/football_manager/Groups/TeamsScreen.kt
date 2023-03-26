@@ -142,19 +142,19 @@ fun TeamsScreen(teams: PersonTeams){
         composable("GroupPage/{id}") {
             val id = it.arguments!!.getString("id")!!.toInt()
             teamViewModel.getMembers(id)
-            GroupPage(navController, teamViewModel)
+            GroupPage(navController, teamViewModel.members)
         }
         composable("PlayerPage/{groupID}/{playerID}") {
             //val groupID = it.arguments!!.getString("groupID")!!.toInt()
             val playerID = it.arguments!!.getString("playerID")!!.toInt()
-            val singlePlayer = teamViewModel.players!!.find{it.id == id}
+            val singlePlayer = teamViewModel.members.players!!.find{it.id == id}
             showProfile(human = singlePlayer!!)
             //PlayerPage(navController, groupID, playerID)
         }
         composable("StaffPage/{groupID}/{staffID}") {
             //val groupID = it.arguments!!.getString("groupID")!!.toInt()
             //val staffID = it.arguments!!.getString("staffID")!!.toInt()
-            val singelStaff = teamViewModel.staff!!.find{it.id == id}
+            val singelStaff = teamViewModel.members.staff!!.find{it.id == id}
             showProfile(human = singelStaff!!)
             //StaffPage(navController, groupID, staffID)
         }

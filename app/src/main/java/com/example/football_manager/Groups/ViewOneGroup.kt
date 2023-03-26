@@ -18,10 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.football_manager.groupRepository
 import com.example.football_manager.model.Person
+import com.example.football_manager.viewmodel.Members
 import com.example.football_manager.viewmodel.TeamViewModel
 
 @Composable
-fun GroupPage(navController: NavController, teamViewModel: TeamViewModel){
+fun GroupPage(navController: NavController, members: Members){
     //val group = groupRepository.getGroupById(id)
     Box(
         modifier = Modifier
@@ -48,7 +49,7 @@ fun GroupPage(navController: NavController, teamViewModel: TeamViewModel){
                         .padding(10.dp)
                 )
             }
-            items(teamViewModel.staff!!) { staff ->
+            items(members.staff!!) { staff ->
                 Column(modifier = Modifier.padding(vertical = 0.dp)
                     .clickable { navController.navigate("StaffPage/${staff.id}") }) {
                     Surface(
@@ -78,7 +79,7 @@ fun GroupPage(navController: NavController, teamViewModel: TeamViewModel){
                         .padding(10.dp)
                 )
             }
-            items(teamViewModel.players!!) { player ->
+            items(members.players!!) { player ->
                 Column(modifier = Modifier.padding(vertical = 0.dp)
                     .clickable { navController.navigate("PlayerPage//${player.id}") }) {
                     Surface(

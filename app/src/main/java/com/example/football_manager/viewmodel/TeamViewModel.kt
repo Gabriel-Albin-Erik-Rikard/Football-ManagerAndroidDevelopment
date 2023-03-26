@@ -10,12 +10,20 @@ import com.example.football_manager.Player
 import com.example.football_manager.Staff
 import com.example.football_manager.model.News
 import com.example.football_manager.model.Person
+import com.example.football_manager.model.PersonTeams
+import com.example.football_manager.model.Team
 import com.example.football_manager.network.FootballManagerAPIService
 import kotlinx.coroutines.launch
 
+data class Members (
+    var players: List<Player>? = null,
+    var staff: List<Staff>? = null
+)
 class TeamViewModel : ViewModel() {
-    var staff : List<Staff>? by mutableStateOf(listOf())
-    var players:  List<Player>? by mutableStateOf(listOf())
+    var members: Members by mutableStateOf(Members(listOf(), listOf()))
+
+    //var staff : List<Staff>? by mutableStateOf(listOf())
+    //var players:  List<Player>? by mutableStateOf(listOf())
     var errorCode: String by mutableStateOf("")
     var singlePlayer: Player? by mutableStateOf(Player(0,""))
     var singleStaff : Staff by mutableStateOf(Staff(0,""))
@@ -25,10 +33,9 @@ class TeamViewModel : ViewModel() {
             val apiService = FootballManagerAPIService.getInstance()
             try {
                 var response = apiService.getTeamStaff(id)
-                staff = response
+                members.staff = response
                 var response2 = apiService.getTeamPlayer(id)
-                players = response2
-                println(response)
+                members.players = response2
             } catch (e: Exception) {
                 errorCode = e.message.toString()
             }
